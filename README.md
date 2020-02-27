@@ -1,6 +1,6 @@
 # Bachelors Chase
 Willkommen zu unserem Spiel "Bachelors Chase"! \
-Das ist ein Black Jack basierendes Kartenpiel, aber mit anderen Regeln und anderen Karten! \
+Das ist ein Black Jack basierendes Kartenpiel, aber mit anderen Regeln und anderen Karten!
 
 ## Spielbeschreibung
 Jeder Spieler erhält am Anfang des Spieles eine zufällige Karte. In jeder Runde muss der Spieler innerhalb von 
