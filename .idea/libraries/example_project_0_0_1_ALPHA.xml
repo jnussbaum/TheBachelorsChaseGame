@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="example-project-0.0.1-ALPHA">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/distributions/example-project-0.0.1-ALPHA.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
