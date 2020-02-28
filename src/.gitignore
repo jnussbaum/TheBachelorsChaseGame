@@ -1,9 +1,0 @@
-#ignoring .idea and out folder, .class and .kotlin_module files
-#######################################
-
-
-out
-build
-*.class
-.idea
-.gradle
