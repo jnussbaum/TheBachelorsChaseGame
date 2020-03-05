@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-05-03" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="2.8.10" locale="de">
+<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-03-09" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="2.8.10" locale="de">
     <description><![CDATA[Unser ultimativer Zeitplan für das Kartenspiel. Unsere Gruppe bestehend aus Meipei Nghiem, Johannes Nussbaum, Adrian und Anna Diack.
 
 Projektname:
@@ -10,8 +10,8 @@ Gruppenname:
         <field id="tpd3" name="Vorgang" width="166" order="0"/>
         <field id="tpd4" name="Anfang" width="64" order="1"/>
         <field id="tpd5" name="Ende" width="64" order="2"/>
-        <timeline><![CDATA[2,29,26,0]]></timeline>
-        <option id="color.recent"><![CDATA[#000000 #330033 #660066 #990099 #660099 #6600ff]]></option>
+        <timeline><![CDATA[29,26,2,0]]></timeline>
+        <option id="color.recent"><![CDATA[#0000ff #0066ff #000000 #330033 #660066 #990099 #660099 #6600ff]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Ressource" width="209" order="0"/>
@@ -49,6 +49,8 @@ Gruppenname:
         <task id="26" name="Meilenstein V (Plenum)" color="#000000" meeting="true" start="2020-05-14" duration="0" complete="5" thirdDate="2020-03-26" thirdDate-constraint="0" priority="4" expand="true"/>
         <task id="29" name="Meilenstein V" color="#000000" meeting="true" start="2020-05-15" duration="0" complete="5" thirdDate="2020-03-26" thirdDate-constraint="0" priority="4" expand="true"/>
         <task id="25" name="Meilenstein III" color="#990099" meeting="true" start="2020-04-17" duration="0" complete="3" thirdDate="2020-03-03" thirdDate-constraint="0" priority="2" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="30" name="PP Präsentation" color="#0066ff" meeting="false" start="2020-03-05" duration="5" complete="0" thirdDate="2020-03-02" thirdDate-constraint="0" expand="true"/>
+        <task id="32" name="Mockup" color="#0000ff" meeting="false" start="2020-02-28" duration="10" complete="0" thirdDate="2020-03-02" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
