@@ -31,6 +31,7 @@ hs_err_pid*
 ### Gradle ###
 .gradle
 .gradle/
+*.lock
 **/build/
 
 # Ignore Gradle GUI config
