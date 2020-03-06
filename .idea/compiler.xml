@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="ch.unibas.dmi.dbis.example-project.main" target="11" />
+      <module name="ch.unibas.dmi.dbis.example-project.test" target="11" />
       <module name="example-project.main" target="11" />
       <module name="example-project.test" target="11" />
     </bytecodeTargetLevel>
