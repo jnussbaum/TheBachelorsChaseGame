@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-06-22" view-index="0" gantt-divider-location="470" resource-divider-location="300" version="2.8.10" locale="de">
+    <description><![CDATA[Unser ultimativer Zeitplan für das Kartenspiel. Unsere Gruppe bestehend aus Meipei Nghiem, Johannes Nussbaum, Adrian und Anna Diack.
+
+Projektname:
+Gruppenname:
+
+
+]]></description>
+    <view zooming-state="default:4" id="gantt-chart">
+        <field id="tpd3" name="Vorgang" width="214" order="0"/>
+        <field id="tpd4" name="Anfang" width="118" order="1"/>
+        <field id="tpd5" name="Ende" width="117" order="2"/>
+        <option id="color.recent"><![CDATA[#000000 #666600 #00cc00 #cccccc #0066ff #006666 #ff6600 #666666 #339900 #ffff33]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Ressource" width="209" order="0"/>
+        <field id="1" name="Rolle" width="85" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="30" name="PP Präsentation" color="#ff0033" meeting="false" start="2020-03-05" duration="4" complete="0" thirdDate="2020-03-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Enthält alle wichtigen Informationen zu unserer Projektidee.
+
+Farben der Teammitgleider:
+- Meipei = gelb
+- Adrian = blau
+- Johannes = Petrol
+- Anna = Rot]]></notes>
+        </task>
+        <task id="85" name="Networking" color="#0066ff" meeting="false" start="2020-03-03" duration="6" complete="0" thirdDate="2020-03-27" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="88" name="Tagebuch" color="#006666" meeting="false" start="2020-02-20" duration="59" complete="0" thirdDate="2020-03-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="32" name="Mockup" color="#ffff33" meeting="false" start="2020-03-02" duration="8" complete="0" thirdDate="2020-03-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="1" name="1. Meilenstein" color="#8cb6ce" meeting="true" start="2020-03-11" duration="0" complete="0" thirdDate="2019-02-21" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Präsentation im Plenum:
+
+- Spielbeschreibung/-regel und Ziel
+- Anforderungen an Software
+- Schnittstelle Server/Client
+- Projektorganisation
+- Dokumentationen]]></notes>
+            <depend id="3" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="3" name="Präsentation im Plenum" color="#000000" meeting="false" start="2020-03-12" duration="2" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <depend id="5" type="2" difference="0" hardness="Rubber"/>
+            <depend id="7" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="5" name="2. Meilenstein - Server" color="#666600" meeting="false" start="2020-03-16" duration="4" complete="0" thirdDate="2019-03-06" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Vorzeigen des Projekts in der Übungsstunde:
+
+Implementierung eines Java Client/Server-Systems mit einfachen Socket-Verbindungen
+-> Netzwerk-Kommunikation eines Servers mit mehreren Clients implementiert]]></notes>
+        </task>
+        <task id="93" name="Server Testen" color="#00cc00" meeting="false" start="2020-03-19" duration="4" complete="0" thirdDate="2020-03-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Die Zeit wird als Buffer benutzt um den bisherigen Code auf Fehlern zu testen]]></notes>
+        </task>
+        <task id="7" name="2. Meilenstein - Client" color="#33ff33" meeting="false" start="2020-03-16" duration="4" complete="0" thirdDate="2019-03-06" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Vorzeigen des Projekts in der Übungsstunde:
+
+Implementierung eines Java Client/Server-Systems mit einfachen Socket-Verbindungen
+-> Netzwerk-Kommunikation eines Servers mit mehreren Clients implementiert]]></notes>
+        </task>
+        <task id="95" name="Client Testen" color="#666600" meeting="false" start="2020-03-19" duration="4" complete="0" thirdDate="2020-03-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Testen wird zum korrigieren des Codes und als Zeitbuffer benutzt.]]></notes>
+        </task>
+        <task id="33" name="Spiel-Implementation" color="#000000" meeting="false" start="2020-03-16" duration="4" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Zusammenfügen und Testen der Software]]></notes>
+            <depend id="34" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="100" name="Implementation Testen" color="#000000" meeting="false" start="2020-03-19" duration="4" complete="0" thirdDate="2020-03-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Zeitbuffer und Fehler korrigieren]]></notes>
+        </task>
+        <task id="34" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-03-25" duration="0" complete="0" thirdDate="2020-03-25" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <depend id="13" type="2" difference="0" hardness="Rubber"/>
+            <depend id="17" type="2" difference="0" hardness="Rubber"/>
+            <depend id="35" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="13" name="3. Meilenstein - Server" color="#00cc00" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Präsentation in der Übungsstunde + eine Woche darauf im Plenum:
+
+Kernkomponenten des Spieles (Spiel-Management) sind implementiert, allerdings noch ohne Regelüberprüfung und ohne grafische Oberfläche, für die Lobby und den Chat ist einer GUI vorhanden.
+
+Erwartete Inhalte:
+– Kurze Diskussion: Welche Massnahmen zur Erhöhung der Softwarequalität haben Sie angewendet / werden Sie anwenden?
+– Folien zum Stand des Projekts
+-> Aktueller Stand des Projekts (erwartete Inhalte des Meilensteins)
+-> Stand im Vergleich zum Arbeitsplan
+– Erklärung der verwendeten Technologien und Libraries
+– Welche Komponenten funktionieren, welche nicht (und warum)?
+]]></notes>
+            <depend id="19" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="112" name="Server Testen" color="#00cc00" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-04-03" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="35" name="3. Meilenstein - Client" color="#666600" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <depend id="19" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="114" name="Client Testen" color="#666600" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-03-20" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="17" name="3. Meilenstein - GUI" color="#ff6600" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Grafische Darstellung des Spiels (Kartenmodelle, evtl Animation)
+
+Sound]]></notes>
+        </task>
+        <task id="117" name="GUI Testen" color="#ff6600" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-03-20" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="19" name="Implementierung Server/Client" color="#0066ff" meeting="false" start="2020-04-07" duration="4" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="123" name="Server/Client Testen" color="#cccccc" meeting="false" start="2020-04-10" duration="5" complete="0" thirdDate="2020-04-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="21" name="Implementierung Software/GUI" color="#666666" meeting="false" start="2020-04-07" duration="4" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="125" name="Software/GUI Testen" color="#006666" meeting="false" start="2020-04-10" duration="5" complete="0" thirdDate="2020-04-03" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="23" name="Präsentation im Plenum" color="#000000" meeting="false" start="2020-04-16" duration="2" complete="0" thirdDate="2019-04-11" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="36" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-08" duration="0" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="27" name="4. Meilenstein - Server" color="#00cc00" meeting="false" start="2020-04-08" duration="10" complete="0" thirdDate="2019-04-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Regel implementieren]]></notes>
+        </task>
+        <task id="136" name="Server Test" color="#00cc00" meeting="false" start="2020-04-21" duration="5" complete="50" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="37" name="4. Meilenstein - Client" color="#666600" meeting="false" start="2020-04-08" duration="10" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2Fe" expand="true">
+            <notes><![CDATA[Komplette Spielregeln
+
+Grafische Darstellung des Spiels (Kartenmodelle, evtl Animation)]]></notes>
+        </task>
+        <task id="139" name="Client Test" color="#666600" meeting="false" start="2020-04-21" duration="5" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="38" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-29" duration="0" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <depend id="40" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="141" name="HandIn Meilenstein 4" color="#000000" meeting="true" start="2020-04-27" duration="0" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="39" name="5. Meilenstein - Tests" color="#cccccc" meeting="false" start="2020-04-29" duration="11" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Beta Testing, Debugging]]></notes>
+            <depend id="41" type="2" difference="0" hardness="Rubber"/>
+            <depend id="42" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="40" name="Dokumentation" color="#006666" meeting="false" start="2020-04-29" duration="53" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+            <notes><![CDATA[Dokumentation: Handbuch, Tagebuch fertig stellen]]></notes>
+            <depend id="41" type="2" difference="0" hardness="Rubber"/>
+            <depend id="42" type="2" difference="0" hardness="Rubber"/>
+        </task>
+        <task id="41" name="Abschlusspräsentation" color="#000000" meeting="false" start="2020-07-13" duration="2" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="42" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-07-13" duration="0" complete="0" thirdDate="2019-05-29" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
