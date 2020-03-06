@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-06-22" view-index="0" gantt-divider-location="470" resource-divider-location="300" version="2.8.10" locale="de">
-    <description><![CDATA[Unser ultimativer Zeitplan für das Kartenspiel. Unsere Gruppe bestehend aus Meipei Nghiem, Johannes Nussbaum, Adrian und Anna Diack.
+<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-03-18" view-index="0" gantt-divider-location="366" resource-divider-location="300" version="2.8.10" locale="de_CH">
+    <description><![CDATA[Unser ultimativer Zeitplan für das Kartenspiel. Unsere Gruppe bestehend aus Meipei Nghiem, Johannes Nussbaum, Adrian Prokopczyk und Anna Diack.
 
-Projektname:
-Gruppenname:
+Projektname: Bachelor's Chase
+Gruppenname: The Chasers
 
 
 ]]></description>
-    <view zooming-state="default:4" id="gantt-chart">
-        <field id="tpd3" name="Vorgang" width="214" order="0"/>
-        <field id="tpd4" name="Anfang" width="118" order="1"/>
-        <field id="tpd5" name="Ende" width="117" order="2"/>
+    <view zooming-state="default:3" id="gantt-chart">
+        <field id="tpd3" name="Vorgang" width="163" order="0"/>
+        <field id="tpd4" name="Anfang" width="91" order="1"/>
+        <field id="tpd5" name="Ende" width="91" order="2"/>
         <option id="color.recent"><![CDATA[#000000 #666600 #00cc00 #cccccc #0066ff #006666 #ff6600 #666666 #339900 #ffff33]]></option>
     </view>
     <view id="resource-table">
@@ -138,22 +138,16 @@ Sound]]></notes>
 Grafische Darstellung des Spiels (Kartenmodelle, evtl Animation)]]></notes>
         </task>
         <task id="139" name="Client Test" color="#666600" meeting="false" start="2020-04-21" duration="5" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="38" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-29" duration="0" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
-            <depend id="40" type="2" difference="0" hardness="Rubber"/>
-        </task>
+        <task id="38" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-29" duration="0" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="141" name="HandIn Meilenstein 4" color="#000000" meeting="true" start="2020-04-27" duration="0" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="39" name="5. Meilenstein - Tests" color="#cccccc" meeting="false" start="2020-04-29" duration="11" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
             <notes><![CDATA[Beta Testing, Debugging]]></notes>
-            <depend id="41" type="2" difference="0" hardness="Rubber"/>
-            <depend id="42" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="40" name="Dokumentation" color="#006666" meeting="false" start="2020-04-29" duration="53" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+        <task id="40" name="Dokumentation" color="#006666" meeting="false" start="2020-03-02" duration="53" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
             <notes><![CDATA[Dokumentation: Handbuch, Tagebuch fertig stellen]]></notes>
-            <depend id="41" type="2" difference="0" hardness="Rubber"/>
-            <depend id="42" type="2" difference="0" hardness="Rubber"/>
         </task>
-        <task id="41" name="Abschlusspräsentation" color="#000000" meeting="false" start="2020-07-13" duration="2" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="42" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-07-13" duration="0" complete="0" thirdDate="2019-05-29" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="41" name="Abschlusspräsentation" color="#000000" meeting="false" start="2020-05-14" duration="2" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="42" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-05-20" duration="0" complete="0" thirdDate="2019-05-29" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
