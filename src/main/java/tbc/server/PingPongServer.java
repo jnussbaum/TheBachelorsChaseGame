@@ -43,7 +43,7 @@ public class PingPongServer implements Runnable {
         // (i.e., 2 or more ping/pongs failed), the server will be notified with connectionBroken(int numOfClient)
         for (int i = 0; i < numOfClients; i++) {
             if (clientsConnectivity[i] < 9) {
-                Server.connectionBroken(i);     //Wie adressiere ich den Server?
+                //Server.connectionBroken(i);     //Wie adressiere ich den Server?
             }
         }
     }
