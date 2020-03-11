@@ -1,3 +1,4 @@
+package tbc.server;
 
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -16,8 +17,7 @@ Socket client = server.accept(); //wartet auf einen Client zum verbinden
 
 	
 /** Die Daten die von den Server an den Client gesendet werden müssen in einem *outputstream objekt gesepichert werden
-**/
-/**
+
 OutputStream out = client.getOutputStream();
 
 PrintWriter writer = new PrintWriter(out); //Um normale Strings aufzufangen sollte das reichen
@@ -26,8 +26,7 @@ PrintWriter writer = new PrintWriter(out); //Um normale Strings aufzufangen soll
 InputStream in = client.getInputStream(); 
 BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-/** Daten die vom Client gesendet werden, müssen auf dem Server wieder ausgegeben werden können.
-**/
+//Daten die vom Client gesendet werden, müssen auf dem Server wieder ausgegeben werden können.
 
 String s = null;
 //schleife liest jeden string der rein kommt solange es kein nullzeiger ist
