@@ -20,7 +20,7 @@ public class ChatClient implements Runnable {
     public static void main(String[] args) {
 
         int portNumber = 8095;
-        String hostname = "localhost";
+        String hostname = "10.192.4.77";
 
         if (args.length < 2) {
             System.out.println("Port number: " + portNumber + "\nWelcome new client!");
