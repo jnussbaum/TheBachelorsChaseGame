@@ -24,14 +24,16 @@ public class ChatClient implements Runnable {
 
     public static void main(String[] args) {
 
-        int portNumber = 8095;
+        int portNumber = 8090;
 
+        // TODO Find the IP address automatically
         String hostname = null;
         try {
             hostname = String.valueOf(InetAddress.getLocalHost().getHostAddress());
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
         if (args.length < 2) {
             System.out.println("Port number: " + portNumber + "\nWelcome new client!");
         } else {

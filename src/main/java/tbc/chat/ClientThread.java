@@ -27,6 +27,7 @@ class ClientThread extends Thread {
         int maxClientsCount = this.maxClientsCount;
         ClientThread[] threads = this.threads;
 
+        // TODO Sending umlaut. Change username. Do not interrupt the writing if you get a message.
         try {
             input = new DataInputStream(clientSocket.getInputStream());
             output = new PrintStream(clientSocket.getOutputStream());

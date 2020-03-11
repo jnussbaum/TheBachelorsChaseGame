@@ -20,7 +20,7 @@ public class ChatServer {
 
     public static void main(String args[]) {
 
-        int portNumber = 8095;
+        int portNumber = 8090;
         if (args.length < 1) {
             System.out.println("Welcome! You are the Server. \nPort number: " + portNumber);
             try {
