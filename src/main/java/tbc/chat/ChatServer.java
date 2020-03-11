@@ -2,11 +2,13 @@ package tbc.chat;
 
 import java.io.PrintStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 
 /*
- * The server. Has to be started before a client.
+ * Server. Has to be started before a client.
  */
 public class ChatServer {
 
@@ -21,6 +23,11 @@ public class ChatServer {
         int portNumber = 8095;
         if (args.length < 1) {
             System.out.println("Welcome! You are the Server. \nPort number: " + portNumber);
+            try {
+                System.out.println(InetAddress.getLocalHost());
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
         } else {
             portNumber = Integer.valueOf(args[0]).intValue();
         }

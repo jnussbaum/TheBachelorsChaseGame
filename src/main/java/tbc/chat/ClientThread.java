@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 /*
- * Handles all the clients information and actions.
+ * ClientThread. Handles all the clients information and actions.
  */
 class ClientThread extends Thread {
 
