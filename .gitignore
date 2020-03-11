@@ -1,5 +1,6 @@
 ### IDEA ###
 .idea
+.idea/
 /out/
 *.iws
 **.iml
