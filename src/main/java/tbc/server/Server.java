@@ -1,31 +1,48 @@
 package tbc.server;
 
-import java.net.*;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.*;
+import java.net.Socket;
+import java.net.ServerSocket;
 
-public class Server {
+public class Server{
+	public static void main (String[]args){
+	
+	try{
+ServerSocket server = new ServerSocket(8095); //dem konstruktor vom Serversocket einen Port zugewiesen
+System.out.println("Server wurde gestartet...");
 
-    public static ServerSocket serv;
+Socket client = server.accept(); //wartet auf einen Client zum verbinden
 
-    public void main(String[] arg) {
-        //TODO add some stuff
-    }
+	
+/** Die Daten die von den Server an den Client gesendet werden müssen in einem *outputstream objekt gesepichert werden
 
-    //starts the Server
-    public void runServer() throws IOException {
-        serv = new ServerSocket(8090);
-        //TODO do more
-    }
+OutputStream out = client.getOutputStream();
 
-    //Starts pinging
-    public void ping() {
-        //TODO do a ping
-    }
+PrintWriter writer = new PrintWriter(out); //Um normale Strings aufzufangen sollte das reichen
 
-    //starts the chat
-    public void startChat(ServerSocket x) {
-        //TODO start talking
-    }
+//Hier werden die Daten die vom Client gesendet werden bearbeitet und gespeichert
+InputStream in = client.getInputStream(); 
+BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
+//Daten die vom Client gesendet werden, müssen auf dem Server wieder ausgegeben werden können.
 
+String s = null;
+//schleife liest jeden string der rein kommt solange es kein nullzeiger ist
+
+while((s = reader.readLine()) != null){
+writer.write(s + "\n");
+writer.flush();
+System.out.println("Client:"+ s);
+}
+//geöffnete Streams wieder schliessen
+reader.close();
+writer.close();
+**/
+		} catch (IOException e){
+	e.printStackTrace();
+	
+		}
+	}
 }

@@ -5,8 +5,13 @@ import java.io.PrintStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+/**
+ * Client. After a successful connection to the server, it can start chatting with other clients.
+ */
 
 public class ChatClient implements Runnable {
 
@@ -19,8 +24,15 @@ public class ChatClient implements Runnable {
 
     public static void main(String[] args) {
 
-        int portNumber = 8095;
-        String hostname = "localhost";
+        int portNumber = 8090;
+
+        // TODO Find the IP address automatically
+        String hostname = null;
+        try {
+            hostname = String.valueOf(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         if (args.length < 2) {
             System.out.println("Port number: " + portNumber + "\nWelcome new client!");

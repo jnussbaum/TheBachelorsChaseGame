@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 /*
- * Handles all the clients information and actions.
+ * ClientThread. Handles all the clients information and actions.
  */
 class ClientThread extends Thread {
 
@@ -27,6 +27,7 @@ class ClientThread extends Thread {
         int maxClientsCount = this.maxClientsCount;
         ClientThread[] threads = this.threads;
 
+        // TODO Sending umlaut. Change username. Do not interrupt the writing if you get a message.
         try {
             input = new DataInputStream(clientSocket.getInputStream());
             output = new PrintStream(clientSocket.getOutputStream());
