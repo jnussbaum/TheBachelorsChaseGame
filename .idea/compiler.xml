@@ -4,8 +4,6 @@
     <bytecodeTargetLevel>
       <module name="ch.unibas.dmi.dbis.example-project.main" target="11" />
       <module name="ch.unibas.dmi.dbis.example-project.test" target="11" />
-      <module name="Desktop.gruppe-14.example-project.main" target="11" />
-      <module name="Desktop.gruppe-14.example-project.test" target="11" />
       <module name="gruppe-14.example-project.main" target="11" />
       <module name="gruppe-14.example-project.test" target="11" />
     </bytecodeTargetLevel>

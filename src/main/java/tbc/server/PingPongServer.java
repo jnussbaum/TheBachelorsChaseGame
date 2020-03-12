@@ -1,58 +1,70 @@
 package tbc.server;
 
+import java.util.LinkedList;
+
 public class PingPongServer implements Runnable {
 
-    /**
-     * Object fields:
-     * sendPing: Received by server.
-     * numOfClients: Received by server.
-     * clientsConnectivity: Each position i represents client i. Each pong received by that client adds 1 to the
-     *      respective position. The sum on position i represents the number of successful ping/pongs.
-     * pingFrequency: How many times per second that a ping should be sent.
-     */
-    boolean sendPing;
-    int numOfClients;
-    private int[] clientsConnectivity = new int[100];
-    int pingFrequency = 10;
+    class ClientObject {
+        String nameOfClient;
+        boolean answered = false;
+        int numOfFails = 0;
+    }
+
+    LinkedList<ClientObject> clientObjects = new LinkedList();
+    private int numOfFailsTolerated = 2;
+    private long pingsPerSecond = 1;
 
     /**
-     * @param sendPing: Object field of the server, initially false. Please pass the field itself to PingPongServer,
-     *                not only its value.As soon as PingPongServer swaps it to true,
-     *                the server sends a ping to all clients via network protocol. Then, the server resets sendPing
-     *                to false. Every access to sendPing has to be synchronized!
-     * @param numOfClients: Object field of the server. Please pass the field itself to PingPongServer, not only its
-     *                    value.
+     * At the beginning of its existence, the Server has to create an instance of PingPongServer with this constructor.
+     * @param clients: Please pass a LinkedList with all clients to the constructor.
      */
-    public PingPongServer(boolean sendPing, int numOfClients) {
-        this.sendPing = sendPing;
-        this.numOfClients = numOfClients;
+    PingPongServer(LinkedList<String> clients) {
+        for (String s : clients) {
+            ClientObject co = new ClientObject();
+            co.nameOfClient = s;
+            clientObjects.add(co);
+        }
     }
 
     @Override
     public void run() {
-        //pingFrequency times per second, sendPing is set to true in order to make the server send a ping to all clients.
-        for (int i = 0; i < pingFrequency; i++) {
-            sendPing = true;    //Wie mache ich das synchronized?
+        while (true) {
+            //tell handler to send ping to all clients
             try {
-                Thread.sleep((long) (1000 / pingFrequency));
-            } catch (InterruptedException e) { /*do nothing*/
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                //do nothing
             }
-        }
-
-        //after 1 second, PingPongServer checks the sums of clientsConnectivity. If one client's sum is less than 9
-        // (i.e., 2 or more ping/pongs failed), the server will be notified with connectionBroken(int numOfClient)
-        for (int i = 0; i < numOfClients; i++) {
-            if (clientsConnectivity[i] < 9) {
-                Server.connectionBroken(i);     //Wie adressiere ich den Server?
+            for (ClientObject co : clientObjects) {
+                if (co.answered == false) {
+                    co.numOfFails++;
+                    if (co.numOfFails > numOfFailsTolerated) {
+                        //tell server that this client is disconnected.
+                        //Server then has to kick this client out of the game.
+                    }
+                }
             }
         }
     }
 
     /**
-     * Each pong received by client numOfClient adds 1 to the sum of successful ping/pongs
-     * at clientsConnectivity[numOfClient].
+     * The handler tells the PingPongServer that a pong arrived by the client named as parameter.
      */
-    void pongArrived(int numOfClient) {
-        clientsConnectivity[numOfClient]++;
+    public void pongArrived(String nameOfClient) {
+        for (ClientObject co : clientObjects) {
+            if (co.nameOfClient.equals(nameOfClient)) {
+                co.answered = true;
+                break;
+            }
+        }
+    }
+
+    /**
+     * Every time a new client connects to the server, the server has to pass the client's name to this thread.
+     */
+    public void addClient(String nameOfClient) {
+        ClientObject co = new ClientObject();
+        co.nameOfClient = nameOfClient;
+        clientObjects.add(co);
     }
 }
