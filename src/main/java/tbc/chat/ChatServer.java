@@ -24,7 +24,7 @@ public class ChatServer {
         if (args.length < 1) {
             System.out.println("Welcome! You are the Server. \nPort number: " + portNumber);
             try {
-                System.out.println(InetAddress.getLocalHost());
+                System.out.println(InetAddress.getLocalHost().getHostAddress());
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             }
@@ -55,9 +55,11 @@ public class ChatServer {
                     }
                 }
                 if (i == maxClientsCount) {
-                    PrintStream os = new PrintStream(clientSocket.getOutputStream());
-                    os.println("Server full.");
-                    os.close();
+                    PrintStream output = new PrintStream(clientSocket.getOutputStream());
+                    output.println("Server full.");
+                    System.out.println("Another client tried to enter the chat room. "
+                        + "Sadly you are already full..");
+                    output.close();
                     clientSocket.close();
                 }
             } catch (IOException e) {
