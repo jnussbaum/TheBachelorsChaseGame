@@ -18,7 +18,6 @@ public class ChatClient implements Runnable {
     private static Socket clientSocket = null;
     private static PrintStream output = null;
     private static DataInputStream input = null;
-
     private static BufferedReader inputLine = null;
     private static boolean closed = false;
 
@@ -26,10 +25,11 @@ public class ChatClient implements Runnable {
 
         int portNumber = 8090;
 
-        // TODO Find the IP address automatically
+        // TODO Find the IP address of the server automatically
         String hostname = null;
         try {
-            hostname = String.valueOf(InetAddress.getLocalHost().getHostAddress());
+            hostname = InetAddress.getLocalHost().getHostAddress();
+            System.out.println(hostname);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -45,9 +45,10 @@ public class ChatClient implements Runnable {
          * Open a socket on a given host and port. Open input and output streams.
          */
         try {
+            // TODO Umlaut still not working
             clientSocket = new Socket(hostname, portNumber);
-            inputLine = new BufferedReader(new InputStreamReader(System.in));
-            output = new PrintStream(clientSocket.getOutputStream());
+            inputLine = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
+            output = new PrintStream(clientSocket.getOutputStream(), true, "Cp850");
             input = new DataInputStream(clientSocket.getInputStream());
             System.out.print("Enter your name: ");
         } catch (UnknownHostException e) {
@@ -62,15 +63,11 @@ public class ChatClient implements Runnable {
          */
         if (clientSocket != null && output != null && input != null) {
             try {
-
                 /* Create a thread to read from the server. */
                 new Thread(new ChatClient()).start();
                 while (!closed) {
                     output.println(inputLine.readLine().trim());
                 }
-                /*
-                 * Close the output stream, close the input stream, close the socket.
-                 */
                 output.close();
                 input.close();
                 clientSocket.close();
