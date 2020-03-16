@@ -41,7 +41,7 @@ class ClientThread extends Thread {
                 if (name.indexOf('@') == -1) {
                     break;
                 } else {
-                    output.println("The name should not contain '@' character.");
+                    output.println("The name should not contain '@' character.");// wegen doppelten usernamen abfragen
                 }
             }
 
