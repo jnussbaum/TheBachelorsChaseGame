@@ -13,7 +13,7 @@ class ClientThread extends Thread {
     private String clientName = null;
     private DataInputStream input = null;
     private PrintStream output = null;
-    private Socket clientSocket = null;
+    private Socket clientSocket;
     private final ClientThread[] threads;
     private int maxClientsCount;
 
@@ -27,17 +27,20 @@ class ClientThread extends Thread {
         int maxClientsCount = this.maxClientsCount;
         ClientThread[] threads = this.threads;
 
-        /*
-         * TODO Chatting with umlaut.
-         *  Implemented change username, but not tested with more than 1 client.
-         *  Do not interrupt the writing if you get a message.
-         */
+        // TODO Do not interrupt the writing if you get a message.
         try {
             input = new DataInputStream(clientSocket.getInputStream());
             output = new PrintStream(clientSocket.getOutputStream());
             String name;
             while (true) {
-                name = input.readLine();
+                // The client suggests a nickname based on the system username
+                if (input.readLine().equalsIgnoreCase("yes")) {
+                    name = System.getProperty("user.name");
+                } else {
+                    output.println("Ok, what's your name then?");
+                    name = input.readLine();
+                }
+
                 if (name.indexOf('@') == -1) {
                     break;
                 } else {
@@ -63,6 +66,7 @@ class ClientThread extends Thread {
                     }
                 }
             }
+
             while (true) {
                 String line = input.readLine();
                 /* To leave the chat room */
@@ -71,6 +75,7 @@ class ClientThread extends Thread {
                 }
                 /* To change the own username */
                 if (line.startsWith("/changeName")) {
+                    output.println(name + " changed her/his name to " + line.substring(12));
                     name = line.substring(12);
                     clientName = "@" + name;
                 }
@@ -98,7 +103,11 @@ class ClientThread extends Thread {
                     synchronized (this) {
                         for (int i = 0; i < maxClientsCount; i++) {
                             if (threads[i] != null && threads[i].clientName != null) {
-                                threads[i].output.println(name + ": " + line);
+                                if (line.startsWith("/changeName")) {
+                                    threads[i].output.println(name + ": My new name is now " + name);
+                                } else {
+                                    threads[i].output.println(name + ": " + line);
+                                }
                             }
                         }
                     }
