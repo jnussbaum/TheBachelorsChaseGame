@@ -12,8 +12,8 @@ public class Server{
 	try{
 ServerSocket server = new ServerSocket(8095); //dem konstruktor vom Serversocket einen Port zugewiesen
 System.out.println("Server wurde gestartet...");
-
-Socket client = server.accept(); //wartet auf einen Client zum verbinden
+Handler hand = new Handler(server);
+//Socket client = server.accept(); //wartet auf einen Client zum verbinden
 
 	
 /** Die Daten die von den Server an den Client gesendet werden müssen in einem *outputstream objekt gesepichert werden

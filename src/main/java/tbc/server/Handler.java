@@ -10,6 +10,7 @@ public class Handler {
     public Socket socket;
     public ServerSocket serv;
     public String s;
+    public String r;
     public boolean isServer;
     private OutputStream out;
     private PrintWriter writer;
@@ -31,7 +32,7 @@ public class Handler {
     public Handler(ServerSocket serv) {
         this.serv = serv;
         try {
-            Socket client = serv.accept(); //wartet auf einen Client zum verbinden
+            socket = serv.accept(); //wartet auf einen Client zum verbinden
             setInOut();
             serverStard();
         } catch (IOException e) {
@@ -62,18 +63,41 @@ public class Handler {
     }
 
     private void serverStard(){
+        System.out.println();
         try {
-             s = null;
+             r = null;
 //schleife liest jeden string der rein kommt solange es kein nullzeiger ist
 
-            while((s = reader.readLine()) != null){
-                switch (s){
+            while((r = reader.readLine()) != null){
+                switch (r){
                     case "Ping_":
                         //TODO
                         break;
                     case "Pong_":
                         //TODO
                         break;
+                    case  "CHAT_":
+                        //TODO
+                        break;
+                    case "GAMST":
+                        //TODO
+                        break;
+                    case "GIVCA":
+                        //TODO;
+                        break;
+                    case "GETCA":
+                        //TODO;
+                        break;
+                    case "THRCA":
+                        //TODO;
+                        break;
+                    case "TURST":
+                        //TODO;
+                        break;
+                    case "TUREN":
+                        //TODO;
+                        break;
+
                 }
                 writer.write(s + "\n");
                 writer.flush();
@@ -99,6 +123,14 @@ public class Handler {
 
     public void sPing_(){
         s="Ping_";
+        send();
+    }
+    public void sCHAT_(String message){
+        s="CHAT_ = "+message;
+        send();
+    }
+    public void sGAMST(){
+        s="GAMST";
         send();
     }
 
