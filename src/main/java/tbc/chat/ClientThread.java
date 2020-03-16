@@ -46,7 +46,7 @@ class ClientThread extends Thread {
             }
 
             output.println("Welcome " + name + " to our chat room."
-                + "\nTo leave enter /quit in a new line.");
+                + "\nPlease do not use umlaut"+ "\nTo leave enter /quit in a new line." + "\nTo change your name enter /changeName in a new line.");
             System.out.println(name + " entered the chat room.");
             synchronized (this) {
                 /* No user is connected to the server yet */
