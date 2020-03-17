@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 /**
  * Client. After a successful connection to the server, it can start chatting with other clients.
@@ -23,9 +24,15 @@ public class ChatClient implements Runnable {
 
     public static void main(String[] args) {
 
+        // default port
         int portNumber = 8090;
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the hostname: ");
+        String hostname = scanner.nextLine();
+
         // TODO Find the IP address of the server automatically
+        /* Still not working...
         String hostname = null;
         try {
             hostname = InetAddress.getLocalHost().getHostAddress();
@@ -33,24 +40,26 @@ public class ChatClient implements Runnable {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+         */
 
         if (args.length < 2) {
             System.out.println("Port number: " + portNumber + "\nWelcome new client!");
         } else {
             hostname = args[0];
-            portNumber = Integer.valueOf(args[1]).intValue();
+            portNumber = Integer.parseInt(args[1]);
         }
 
         /*
          * Open a socket on a given host and port. Open input and output streams.
          */
         try {
-            // TODO Umlaut still not working
             clientSocket = new Socket(hostname, portNumber);
-            inputLine = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
-            output = new PrintStream(clientSocket.getOutputStream(), true, "Cp850");
+            inputLine = new BufferedReader(new InputStreamReader(System.in));
+            output = new PrintStream(clientSocket.getOutputStream());
             input = new DataInputStream(clientSocket.getInputStream());
-            System.out.print("Enter your name: ");
+            // The client suggests a nickname based on the system username
+            System.out.println("Is your name " + System.getProperty("user.name") + "? "
+                + "\nPlease answer with yes or no.");
         } catch (UnknownHostException e) {
             System.err.println("Unknown hostname " + hostname);
         } catch (IOException e) {
@@ -89,7 +98,7 @@ public class ChatClient implements Runnable {
         try {
             while ((responseLine = input.readLine()) != null) {
                 System.out.println(responseLine);
-                if (responseLine.indexOf("*** Bye") != -1) {
+                if (responseLine.contains("*** Bye")) {
                     break;
                 }
             }
