@@ -36,14 +36,27 @@ class ClientThread extends Thread {
             input = new DataInputStream(clientSocket.getInputStream());
             output = new PrintStream(clientSocket.getOutputStream());
             String name;
+
             while (true) {
                 name = input.readLine();
                 if (name.indexOf('@') == -1) {
                     break;
-                } else {
+                } else{
                     output.println("The name should not contain '@' character.");// wegen doppelten usernamen abfragen
                 }
             }
+
+
+              String controlName(String name){
+                name = input();
+                int x = 0;
+                if (clientName.contains(input())) {
+                  name += x;
+                  return name;
+                } else {
+                  return name;
+                }
+              }
 
             output.println("Welcome " + name + " to our chat room."
                 + "\nPlease do not use umlaut"+ "\nTo leave enter /quit in a new line." + "\nTo change your name enter /changeName in a new line.");
