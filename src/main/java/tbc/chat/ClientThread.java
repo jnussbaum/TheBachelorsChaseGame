@@ -22,6 +22,16 @@ class ClientThread extends Thread {
         this.threads = threads;
         maxClientsCount = threads.length;
     }
+    // is checking the usernames which are already in the lobby and disable dublicate usernames
+    private boolean isNamePicked(String name){
+        // check other clients name
+        for(ClientThread clientThread: threads){
+            if(clientThread != this && clientThread != null)
+                if(clientThread.clientName.equals("@"+ name))
+                    return true;
+        }
+        return false;
+    }
 
     public void run() {
         int maxClientsCount = this.maxClientsCount;
@@ -33,13 +43,23 @@ class ClientThread extends Thread {
             output = new PrintStream(clientSocket.getOutputStream());
             String name;
 
-            while (true) {
-                // The client suggests a nickname based on the system username
+            while(true){
+
+// The client suggests a nickname based on the system username
                 if (input.readLine().equalsIgnoreCase("yes")) {
                     name = System.getProperty("user.name");
                 } else {
                     output.println("Ok, what's your name then?");
                     name = input.readLine();
+                }
+
+                if(isNamePicked(name) == true){
+                    do {
+                        output.println("Your name is already picked. \nPlease choose another name. ");
+                        name = input.readLine();
+                    } while(isNamePicked(name) == true);
+
+
                 }
 
                 if (name.indexOf('@') == -1) {
@@ -48,18 +68,6 @@ class ClientThread extends Thread {
                     output.println("The name should not contain '@' character.");// wegen doppelten usernamen abfragen
                 }
             }
-
-
-              String controlName(String name){
-                name = input();
-                int x = 0;
-                if (clientName.contains(input())) {
-                  name += x;
-                  return name;
-                } else {
-                  return name;
-                }
-              }
 
             output.println("Welcome " + name + " to our chat room."
                 + "\nPlease do not use umlaut"+ "\nTo leave enter /quit in a new line." + "\nTo change your name enter /changeName in a new line.");
