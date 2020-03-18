@@ -22,12 +22,12 @@ class ClientThread extends Thread {
         this.threads = threads;
         maxClientsCount = threads.length;
     }
+
     /* Checking the usernames which are already in the lobby and disable dublicate usernames */
     private boolean isNamePicked(String name){
-        // check other clients name
         for(ClientThread clientThread: threads){
             if(clientThread != this && clientThread != null)
-                if(clientThread.clientName.equals("@"+ name))
+                if(clientThread.clientName.equals("@" + name))
                     return true;
         }
         return false;
@@ -43,7 +43,6 @@ class ClientThread extends Thread {
             String name;
 
             while(true){
-
                 /* The client suggests a nickname based on the system username */
                 if (input.readLine().equalsIgnoreCase("yes")) {
                     name = System.getProperty("user.name");
@@ -52,11 +51,11 @@ class ClientThread extends Thread {
                     name = input.readLine();
                 }
 
-                if (isNamePicked(name) == true){
+                if (isNamePicked(name) == true) {
                     do {
                         output.println("Your name is already picked. \nPlease choose another name. ");
                         name = input.readLine();
-                    } while(isNamePicked(name) == true);
+                    } while (isNamePicked(name) == true);
                 }
 
                 if (name.indexOf('@') == -1) {
@@ -94,10 +93,15 @@ class ClientThread extends Thread {
                 }
                 /* To change the own username */
                 if (line.startsWith("/changeName")) {
-                    output.println(name + " changed her/his name to " + line.substring(12));
-                    name = line.substring(12);
-                    clientName = "@" + name;
+                    if (isNamePicked(name)) {
+                        output.println("Your name is already picked.");
+                    } else {
+                        output.println(name + " changed her/his name to " + line.substring(12));
+                        name = line.substring(12);
+                        clientName = "@" + name;
+                    }
                 }
+
                 /* Start with '@' to send a private message to a specific user */
                 if (line.startsWith("@")) {
                     String[] words = line.split("\\s", 2);
@@ -123,7 +127,7 @@ class ClientThread extends Thread {
                         for (int i = 0; i < maxClientsCount; i++) {
                             if (threads[i] != null && threads[i].clientName != null) {
                                 if (line.startsWith("/changeName")) {
-                                    threads[i].output.println(name + ": My new name is now " + name);
+
                                 } else {
                                     threads[i].output.println(name + ": " + line);
                                 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -54,7 +55,7 @@ public class ChatClient implements Runnable {
          */
         try {
             clientSocket = new Socket(hostname, portNumber);
-            inputLine = new BufferedReader(new InputStreamReader(System.in));
+            inputLine = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             output = new PrintStream(clientSocket.getOutputStream());
             input = new DataInputStream(clientSocket.getInputStream());
             /* The client suggests a nickname based on the system username */
