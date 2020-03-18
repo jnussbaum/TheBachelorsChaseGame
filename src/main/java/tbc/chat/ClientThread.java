@@ -22,7 +22,7 @@ class ClientThread extends Thread {
         this.threads = threads;
         maxClientsCount = threads.length;
     }
-    // is checking the usernames which are already in the lobby and disable dublicate usernames
+    /* Checking the usernames which are already in the lobby and disable dublicate usernames */
     private boolean isNamePicked(String name){
         // check other clients name
         for(ClientThread clientThread: threads){
@@ -37,7 +37,6 @@ class ClientThread extends Thread {
         int maxClientsCount = this.maxClientsCount;
         ClientThread[] threads = this.threads;
 
-        // TODO Do not interrupt the writing if you get a message.
         try {
             input = new DataInputStream(clientSocket.getInputStream());
             output = new PrintStream(clientSocket.getOutputStream());
@@ -45,7 +44,7 @@ class ClientThread extends Thread {
 
             while(true){
 
-// The client suggests a nickname based on the system username
+                /* The client suggests a nickname based on the system username */
                 if (input.readLine().equalsIgnoreCase("yes")) {
                     name = System.getProperty("user.name");
                 } else {
@@ -53,24 +52,23 @@ class ClientThread extends Thread {
                     name = input.readLine();
                 }
 
-                if(isNamePicked(name) == true){
+                if (isNamePicked(name) == true){
                     do {
                         output.println("Your name is already picked. \nPlease choose another name. ");
                         name = input.readLine();
                     } while(isNamePicked(name) == true);
-
-
                 }
 
                 if (name.indexOf('@') == -1) {
                     break;
                 } else{
-                    output.println("The name should not contain '@' character.");// wegen doppelten usernamen abfragen
+                    output.println("The name should not contain '@' character.");
                 }
             }
 
             output.println("Welcome " + name + " to our chat room."
-                + "\nPlease do not use umlaut"+ "\nTo leave enter /quit in a new line." + "\nTo change your name enter /changeName in a new line.");
+                + "\nPlease do not use umlaut"+ "\nTo leave enter /quit in a new line."
+                + "\nTo change your name enter /changeName <new username> in a new line.");
             System.out.println(name + " entered the chat room.");
             synchronized (this) {
                 /* No user is connected to the server yet */

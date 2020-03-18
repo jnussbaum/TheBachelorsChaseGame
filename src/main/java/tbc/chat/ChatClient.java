@@ -57,7 +57,7 @@ public class ChatClient implements Runnable {
             inputLine = new BufferedReader(new InputStreamReader(System.in));
             output = new PrintStream(clientSocket.getOutputStream());
             input = new DataInputStream(clientSocket.getInputStream());
-            // The client suggests a nickname based on the system username
+            /* The client suggests a nickname based on the system username */
             System.out.println("Is your name " + System.getProperty("user.name") + "? "
                 + "\nPlease answer with yes or no.");
         } catch (UnknownHostException e) {
