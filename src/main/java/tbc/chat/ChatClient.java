@@ -1,5 +1,7 @@
 package tbc.chat;
 
+import tbc.client.ClientHandler;
+
 import java.io.DataInputStream;
 import java.io.PrintStream;
 import java.io.BufferedReader;
@@ -11,101 +13,23 @@ import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-/**
- * Client. After a successful connection to the server, it can start chatting with other clients.
- */
-
 public class ChatClient implements Runnable {
 
-    private static Socket clientSocket = null;
-    private static PrintStream output = null;
-    private static DataInputStream input = null;
-    private static BufferedReader inputLine = null;
-    private static boolean closed = false;
+    ClientHandler clientHandler;
+    BufferedReader input;
 
-    public static void main(String[] args) {
+    public ChatClient(ClientHandler clientHandler) {
+        this.clientHandler = clientHandler;
+    }
 
-        // default port
-        int portNumber = 8090;
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the hostname: ");
-        String hostname = scanner.nextLine();
-
-        // TODO Find the IP address of the server automatically
-        /* Still not working...
-        String hostname = null;
+    public void run() {
+        input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        String s;
         try {
-            hostname = InetAddress.getLocalHost().getHostAddress();
-            System.out.println(hostname);
-        } catch (UnknownHostException e) {
+            while ((s = input.readLine()) != null) {
+                clientHandler.sendMessage();
+            }
+        } catch (IOException e) {
             e.printStackTrace();
         }
-         */
-
-        if (args.length < 2) {
-            System.out.println("Port number: " + portNumber + "\nWelcome new client!");
-        } else {
-            hostname = args[0];
-            portNumber = Integer.parseInt(args[1]);
-        }
-
-        /*
-         * Open a socket on a given host and port. Open input and output streams.
-         */
-        try {
-            clientSocket = new Socket(hostname, portNumber);
-            inputLine = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-            output = new PrintStream(clientSocket.getOutputStream());
-            input = new DataInputStream(clientSocket.getInputStream());
-            /* The client suggests a nickname based on the system username */
-            System.out.println("Is your name " + System.getProperty("user.name") + "? "
-                + "\nPlease answer with yes or no.");
-        } catch (UnknownHostException e) {
-            System.err.println("Unknown hostname " + hostname);
-        } catch (IOException e) {
-            System.err.println("Couldn't get I/O for the connection to the hostname " + hostname);
-        }
-
-        /*
-         * If everything has been initialized then we want to write some data to the
-         * socket we have opened a connection to on the port portNumber.
-         */
-        if (clientSocket != null && output != null && input != null) {
-            try {
-                /* Create a thread to read from the server. */
-                new Thread(new ChatClient()).start();
-                while (!closed) {
-                    output.println(inputLine.readLine().trim());
-                }
-                output.close();
-                input.close();
-                clientSocket.close();
-            } catch (IOException e) {
-                System.err.println(e);
-            }
-        }
     }
-
-    /*
-     * Create a thread to read from the server.
-     */
-    public void run() {
-        /*
-         * Keep on reading from the socket till we receive "Bye" from the
-         * server. Once we received that then we want to break.
-         */
-        String responseLine;
-        try {
-            while ((responseLine = input.readLine()) != null) {
-                System.out.println(responseLine);
-                if (responseLine.contains("*** Bye")) {
-                    break;
-                }
-            }
-            closed = true;
-        } catch (IOException e) {
-            System.err.println(e);
-        }
-    }
-}

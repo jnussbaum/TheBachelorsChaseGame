@@ -8,11 +8,11 @@ import java.net.Socket;
 /**
  * ClientThread. Handles all the clients information and actions.
  */
-class ClientThread extends Thread {
+public class ClientThread extends Thread {
 
-    private String clientName = null;
+    public String clientName = null;
     private DataInputStream input = null;
-    private PrintStream output = null;
+    public PrintStream output = null;
     private Socket clientSocket;
     private final ClientThread[] threads;
     private int maxClientsCount;

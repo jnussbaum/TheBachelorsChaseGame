@@ -1,69 +1,40 @@
 package tbc.chat;
 
+import tbc.server.Server;
+import tbc.server.ServerHandler;
+
 import java.io.PrintStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-/*
+/**
  * Server. Has to be started before a client.
  */
-public class ChatServer {
+public class ChatServer implements Runnable {
 
-    private static ServerSocket serverSocket = null;
-    private static Socket clientSocket = null;
+    Server server;
+    HashMap<String, ServerHandler> clients;
 
-    private static final int maxClientsCount = 4;
-    private static final ClientThread[] threads = new ClientThread[maxClientsCount];
+    public ChatServer() {
+        //this.server = server;
+    }
 
-    public static void main(String args[]) {
+    void run() {
+        while (true)
+        //Receives a Message and a receiver. Then he forwards the message to the receivers(=ServerHandlers)
+    }
 
-        int portNumber = 8090;
-        if (args.length < 1) {
-            System.out.println("Welcome! You are the Server. \nPort number: " + portNumber);
-            try {
-                System.out.println(InetAddress.getLocalHost().getHostAddress());
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
-        } else {
-            portNumber = Integer.valueOf(args[0]).intValue();
-        }
-
-        /*
-         * Open a server socket on the portNumber (default 8090).
-         */
-        try {
-            serverSocket = new ServerSocket(portNumber);
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-
-        /*
-         * Create a client socket for each connection and pass it to a new client thread.
-         */
-        while (true) {
-            try {
-                clientSocket = serverSocket.accept();
-                int i = 0;
-                for (i = 0; i < maxClientsCount; i++) {
-                    if (threads[i] == null) {
-                        (threads[i] = new ClientThread(clientSocket, threads)).start();
-                        break;
-                    }
-                }
-                if (i == maxClientsCount) {
-                    PrintStream output = new PrintStream(clientSocket.getOutputStream());
-                    output.println("Server full.");
-                    System.out.println("Another client tried to enter the chat room. "
-                        + "Sadly you are already full..");
-                    output.close();
-                    clientSocket.close();
-                }
-            } catch (IOException e) {
-                System.out.println(e);
+    public void receiveMessage(String sender, String receiver, String msg) {
+        if (receiver.equals("ALL")) {
+            //send message to all ServerHandlers except sender
+            for (ServerHandler sh : clients.values())
+                sh.sendMessage(sender, msg);
             }
         }
     }
