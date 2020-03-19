@@ -35,7 +35,7 @@ Vorl\"aufig gelten folgende Zust\"andigkeiten:
 
 \paragraph{Eintrag 3:}
 Freitag, 28.02.2020\\
-Meipei f\"ugt unserem Repository ein gitignore-File hinzu und l\"oscht die überflüssigen Dateien.\\
+Meipei f\"ugt unserem Repository ein gitignore-File hinzu und l\"oscht die \"uberfl\"ussigen Dateien.\\
 Adrian wird einen ersten Entwurf des Netzwerkprotokolls anfertigen und ins Repository stellen.
 
 \paragraph{Eintrag 4:}
@@ -87,16 +87,16 @@ Wir übten die Pr\"asentation ein und stoppten die Zeit. Für die kommenden Tage
 \item Johannes beginnt, das Ping-Pong zu programmieren.
 \end{itemize}
 
-\paragraph{Eintrag 6:}
+\paragraph{Eintrag 7:}
 Mittwoch, 11.03.2020\\
 Treffen der gesamten Gruppe.\\
 Wir einigen uns darauf, Englisch zu verwenden f\"ur alle Variablen- und Methodennamen, Kommentare im Programm, und auch f\"ur die Anzeigetexte des Games. Das einzige, was Deutsch bleibt, sind die Commit messages, weil wir dort schon auf Deutsch begonnen haben.\\
 
-\paragraph{Eintrag 6:}
+\paragraph{Eintrag 8:}
 Donnerstag, 12.03.2020\\
 Wir treffen uns in einem Sitzungsraum, um den Vortrag aufzunehmen. Es klappt alles ausgezeichnet, sodass wir nach kurzer Zeit bereits die fertige Video-Datei haben mit den Teilen von allen Gruppenmitgliedern.
 
-\paragraph{Eintrag 6:}
+\paragraph{Eintrag 9:}
 Montag, 16.03.2020\\
 Telefonkonferenz auf Discord.\\
 Der Handler hat noch kleinere Probleme, Adrian arbeitet weiter daran. Die anderen Klassen m\"ussen irgendwann noch angepasst werden, dass sie den Handler benutzen, statt direkt miteinander zu kommunizieren.\\
@@ -105,7 +105,20 @@ Das Netzwerkprotokoll steht gr\"osstenteils, und wird in den kommenden Tagen von
 Mei k\"ummert sich um die Usernamen.\\
 Anna k\"ummert sich um Hamachi.\\
 Johannes verschiebt das Login und Logout vom Chat zum Handler.\\
-Wir setzen uns Freitag, 20. M\"arz als Deadline für alle Milestone 2-Anforderungen. Sollte dann etwas nicht klappen, haben wir noch das Wochenende als Puffer.
+Wir setzen uns Freitag, 20. M\"arz als Deadline für alle Anforderungen von Milestone 2. Sollte dann etwas nicht klappen, haben wir noch das Wochenende als Puffer.
 
+\paragraph{Eintrag 10:}
+Mittwoch, 18.03.2020\\
+\"Ubungsstunde per Zoom. Lange Diskussion \"uber den Handler. Leider ist es uns noch unklar, wie wir die Kommunikation der Clients mit dem Server organisieren. Wir verbringen einen Grossteil des Nachmittags beim gemeinsamen Programmieren, d.h. Johannes teilt seinen Bildschirm und schreibt Code, und alle vier diskutieren dar\"uber, wie der Code geschrieben/abge\"andert werden soll.\\
+Schliesslich vertagen wir das weitere Vorgehen auf morgen 13 Uhr (Ausweichtermin, weil Johannes eine Terminkollision hat: 16 Uhr)
 
+\paragraph{Eintrag 11:}
+Donnerstag, 19.03.2020\\
+Wir beginnen um 13 Uhr ein Zoom-Meeting. Mei hat auf\\ https://github.com/RuthRainbow/Chat-Server/ ein gutes Beispiel gefunden f\"ur das, was wir brauchen. Nun versuchen wir unseren vorhandenen Code diesem Beispiel gem\"ass anzupassen.\\
+Leider m\"ussen wir unsere Versuche aufgeben, unseren bisherigen Code zu verbessern. Wir beginnen bei Null, und einigen uns auf folgendes Modell:\\
+Sowohl Server als auch Client werden als statische Klassen von der Konsole aus gestartet; sie haben ihren Code jeweils in ihrer main-Methode.\\
+Der Client startet aus der main-Methode heraus ein ClientHandler-Objekt, das die gesamte Netzwerkkommunikation \"ubernimmt. Ebenfalls startet der Client einen ChatClient, welcher f\"ur den Chat verantwortlich ist.\\
+Sobald der Server die einkommende Verbindung erhalten hat, erstellt er ein ServerHandler-Objekt, das fortan für die Kommunikation zwischen dem Server und *diesem* Client zust\"andig ist. Ebenso startet er einen Chatserver.\\
+Die beiden Handler-Klassen haben zwei Aufgaben: Erstens lauschen sie in ihrer run()-Methode auf eingehende Nachrichten, entschl\"usseln diese ankommenden Strings gem\"ass Netzwerkprotokoll, und rufen die entsprechenden Methoden auf, um die Informationen weiterzuleiten. Zweitens haben sie Methoden, die vom dahinterstehenden Server/Client aufgerufen werden k\"onnen, um eine Nachricht gem\"ass Netzwerkprotokoll rauszuschicken.\\
+Das n\"achste Zoom-Meeting ist morgen nach der Vorlesung.
 \end{document}
