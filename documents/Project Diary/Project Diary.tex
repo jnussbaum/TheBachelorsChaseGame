@@ -120,5 +120,6 @@ Sowohl Server als auch Client werden als statische Klassen von der Konsole aus g
 Der Client startet aus der main-Methode heraus ein ClientHandler-Objekt, das die gesamte Netzwerkkommunikation \"ubernimmt. Ebenfalls startet der Client einen ChatClient, welcher f\"ur den Chat verantwortlich ist.\\
 Sobald der Server die einkommende Verbindung erhalten hat, erstellt er ein ServerHandler-Objekt, das fortan für die Kommunikation zwischen dem Server und *diesem* Client zust\"andig ist. Ebenso startet er einen Chatserver.\\
 Die beiden Handler-Klassen haben zwei Aufgaben: Erstens lauschen sie in ihrer run()-Methode auf eingehende Nachrichten, entschl\"usseln diese ankommenden Strings gem\"ass Netzwerkprotokoll, und rufen die entsprechenden Methoden auf, um die Informationen weiterzuleiten. Zweitens haben sie Methoden, die vom dahinterstehenden Server/Client aufgerufen werden k\"onnen, um eine Nachricht gem\"ass Netzwerkprotokoll rauszuschicken.\\
+Wir verwenden den ganzen Nachmittag bis 18 Uhr, um im Pair-Programming diese ganze Architektur umzusetzen. Johannes tippt und gibt seinen Bildschirm frei, während die anderen ihm laufend Feedback und Korrekturen mitteilen.\\
 Das n\"achste Zoom-Meeting ist morgen nach der Vorlesung.
 \end{document}
