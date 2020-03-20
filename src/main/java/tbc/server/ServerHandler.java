@@ -9,22 +9,24 @@ import java.net.Socket;
 
 public class ServerHandler implements Runnable {
 
-    String myName;
-    Socket clientSocket;
-    DataInputStream clientInputStream;       //DataInputStream is not ideal, because its readLine() method
-                                                //is deprecated. BufferedReader would be better.
-    PrintStream clientOutputStream;
+    private String myName;
+    private Socket clientSocket;
+    private ChatServer chatServer;
+    private BufferedReader clientInputStream;
+    private PrintWriter clientOutputStream;
 
     /**
      * As soon as a new clients connects to the server, the server instantiates a new ServerHandler-Object,
      * passing the clientSocket to it.
      */
-    public ServerHandler(String myName, Socket clientSocket) {
+    public ServerHandler(String myName, Socket clientSocket, ChatServer chatServer) {
         this.myName = myName;
         this.clientSocket = clientSocket;
+        this.chatServer = chatServer;
         try {
-            clientInputStream = new DataInputStream(clientSocket.getInputStream());
-            clientOutputStream = new PrintStream(clientSocket.getOutputStream());
+            clientInputStream = new BufferedReader(new InputStreamReader(
+                    new DataInputStream(clientSocket.getInputStream())));
+            clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,8 +44,8 @@ public class ServerHandler implements Runnable {
         }
     }
 
-    public void decode(String s) {
-        String[] commands = s.split("|");
+    void decode(String s) {
+        String[] commands = s.split("#");
         switch (commands[0]) {
             case "CHANGENAME":
                 String userName = commands[1];
@@ -56,7 +58,7 @@ public class ServerHandler implements Runnable {
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[3];
-                contribute(sender, receiver, msg);
+                contributeToChat(sender, receiver, msg);
                 //handle ALL as receiver
                 break;
             case "GAMST":
@@ -91,23 +93,26 @@ public class ServerHandler implements Runnable {
     /**
      * Writes the message into the chat message history on the server
      */
-    public void contribute(String sender, String receiver, String msg) {
-        //Inform the chat-program on the server that the sender sent a message to the specified receiver.
-        ChatServer.receiveMessage();
+    public void contributeToChat(String sender, String receiver, String msg) {
+        chatServer.receiveMessage(sender, receiver, msg);
     }
 
     /**
      * The server sends a message to this handler's client
      */
-    public void sendMessage(String sender, String msg) {
-        clientOutputStream.print("CHAT_" + "|" + sender + "|" + " " + "|" + msg);
+    public void sendChatMessage(String sender, String msg) {
+        clientOutputStream.println("CHAT_" + "#" + sender + "#" + myName + "#" + msg);
+        clientOutputStream.flush();
+        System.out.println("ServerHandler just sent this to clienthandler: " + sender + msg);
     }
 
-    public void changeFeedback(boolean feedback, String name) {
+    public void giveFeedbackToChange(boolean feedback, String name) {
         if (feedback) {
-            clientOutputStream.print("CHANGEOK" + "|" + name);
+            clientOutputStream.println("CHANGEOK" + "#" + name);
+            clientOutputStream.flush();
         } else {
-            clientOutputStream.print("CHANGENO");
+            clientOutputStream.println("CHANGENO");
+            clientOutputStream.flush();
         }
     }
 }

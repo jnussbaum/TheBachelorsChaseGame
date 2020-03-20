@@ -3,39 +3,28 @@ package tbc.chat;
 import tbc.server.Server;
 import tbc.server.ServerHandler;
 
-import java.io.PrintStream;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.ServerSocket;
-import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
- * Server. Has to be started before a client.
+ * The Server starts this thread, which will be the Headquarter of the Chat application.
  */
-public class ChatServer implements Runnable {
+public class ChatServer {
 
-    Server server;
-    HashMap<String, ServerHandler> clients;
-
-    public ChatServer() {
-        //this.server = server;
-    }
-
-    void run() {
-        while (true)
-        //Receives a Message and a receiver. Then he forwards the message to the receivers(=ServerHandlers)
-    }
+    /**
+     * This HashMap administrates all clients by their name and ServerHandler.
+     */
+    private HashMap<String, ServerHandler> clients = new HashMap<>();
 
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
-            //send message to all ServerHandlers except sender
-            for (ServerHandler sh : clients.values())
-                sh.sendMessage(sender, msg);
+            //TODO: sender should not receive message
+            for (ServerHandler sh : clients.values()) {
+                sh.sendChatMessage(sender, msg);
             }
         }
+    }
+
+    public void register(String clientName, ServerHandler clientServerHandler) {
+        clients.put(clientName, clientServerHandler);
     }
 }

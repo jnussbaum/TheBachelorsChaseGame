@@ -15,8 +15,8 @@ import java.util.Scanner;
 
 public class ChatClient implements Runnable {
 
-    ClientHandler clientHandler;
-    BufferedReader input;
+    private ClientHandler clientHandler;
+    private BufferedReader input;
 
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -27,9 +27,20 @@ public class ChatClient implements Runnable {
         String s;
         try {
             while ((s = input.readLine()) != null) {
-                clientHandler.sendMessage();
+                processInput(s);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    public void processInput(String s) {
+        if (s.startsWith("@")) {
+            String name = s.substring(1, s.indexOf(" "));
+            String msg = s.substring(s.indexOf(" ") + 1, s.length() - 1);
+            clientHandler.sendMessage(name, msg);
+        } else {
+            clientHandler.sendMessage("ALL", s);
+        }
+    }
+}
