@@ -1,8 +1,6 @@
 package tbc.chat;
 
-import tbc.server.Server;
 import tbc.server.ServerHandler;
-
 import java.util.HashMap;
 
 /**
