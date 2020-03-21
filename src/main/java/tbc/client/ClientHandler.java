@@ -6,6 +6,7 @@ import java.net.Socket;
 
 public class ClientHandler implements Runnable {
 
+    //What should we do with the unused object fields? Keep?
     private String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
@@ -31,6 +32,7 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //TODO: Make a separate decode() method with the following (like in ServerHander)
             String[] commands = s.split("#");
             switch (commands[0]) {
                 case "CHAT":
