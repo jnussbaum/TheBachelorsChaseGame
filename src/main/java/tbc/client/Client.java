@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.sql.SQLOutput;
 
 public class Client {
 
@@ -37,9 +36,9 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        String hostName = null;
-        Thread clientHandlerThread = null;
+    public static void main(String[] args) {
+        String hostName;
+        Thread clientHandlerThread;
         Thread chatClientThread = null;
         input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         try {
@@ -80,7 +79,7 @@ public class Client {
         } catch (IOException e) {
             System.err.println("There was an IOException when setting the username.");
         }
-        while (nameSettingSucceeded == false) {
+        while (!nameSettingSucceeded) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
