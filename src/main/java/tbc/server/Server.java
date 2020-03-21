@@ -43,7 +43,7 @@ public class Server {
 		chatServer = new ChatServer();
 		try {
 			serverSocket = new ServerSocket(portNumber);
-			System.out.println("Type this address as argument when starting the client: "
+			System.out.println("Type this address in the client after starting the client: "
 					+ InetAddress.getLocalHost().getHostAddress());
 			Socket socket;
 			int i = 0;

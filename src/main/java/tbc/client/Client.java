@@ -37,15 +37,18 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) {
-        String hostName = args[0];
+    public static void main(String[] args) throws IOException {
+        //String hostName = args[0];
         //int portNumber = Integer.parseInt(args[1]);
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        System.out.println("Please enter the hostname given from the server: ");
+        String hostName = input.readLine();
         int portNumber = 8096;
         Thread clientHandlerThread = new Thread(clientHandler = new ClientHandler(hostName, portNumber));
         Thread chatClientThread = new Thread(chatClient = new ChatClient(clientHandler));
         clientHandlerThread.start();
         clientHandler.registerChatClient(chatClient);
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        //BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         try {
             System.out.println("Is your name " + System.getProperty("user.name") + "? ");
             System.out.println("Please answer with yes or no.");
