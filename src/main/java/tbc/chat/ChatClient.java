@@ -15,8 +15,9 @@ public class ChatClient implements Runnable {
     }
 
     public void run() {
-        try (BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-            String s;
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        String s;
+        try {
             while ((s = input.readLine()) != null) {
                 processInput(s);
             }

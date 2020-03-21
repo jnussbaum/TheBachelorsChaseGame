@@ -41,7 +41,7 @@ public class Client {
         //String hostName = args[0];
         //int portNumber = Integer.parseInt(args[1]);
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        System.out.println("Please enter the hostname given from the server: ");
+        System.out.println("Please enter the IP adress given from the server: ");
         String hostName = input.readLine();
         int portNumber = 8096;
         Thread clientHandlerThread = new Thread(clientHandler = new ClientHandler(hostName, portNumber));
