@@ -53,7 +53,8 @@ public class Client {
         Thread chatClientThread = new Thread(chatClient = new ChatClient(clientHandler));
         clientHandlerThread.start();
         clientHandler.registerChatClient(chatClient);
-        try (BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+        try {
             System.out.println("Is your name " + System.getProperty("user.name") + "? ");
             System.out.println("Please answer with yes or no.");
             String name;
