@@ -34,7 +34,7 @@ public class ServerHandler implements Runnable {
         this.chatServer = chatServer;
         try {
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_16LE));
+                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
