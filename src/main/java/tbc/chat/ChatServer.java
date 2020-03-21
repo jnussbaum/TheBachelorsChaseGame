@@ -17,9 +17,18 @@ public class ChatServer {
 
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
-            //TODO: sender should not receive message
+            //send message to all, except the sender
             for (ServerHandler sh : clients.values()) {
-                sh.sendChatMessage(sender, msg);
+                if (sh.getName().equals(sender) == false) {
+                    sh.sendChatMessage(sender, msg);
+                }
+            }
+        } else {
+            //send message to receiver
+            for (ServerHandler sh : clients.values()) {
+                if (sh.getName().equals(receiver)) {
+                    sh.sendChatMessage(sender, msg);
+                }
             }
         }
     }

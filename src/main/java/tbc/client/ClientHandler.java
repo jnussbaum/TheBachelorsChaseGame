@@ -1,10 +1,8 @@
 package tbc.client;
 
 import tbc.chat.ChatClient;
-
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 public class ClientHandler implements Runnable {
 
@@ -35,7 +33,7 @@ public class ClientHandler implements Runnable {
             }
             String[] commands = s.split("#");
             switch (commands[0]) {
-                case "CHAT_":
+                case "CHAT":
                     String sender = commands[1];
                     String receiver = commands[2];
                     String msg = commands[3];
@@ -58,7 +56,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void sendMessage(String receiver, String msg) {
-        clientOutputStream.println("CHAT_" + "#" + myName + "#" + receiver + "#" + msg);
+        clientOutputStream.println("CHAT" + "#" + myName + "#" + receiver + "#" + msg);
         clientOutputStream.flush();
     }
 

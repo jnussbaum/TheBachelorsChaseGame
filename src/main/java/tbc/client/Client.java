@@ -49,15 +49,14 @@ public class Client {
         String hostName = args[0];
         //int portNumber = Integer.parseInt(args[1]);
         int portNumber = 8096;
-        Thread th1 = new Thread(clientHandler = new ClientHandler(hostName, portNumber));
-        Thread th2 = new Thread(chatClient = new ChatClient(clientHandler));
-        th1.start();
+        Thread clientHandlerThread = new Thread(clientHandler = new ClientHandler(hostName, portNumber));
+        Thread chatClientThread = new Thread(chatClient = new ChatClient(clientHandler));
+        clientHandlerThread.start();
         clientHandler.registerChatClient(chatClient);
-        try {
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
             System.out.println("Is your name " + System.getProperty("user.name") + "? ");
             System.out.println("Please answer with yes or no.");
             String name;
-            BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             if (input.readLine().equalsIgnoreCase("yes")) {
                 name = System.getProperty("user.name");
                 System.out.println("Hello " + name + ", welcome to our chat!");
@@ -74,6 +73,6 @@ public class Client {
         } catch (IOException e) {
             //TODO
         }
-        th2.start();
+        chatClientThread.start();
     }
 }

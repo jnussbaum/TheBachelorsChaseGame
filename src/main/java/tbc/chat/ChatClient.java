@@ -16,16 +16,14 @@ import java.util.Scanner;
 public class ChatClient implements Runnable {
 
     private ClientHandler clientHandler;
-    private BufferedReader input;
 
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }
 
     public void run() {
-        input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-        String s;
-        try {
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+            String s;
             while ((s = input.readLine()) != null) {
                 processInput(s);
             }

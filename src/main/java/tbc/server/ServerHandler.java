@@ -7,6 +7,10 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
+ * which will be responsible for the communication between the server and this client.
+ */
 public class ServerHandler implements Runnable {
 
     private String myName;
@@ -16,8 +20,11 @@ public class ServerHandler implements Runnable {
     private PrintWriter clientOutputStream;
 
     /**
-     * As soon as a new clients connects to the server, the server instantiates a new ServerHandler-Object,
-     * passing the clientSocket to it.
+     * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to it:
+     * @param myName Identifier of the client for which this serverHandler is responsible.
+     * @param clientSocket The socket which belongs to this client. Needed to open the I/O-Streams.
+     * @param chatServer The chat Headquarter on server side, to which all incoming chat messages are
+     *                   forwarded.
      */
     public ServerHandler(String myName, Socket clientSocket, ChatServer chatServer) {
         this.myName = myName;
@@ -32,18 +39,29 @@ public class ServerHandler implements Runnable {
         }
     }
 
+    /**
+     * All which a ServerHandler-Thread makes during its lifetime is to listen to incoming information
+     * on the clientInputStream, and pass this information to decode().
+     */
     public void run() {
-        //Listen to incoming
         try {
             String s;
             while ((s = clientInputStream.readLine()) != null) {
                 decode(s);
             }
         } catch (IOException e) {
-            //do something
+            System.err.println("The ServerHandler of client " + myName + "experienced the following IOException" +
+                    "while listening to its clientInputStream:\n");
+            e.printStackTrace();
         }
     }
 
+    /**
+     * As soon as information comes in on the clientInputStream, this String is passed to decode(). This method
+     * looks at the first substring (commands[0], the Network Protocol command) and then invokes the appropriate
+     * methods in this object in order to process the information. The following substrings (from commands[] on)
+     * are the parameters of the Network Protocol command.
+     */
     void decode(String s) {
         String[] commands = s.split("#");
         switch (commands[0]) {
@@ -54,65 +72,37 @@ public class ServerHandler implements Runnable {
             case "LOGOUT":
                 //TODO
                 break;
-            case "CHAT_":
+            case "CHAT":
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[3];
-                contributeToChat(sender, receiver, msg);
-                //handle ALL as receiver
-                break;
-            case "GAMST":
-                //TODO
-                break;
-            case "GIVCA":
-                //TODO;
-                break;
-            case "GETCA":
-                //TODO;
-                break;
-            case "THRCA":
-                //TODO;
-                break;
-            case "TURST":
-                //TODO;
-                break;
-            case "TUREN":
-                //TODO;
-                break;
-            case "LOGIN":
-                String clientName = commands[1];
-                //TODO
-                break;
-            case "LOGOU":
-                //String clientName = commands[1];
-                //TODO
+                chatServer.receiveMessage(sender, receiver, msg);
                 break;
         }
     }
 
     /**
-     * Writes the message into the chat message history on the server
-     */
-    public void contributeToChat(String sender, String receiver, String msg) {
-        chatServer.receiveMessage(sender, receiver, msg);
-    }
-
-    /**
-     * The server sends a message to this handler's client
+     * The chatServer sends a chat message to this handler's client.
      */
     public void sendChatMessage(String sender, String msg) {
         clientOutputStream.println("CHAT_" + "#" + sender + "#" + myName + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("ServerHandler just sent this to clienthandler: " + sender + msg);
     }
 
-    public void giveFeedbackToChange(boolean feedback, String name) {
+    /**
+     * The server sends a feedback to this handler's client, if his name change request was allowed or rejected.
+     */
+    public void giveFeedbackToChange(boolean feedback, String newName) {
         if (feedback) {
-            clientOutputStream.println("CHANGEOK" + "#" + name);
+            clientOutputStream.println("CHANGEOK" + "#" + newName);
             clientOutputStream.flush();
         } else {
             clientOutputStream.println("CHANGENO");
             clientOutputStream.flush();
         }
+    }
+
+    public String getName() {
+        return myName;
     }
 }
