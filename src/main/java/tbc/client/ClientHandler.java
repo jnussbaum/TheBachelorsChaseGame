@@ -3,6 +3,7 @@ package tbc.client;
 import tbc.chat.ChatClient;
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class ClientHandler implements Runnable {
 
@@ -17,7 +18,7 @@ public class ClientHandler implements Runnable {
         try {
             clientSocket = new Socket(hostName, portNumber);
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream())));
+                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_16LE));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +40,9 @@ public class ClientHandler implements Runnable {
                     String sender = commands[1];
                     String receiver = commands[2];
                     String msg = commands[3];
-                    Client.chatArrived(sender, msg);
+                    boolean privateMessage = Boolean.getBoolean(commands[4]);
+                    chatClient.chatArrived(sender, msg, privateMessage);
+                    System.out.println("Clienthandler sent message to chatclient");
                     break;
                 case "CHANGEOK":
                     String newName = commands[1];
@@ -60,6 +63,7 @@ public class ClientHandler implements Runnable {
     public void sendMessage(String receiver, String msg) {
         clientOutputStream.println("CHAT" + "#" + myName + "#" + receiver + "#" + msg);
         clientOutputStream.flush();
+        System.out.println("clienthandler sent message out to clientoutputstream");
     }
 
     public void registerChatClient(ChatClient chatClient) {

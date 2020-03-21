@@ -28,7 +28,12 @@ public class Server {
 		if (clients.containsKey(newUserName)) {
 			clients.get(requester).giveFeedbackToChange(false, "xy");
 		} else {
-			clients.get(requester).giveFeedbackToChange(true, newUserName);
+			ServerHandler sh = clients.get(requester);
+			clients.remove(requester);
+			sh.setName(newUserName);
+			clients.put(newUserName, sh);
+			chatServer.setName(requester, newUserName);
+			clients.get(newUserName).giveFeedbackToChange(true, newUserName);
 		}
 	}
 

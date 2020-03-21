@@ -9,13 +9,14 @@ import tbc.client.ClientHandler;
 public class ChatClient implements Runnable {
 
     private ClientHandler clientHandler;
+    BufferedReader input;
 
-    public ChatClient(ClientHandler clientHandler) {
+    public ChatClient(ClientHandler clientHandler, BufferedReader input) {
         this.clientHandler = clientHandler;
+        this.input = input;
     }
 
     public void run() {
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
         String s;
         try {
             while ((s = input.readLine()) != null) {
@@ -31,8 +32,17 @@ public class ChatClient implements Runnable {
             String name = s.substring(1, s.indexOf(" "));
             String msg = s.substring(s.indexOf(" ") + 1, s.length() - 1);
             clientHandler.sendMessage(name, msg);
+            System.out.println("ChatClient sent message to clienthandler");
         } else {
             clientHandler.sendMessage("ALL", s);
+        }
+    }
+
+    public static void chatArrived(String sender, String msg, boolean privateMessage) {
+        if (privateMessage) {
+            System.out.println("[PRIVATE] " + sender + ": " + msg);
+        } else {
+            System.out.println(sender + ": " + msg);
         }
     }
 }

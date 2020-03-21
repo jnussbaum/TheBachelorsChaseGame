@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -33,7 +34,7 @@ public class ServerHandler implements Runnable {
         this.chatServer = chatServer;
         try {
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream())));
+                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_16LE));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,6 +78,7 @@ public class ServerHandler implements Runnable {
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[3];
+                System.out.println("ServerHandler sent message to chatserver");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
         }
@@ -85,9 +87,14 @@ public class ServerHandler implements Runnable {
     /**
      * The chatServer sends a chat message to this handler's client.
      */
-    public void sendChatMessage(String sender, String msg) {
-        clientOutputStream.println("CHAT_" + "#" + sender + "#" + myName + "#" + msg);
+    public void sendChatMessage(String sender, String msg, boolean privateMessage) {
+        if (privateMessage) {
+            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + "TRUE");
+        } else {
+            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + "FALSE");
+        }
         clientOutputStream.flush();
+        System.out.println("ServerHandler sent message to clientoutputstream");
     }
 
     /**
@@ -105,5 +112,9 @@ public class ServerHandler implements Runnable {
 
     public String getName() {
         return myName;
+    }
+
+    public void setName(String newName) {
+        myName = newName;
     }
 }
