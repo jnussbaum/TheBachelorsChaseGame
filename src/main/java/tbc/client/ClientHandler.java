@@ -18,7 +18,7 @@ public class ClientHandler implements Runnable {
         try {
             clientSocket = new Socket(hostName, portNumber);
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_16LE));
+                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //TODO: Make a separate decode() method with the following (like in ServerHander)
+            //TODO: Make a separate decode() method with the following (like in ServerHandler)
             String[] commands = s.split("#");
             switch (commands[0]) {
                 case "CHAT":

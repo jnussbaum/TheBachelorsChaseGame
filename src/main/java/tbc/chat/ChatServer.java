@@ -17,7 +17,7 @@ public class ChatServer {
         if (receiver.equals("ALL")) {
             //send message to all, except the sender
             for (ServerHandler sh : clients.values()) {
-                if (sh.getName().equals(sender) == false) {
+                if (!sh.getName().equals(sender)) {
                     sh.sendChatMessage(sender, msg, false);
                     System.out.println("ChatServer sent message to the serverhandler of " + sh.getName());
                 }

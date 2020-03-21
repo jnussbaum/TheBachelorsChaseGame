@@ -44,7 +44,7 @@ public class Server {
 	public static void main (String[] args) {
 		//int portNumber = Integer.parseInt(args[0]);
 		int portNumber = 8096;
-		ServerSocket serverSocket = null;
+		ServerSocket serverSocket;
 		chatServer = new ChatServer();
 		try {
 			serverSocket = new ServerSocket(portNumber);
@@ -54,7 +54,7 @@ public class Server {
 			int i = 0;
 			while (true) {
 				socket = serverSocket.accept();
-				String name = socket.getInetAddress().getHostName() + String.valueOf(i);
+				String name = socket.getInetAddress().getHostName() + i;
 				i++;
 				ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
 				Thread shThread = new Thread(serverHandler);

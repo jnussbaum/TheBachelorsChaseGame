@@ -34,7 +34,7 @@ public class ServerHandler implements Runnable {
         this.chatServer = chatServer;
         try {
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_16LE));
+                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
@@ -89,9 +89,9 @@ public class ServerHandler implements Runnable {
      */
     public void sendChatMessage(String sender, String msg, boolean privateMessage) {
         if (privateMessage) {
-            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + "TRUE");
+            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + "true");
         } else {
-            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + "FALSE");
+            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + "false");
         }
         clientOutputStream.flush();
         System.out.println("ServerHandler sent message to clientoutputstream");
