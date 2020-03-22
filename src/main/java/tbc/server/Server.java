@@ -42,7 +42,6 @@ public class Server {
 	 * add them to the clients administration, and register them at the chatServer.
 	 */
 	public static void main (String[] args) {
-		//int portNumber = Integer.parseInt(args[0]);
 		int portNumber = 8096;
 		ServerSocket serverSocket;
 		chatServer = new ChatServer();

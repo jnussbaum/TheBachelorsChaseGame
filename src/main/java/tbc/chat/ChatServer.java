@@ -11,7 +11,7 @@ public class ChatServer {
     /**
      * This HashMap administrates all clients by their name and ServerHandler.
      */
-    private HashMap<String, ServerHandler> clients = new HashMap<>();
+    private static HashMap<String, ServerHandler> clients = new HashMap<>();
 
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
@@ -23,11 +23,16 @@ public class ChatServer {
                 }
             }
         } else {
-            //send message to receiver
-            for (ServerHandler sh : clients.values()) {
-                if (sh.getName().equals(receiver)) {
-                    sh.sendChatMessage(sender, msg, true);
-                    System.out.println("ChatServer sent message to the serverhandler of " + sh.getName());
+            //if receiver does not exist
+            if (!checkUser(receiver)) {
+                System.out.println("User not found.");
+            } else {
+                //send message to receiver
+                for (ServerHandler sh : clients.values()) {
+                    if (sh.getName().equals(receiver)) {
+                        sh.sendChatMessage(sender, msg, true);
+                        System.out.println("ChatServer sent message to the serverhandler of " + sh.getName());
+                    }
                 }
             }
         }
@@ -41,5 +46,14 @@ public class ChatServer {
         ServerHandler sh = clients.get(oldName);
         clients.remove(oldName);
         clients.put(newName, sh);
+    }
+
+    public static boolean checkUser(String checkName) {
+        for (ServerHandler sh : clients.values()) {
+            if (sh.getName().equals(checkName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,9 +1,14 @@
 package tbc.client;
 
-import tbc.chat.ChatClient;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import tbc.chat.ChatClient;
 
 public class ClientHandler implements Runnable {
 
@@ -20,6 +25,8 @@ public class ClientHandler implements Runnable {
             clientInputStream = new BufferedReader(new InputStreamReader(
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
+        } catch (UnknownHostException e) {
+            System.err.println("Unknown hostname " + hostName);
         } catch (IOException e) {
             e.printStackTrace();
         }

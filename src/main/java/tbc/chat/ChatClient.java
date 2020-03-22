@@ -29,8 +29,12 @@ public class ChatClient implements Runnable {
         if (s.startsWith("@")) {
             String name = s.substring(1, s.indexOf(" "));
             String msg = s.substring(s.indexOf(" ") + 1);
-            clientHandler.sendMessage(name, msg);
-            System.out.println("ChatClient sent message to clienthandler");
+            if (msg.length() == 0) {
+                System.out.println("Usage: @<user> <message>.");
+            } else {
+                clientHandler.sendMessage(name, msg);
+                System.out.println("ChatClient sent message to clienthandler");
+            }
         } else {
             clientHandler.sendMessage("ALL", s);
         }
