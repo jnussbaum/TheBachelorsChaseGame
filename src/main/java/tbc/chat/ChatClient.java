@@ -26,22 +26,24 @@ public class ChatClient implements Runnable {
     }
 
     public void processInput(String s) {
-        if (s.startsWith("@")) {
-            String name = s.substring(1, s.indexOf(" "));
-            String msg = s.substring(s.indexOf(" ") + 1);
-            clientHandler.sendMessage(name, msg);
-            System.out.println("ChatClient sent message to clienthandler");
+        // the client wants to logout
+        if (s.startsWith("LOGOUT")) {
+            String userName = ClientHandler.myName;
+            clientHandler.logOut();
+            System.out.println("You have logged out.");
+            return;
+        }
 
-         if(s.startsWith("LOGOUT")) {
-             clientHandler.sendMessage(name, msg);
-             System.out.println("Client logged out");
-         }
+        // send private message
+        if (s.startsWith("@")) {
+            String receiver = s.substring(1, s.indexOf(" "));
+            String msg = s.substring(s.indexOf(" ") + 1);
             if (msg.length() == 0) {
                 System.out.println("Usage: @<user> <message>.");
             } else {
-                clientHandler.sendMessage(name, msg);
-                System.out.println("ChatClient sent message to clienthandler");
+                clientHandler.sendMessage(receiver, msg);
             }
+        // send public message
         } else {
             clientHandler.sendMessage("ALL", s);
         }

@@ -16,10 +16,11 @@ import tbc.chat.ChatServer;
 public class ServerHandler implements Runnable {
 
     private String myName;
-    private Socket clientSocket;
+    public Socket clientSocket;
     private ChatServer chatServer;
-    private BufferedReader clientInputStream;
-    private PrintWriter clientOutputStream;
+    public BufferedReader clientInputStream;
+    public PrintWriter clientOutputStream;
+    private boolean exit = false;
 
     /**
      * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to it:
@@ -48,12 +49,13 @@ public class ServerHandler implements Runnable {
     public void run() {
         try {
             String s;
-            while ((s = clientInputStream.readLine()) != null) {
+            while (exit == false && (s = clientInputStream.readLine()) != null) {
                 decode(s);
             }
         } catch (IOException e) {
-            System.err.println("The ServerHandler of client " + myName + "experienced the following IOException" +
-                    "while listening to its clientInputStream:\n");
+            System.err.println("The ServerHandler of client " + myName
+                + " experienced the following IOException"
+                + " while listening to its clientInputStream:\n");
             e.printStackTrace();
         }
     }
@@ -72,11 +74,9 @@ public class ServerHandler implements Runnable {
                 Server.changeName(myName, userName);
                 break;
             case "LOGOUT":
-                //TODO
-                loggingOut();
+                System.out.println("LOGOUT in ServerHandler");
+                closeConnection();
                 break;
-
-
             case "CHAT":
                 String sender = commands[1];
                 String receiver = commands[2];
@@ -84,6 +84,8 @@ public class ServerHandler implements Runnable {
                 System.out.println("ServerHandler sent message to chatserver");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
+            default:
+                System.err.println("No such command in the ServerHandler protocol.");
         }
     }
 
@@ -100,34 +102,9 @@ public class ServerHandler implements Runnable {
         System.out.println("ServerHandler sent message to clientoutputstream");
     }
 
-    public void loggingOut(){
-        try {
-            if (clientInputStream != null)
-                clientInputStream.close();
-        }
-        catch (Exception e) {
-            System.out.println("InputStream konnte nicht geschlossen werden!");
-        }
-
-        try {
-            if (clientOutputStream != null)
-                clientOutputStream.close();
-        }
-        catch (Exception e) {
-            System.out.println("OutputStream konnte nicht geschlossen werden!");
-        }
-
-        try {
-            if (clientSocket != null)
-                clientSocket.close();
-        }
-        catch (Exception e) {
-            System.out.println(myName + "logged out!");
-
-        }
-    }
     /**
-     * The server sends a feedback to this handler's client, if his name change request was allowed or rejected.
+     * The server sends a feedback to this handler's client,
+     * if his name change request was allowed or rejected.
      */
     public void giveFeedbackToChange(boolean feedback, String newName) {
         if (feedback) {
@@ -143,7 +120,23 @@ public class ServerHandler implements Runnable {
         return myName;
     }
 
-    public void setName(String newName) {
-        myName = newName;
+    public void setName(String name) {
+        myName = name;
+    }
+
+    /**
+     * This method closes all the stream and the socket of the client, who requested the LOGOUT.
+     */
+    public void closeConnection() {
+        try {
+            clientOutputStream.close();
+            clientInputStream.close();
+            clientSocket.close();
+            System.out.println("loggingOut von " + myName);
+            Server.removeUser(myName);
+            exit = true;
+        } catch (IOException e) {
+            System.err.println("Closing failed in ServerHandler.");
+        }
     }
 }

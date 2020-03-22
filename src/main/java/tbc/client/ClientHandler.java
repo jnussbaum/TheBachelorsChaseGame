@@ -12,12 +12,12 @@ import tbc.chat.ChatClient;
 
 public class ClientHandler implements Runnable {
 
-    //What should we do with the unused object fields? Keep?
-    private String myName;
+    public static String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
     private PrintWriter clientOutputStream;
+    private boolean unknownHostname = false;
 
     public ClientHandler(String hostName, int portNumber) {
         try {
@@ -26,10 +26,15 @@ public class ClientHandler implements Runnable {
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (UnknownHostException e) {
-            System.err.println("Unknown hostname " + hostName);
+            unknownHostname = true;
+            System.err.println("Unknown hostname: " + hostName);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isUnknownHostname() {
+        return unknownHostname;
     }
 
     public void run() {
@@ -38,18 +43,17 @@ public class ClientHandler implements Runnable {
             try {
                 s = clientInputStream.readLine();
             } catch (IOException e) {
+                System.err.println("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            //TODO: Make a separate decode() method with the following (like in ServerHandler)
+            if (s == null) return;
             String[] commands = s.split("#");
             switch (commands[0]) {
                 case "CHAT":
                     String sender = commands[1];
-                    String receiver = commands[2];
                     String msg = commands[3];
                     boolean privateMessage = Boolean.getBoolean(commands[4]);
                     chatClient.chatArrived(sender, msg, privateMessage);
-                    System.out.println("Clienthandler sent message to chatclient");
                     break;
                 case "CHANGEOK":
                     String newName = commands[1];
@@ -58,6 +62,10 @@ public class ClientHandler implements Runnable {
                     break;
                 case "CHANGENO":
                     Client.nameChangeFeedback(false, "xyz");
+                    break;
+                default:
+                    System.err.println("No such command in the ClientHandler protocol.");
+
             }
         }
     }
@@ -70,11 +78,15 @@ public class ClientHandler implements Runnable {
     public void sendMessage(String receiver, String msg) {
         clientOutputStream.println("CHAT" + "#" + myName + "#" + receiver + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("clienthandler sent message out to clientoutputstream");
     }
 
     public void registerChatClient(ChatClient chatClient) {
         this.chatClient = chatClient;
+    }
+
+    public void logOut() {
+        clientOutputStream.println("LOGOUT" + "#" + myName);
+        clientOutputStream.flush();
     }
 
 }
