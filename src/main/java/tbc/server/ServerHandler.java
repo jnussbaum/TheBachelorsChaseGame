@@ -1,6 +1,5 @@
 package tbc.server;
 
-import tbc.chat.ChatServer;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import tbc.chat.ChatServer;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -73,7 +73,10 @@ public class ServerHandler implements Runnable {
                 break;
             case "LOGOUT":
                 //TODO
+                loggingOut();
                 break;
+
+
             case "CHAT":
                 String sender = commands[1];
                 String receiver = commands[2];
@@ -97,6 +100,32 @@ public class ServerHandler implements Runnable {
         System.out.println("ServerHandler sent message to clientoutputstream");
     }
 
+    public void loggingOut(){
+        try {
+            if (clientInputStream != null)
+                clientInputStream.close();
+        }
+        catch (Exception e) {
+            System.out.println("InputStream konnte nicht geschlossen werden!");
+        }
+
+        try {
+            if (clientOutputStream != null)
+                clientOutputStream.close();
+        }
+        catch (Exception e) {
+            System.out.println("OutputStream konnte nicht geschlossen werden!");
+        }
+
+        try {
+            if (clientSocket != null)
+                clientSocket.close();
+        }
+        catch (Exception e) {
+            System.out.println(myName + "logged out!");
+
+        }
+    }
     /**
      * The server sends a feedback to this handler's client, if his name change request was allowed or rejected.
      */
