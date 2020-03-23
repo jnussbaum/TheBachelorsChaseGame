@@ -28,7 +28,6 @@ public class ChatClient implements Runnable {
     public void processInput(String s) {
         // the client wants to logout
         if (s.startsWith("LOGOUT")) {
-            String userName = ClientHandler.myName;
             clientHandler.logOut();
             System.out.println("You have logged out.");
             return;
@@ -38,19 +37,23 @@ public class ChatClient implements Runnable {
         if (s.startsWith("@")) {
             String receiver = s.substring(1, s.indexOf(" "));
             String msg = s.substring(s.indexOf(" ") + 1);
-            if (msg.length() == 0) {
+            if (msg.length() == 0 || msg.length()-1 == 0) {
                 System.out.println("Usage: @<user> <message>.");
             } else {
-                clientHandler.sendMessage(receiver, msg);
+                clientHandler.sendMessage(receiver, "true", msg);
             }
         // send public message
         } else {
-            clientHandler.sendMessage("ALL", s);
+            if (s.length() == 0) {
+                System.out.println("Please enter a message.");
+            } else {
+                clientHandler.sendMessage("ALL", "false", s);
+            }
         }
     }
 
-    public static void chatArrived(String sender, String msg, boolean privateMessage) {
-        if (privateMessage) {
+    public static void chatArrived(String sender, String isPrivateMsg, String msg) {
+        if (isPrivateMsg.equals("true")) {
             System.out.println("[PRIVATE] " + sender + ": " + msg);
         } else {
             System.out.println(sender + ": " + msg);

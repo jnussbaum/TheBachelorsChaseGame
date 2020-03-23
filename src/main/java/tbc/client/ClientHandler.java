@@ -51,9 +51,9 @@ public class ClientHandler implements Runnable {
             switch (commands[0]) {
                 case "CHAT":
                     String sender = commands[1];
-                    String msg = commands[3];
-                    boolean privateMessage = Boolean.getBoolean(commands[4]);
-                    chatClient.chatArrived(sender, msg, privateMessage);
+                    String isPrivateMessage = commands[3];
+                    String msg = commands[4];
+                    chatClient.chatArrived(sender, isPrivateMessage, msg);
                     break;
                 case "CHANGEOK":
                     String newName = commands[1];
@@ -75,8 +75,8 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    public void sendMessage(String receiver, String msg) {
-        clientOutputStream.println("CHAT" + "#" + myName + "#" + receiver + "#" + msg);
+    public void sendMessage(String receiver, String isPrivateMsg, String msg) {
+        clientOutputStream.println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
     }
 
@@ -85,7 +85,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void logOut() {
-        clientOutputStream.println("LOGOUT" + "#" + myName);
+        clientOutputStream.println("LOGOUT");
         clientOutputStream.flush();
     }
 

@@ -15,11 +15,6 @@ public class Server {
 		public static HashMap<String, ServerHandler> clients = new HashMap<>();
 
 		/**
-		 * This is the Headquarter of the Chat application.
-		 */
-		private static ChatServer chatServer;
-
-		/**
 		 * Processes a client's request to change his name. If newUserName is occupied, it sends a negative
 		 * answer back. If newUserName is available, it changes requester's name to newUserName and sends a
 		 * positive answer back.
@@ -43,7 +38,9 @@ public class Server {
 		public static void main (String[] args) {
 				int portNumber = 8096;
 				ServerSocket serverSocket;
-				chatServer = new ChatServer();
+
+				//This is the Headquarter of the Chat application.
+				ChatServer chatServer = new ChatServer();
 				try {
 						serverSocket = new ServerSocket(portNumber);
 						System.out.println("Type this address in the client after starting the client: "
@@ -65,16 +62,13 @@ public class Server {
 				}
 		}
 
-	/**
-	 * This method removes the client from the list.
-	 * @param logoutUser The client who requested the LOGOUT.
-	 */
+		/**
+		 * This method removes the client from the list.
+		 * @param logoutUser The client who requested the LOGOUT.
+		 */
 		public static void removeUser(String logoutUser) {
 				clients.remove(logoutUser);
-				System.out.println(logoutUser + " removed in ChatServer");
-				for (ServerHandler sh : clients.values()) {
-						System.out.println(sh.getName() + " ");
-				}
+				System.out.println(logoutUser + " removed from the Server");
 		}
 
 }

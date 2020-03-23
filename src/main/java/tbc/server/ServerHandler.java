@@ -74,14 +74,13 @@ public class ServerHandler implements Runnable {
                 Server.changeName(myName, userName);
                 break;
             case "LOGOUT":
-                System.out.println("LOGOUT in ServerHandler");
                 closeConnection();
                 break;
             case "CHAT":
                 String sender = commands[1];
                 String receiver = commands[2];
-                String msg = commands[3];
-                System.out.println("ServerHandler sent message to chatserver");
+                String msg = commands[4];
+                System.out.println("ServerHandler sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
             default:
@@ -92,14 +91,10 @@ public class ServerHandler implements Runnable {
     /**
      * The chatServer sends a chat message to this handler's client.
      */
-    public void sendChatMessage(String sender, String msg, boolean privateMessage) {
-        if (privateMessage) {
-            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + true);
-        } else {
-            clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + msg + "#" + false);
-        }
+    public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
+        clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("ServerHandler sent message to clientoutputstream");
+        System.out.println("ServerHandler sent message to ClientOutputStream");
     }
 
     /**
@@ -132,7 +127,7 @@ public class ServerHandler implements Runnable {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
-            System.out.println("loggingOut von " + myName);
+            System.out.println("Closed stream and socket from " + myName);
             Server.removeUser(myName);
             exit = true;
         } catch (IOException e) {

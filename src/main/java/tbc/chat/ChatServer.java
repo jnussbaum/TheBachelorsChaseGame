@@ -13,8 +13,8 @@ public class ChatServer {
             //send message to all, except the sender
             for (ServerHandler sh : Server.clients.values()) {
                 if (!sh.getName().equals(sender)) {
-                    sh.sendChatMessage(sender, msg, false);
-                    System.out.println("ChatServer sent message to the serverhandler of "
+                    sh.sendChatMessage(sender, "false", msg);
+                    System.out.println("ChatServer sent message to the ServerHandler of "
                         + sh.getName());
                 }
             }
@@ -23,11 +23,11 @@ public class ChatServer {
             if (!checkUser(receiver)) {
                 System.out.println("User not found.");
             } else {
-                //send message to receiver
+                //send message to specific receiver
                 for (ServerHandler sh : Server.clients.values()) {
                     if (sh.getName().equals(receiver)) {
-                        sh.sendChatMessage(sender, msg, true);
-                        System.out.println("ChatServer sent message to the serverhandler of "
+                        sh.sendChatMessage(sender, "true", msg);
+                        System.out.println("ChatServer sent message to the ServerHandler of "
                             + sh.getName());
                     }
                 }
