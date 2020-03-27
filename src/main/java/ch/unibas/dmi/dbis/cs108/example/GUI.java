@@ -1,4 +1,4 @@
-package ch.unibas.dmi.dbis.cs108.example.gui.javafx;
+package ch.unibas.dmi.dbis.cs108.example;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
