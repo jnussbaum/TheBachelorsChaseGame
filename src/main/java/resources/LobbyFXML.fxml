@@ -11,7 +11,8 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #006400#006400;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.LobbyController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #006400#006400;"
+  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tbc.GUI.LobbyController">
    <children>
       <HBox prefHeight="400.0" prefWidth="600.0">
          <children>

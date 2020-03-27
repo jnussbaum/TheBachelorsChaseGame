@@ -1,25 +1,16 @@
-package GUI;
+package tbc.GUI;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 
-public class LobbyController extends Application {
+public class LobbyController {
     @FXML private Circle circleCards, circleRules, circleStart, circleGoal, circleSettings;
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
     @FXML private Button closeBtn;
-
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
 
     public void showCards() {
         if (circleCards.isPressed()) {
@@ -85,21 +76,4 @@ public class LobbyController extends Application {
         }
     }
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-      primaryStage.setTitle("The Bachelor's Chase");
-      /*
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("LobbyFXML.fxml"));
-      try {
-          loader.load();
-      } catch (Exception e) {
-          System.out.println("Couldn't find LobbyFXML file.");
-      }
-       */
-      Parent root = FXMLLoader.load(getClass().getResource("LobbyFXML.fxml"));
-      Scene scene = new Scene(root, 640, 480);
-      primaryStage.setScene(scene);
-      primaryStage.show();
-  }
 }
