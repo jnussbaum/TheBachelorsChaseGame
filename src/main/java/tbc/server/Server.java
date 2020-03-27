@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Server {
@@ -12,7 +13,8 @@ public class Server {
 		/**
 		 * This HashMap administrates all clients by their name and ServerHandler.
 		 */
-		public static HashMap<String, ServerHandler> clients = new HashMap<>();
+		private static HashMap<String, ServerHandler> clients = new HashMap<>();
+		private static HashMap<String, Lobby> lobbies = new HashMap<>();
 
 		/**
 		 * Processes a client's request to change his name. If newUserName is occupied, it sends a negative
@@ -69,6 +71,33 @@ public class Server {
 		public static void removeUser(String logoutUser) {
 				clients.remove(logoutUser);
 				System.out.println(logoutUser + " removed from the Server");
+		}
+
+		public static void createLobby(String lobbyName, ServerHandler sh) {
+			Lobby lobby = new Lobby(lobbyName, sh);
+			lobbies.put(lobbyName, lobby);
+		}
+
+		public static String[] getLobbies() {
+			return (String[]) lobbies.keySet().toArray();
+		}
+
+		public static Lobby getLobby(String lobbyName) {
+			return lobbies.get(lobbyName);
+		}
+
+		public static Collection<ServerHandler> getServerHandlers() {
+			return clients.values();
+		}
+
+		public static void addClient(String clientName, ServerHandler clientServerHandler) {
+			clients.put(clientName, clientServerHandler);
+		}
+
+		public static void joinLobby(String lobbyName, ServerHandler sh) {
+			if (lobbies.containsKey(lobbyName)) {
+				lobbies.get(lobbyName).join(sh.getName(), sh);
+			}
 		}
 
 }

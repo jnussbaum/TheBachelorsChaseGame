@@ -12,7 +12,7 @@ import tbc.chat.ChatClient;
 
 public class ClientHandler implements Runnable {
 
-    public static String myName;
+    public String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
@@ -46,7 +46,7 @@ public class ClientHandler implements Runnable {
                 System.err.println("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) return;
+            if (s == null) System.err.println("ClientHandler " + myName + "received an empty message.");
             String[] commands = s.split("#");
             switch (commands[0]) {
                 case "CHAT":
@@ -63,9 +63,20 @@ public class ClientHandler implements Runnable {
                 case "CHANGENO":
                     Client.nameChangeFeedback(false, "xyz");
                     break;
+                case "SENDLOBBYLIST":
+                    receiveLobbyList(commands);
+                case "LOBBYJOINED":
+                    String lobbyName = commands[1];
+                    System.out.println("You joined the lobby " + lobbyName);
+                case "GIVECARD":
+                    String cardName = commands[1];
+                    Client.game.addCard(cardName);
+                case "GAMESTARTED":
+                    Client.startGame();
+                case "GIVETURN":
+                    Client.game.giveTurn();
                 default:
-                    System.err.println("No such command in the ClientHandler protocol.");
-
+                    System.err.println("ClientHandler " + myName + "received an invalid message.");
             }
         }
     }
@@ -89,4 +100,23 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
+    void sendLobbyList (String lobbyName) {
+        clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
+    }
+
+    void receiveLobbyList(String[] commands) {
+        String[] lobbies = new String[commands.length - 1];
+        for (int i = 1; i < commands.length; i++) {
+            lobbies[i - 1] = commands[i];
+        }
+        //TODO: Further processing of available lobbies --> GUI
+    }
+
+    void joinLobby(String lobbyName) {
+        clientOutputStream.println("JOINLOBBY" + "#" + lobbyName);
+    }
+
+    void startGame() {
+        clientOutputStream.println("STARTGAME");
+    }
 }

@@ -21,6 +21,7 @@ public class ServerHandler implements Runnable {
     public BufferedReader clientInputStream;
     public PrintWriter clientOutputStream;
     private boolean exit = false;
+    private Lobby lobby;
 
     /**
      * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to it:
@@ -83,6 +84,16 @@ public class ServerHandler implements Runnable {
                 System.out.println("ServerHandler sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
+            case "CREATELOBBY":
+                String lobbyName = commands[1];
+                Server.createLobby(lobbyName, this);
+            case "GETLOBBYLIST":
+                sendLobbyList();
+            case "JOINLOBBY":
+                String name = commands[1];
+                Server.joinLobby(name, this);
+            case "STARTGAME":
+                lobby.startGame();
             default:
                 System.err.println("No such command in the ServerHandler protocol.");
         }
@@ -133,5 +144,39 @@ public class ServerHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("Closing failed in ServerHandler.");
         }
+    }
+
+    public void sendLobbyList() {
+        String[] lobbies = Server.getLobbies();
+        String s = "SENDLOBBYLIST";
+        if (lobbies.length != 0) {
+            for (int i = 0; i < lobbies.length; i++) {
+                s = s + "#" + lobbies[i];
+            }
+        } else {
+            s = s + "#" + "No Lobbies";
+        }
+        clientOutputStream.println(s);
+        clientOutputStream.flush();
+    }
+
+    public void lobbyJoined(String lobbyName) {
+        clientOutputStream.println("LOBBYJOINED" + "#" + lobbyName);
+        clientOutputStream.flush();
+        lobby = Server.getLobby(lobbyName);
+    }
+
+    public void giveCard(String cardName) {
+        clientOutputStream.println("GIVECARD" + "#" + cardName);
+        clientOutputStream.flush();
+    }
+
+    public void gameStarted() {
+        clientOutputStream.println("GAMESTARTED");
+        clientOutputStream.flush();
+    }
+
+    public void giveTurn() {
+        clientOutputStream.println("GIVETURN");
     }
 }

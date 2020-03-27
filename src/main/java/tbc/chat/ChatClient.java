@@ -52,7 +52,7 @@ public class ChatClient implements Runnable {
         }
     }
 
-    public static void chatArrived(String sender, String isPrivateMsg, String msg) {
+    public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
             System.out.println("[PRIVATE] " + sender + ": " + msg);
         } else {

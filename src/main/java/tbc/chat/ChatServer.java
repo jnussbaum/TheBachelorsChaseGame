@@ -11,7 +11,7 @@ public class ChatServer {
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
             //send message to all, except the sender
-            for (ServerHandler sh : Server.clients.values()) {
+            for (ServerHandler sh : Server.getServerHandlers()) {
                 if (!sh.getName().equals(sender)) {
                     sh.sendChatMessage(sender, "false", msg);
                     System.out.println("ChatServer sent message to the ServerHandler of "
@@ -24,7 +24,7 @@ public class ChatServer {
                 System.out.println("User not found.");
             } else {
                 //send message to specific receiver
-                for (ServerHandler sh : Server.clients.values()) {
+                for (ServerHandler sh : Server.getServerHandlers()) {
                     if (sh.getName().equals(receiver)) {
                         sh.sendChatMessage(sender, "true", msg);
                         System.out.println("ChatServer sent message to the ServerHandler of "
@@ -36,11 +36,11 @@ public class ChatServer {
     }
 
     public void register(String clientName, ServerHandler clientServerHandler) {
-        Server.clients.put(clientName, clientServerHandler);
+        Server.addClient(clientName, clientServerHandler);
     }
 
     public static boolean checkUser(String checkName) {
-        for (ServerHandler sh : Server.clients.values()) {
+        for (ServerHandler sh : Server.getServerHandlers()) {
             if (sh.getName().equals(checkName)) {
                 return true;
             }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import tbc.chat.ChatClient;
+import tbc.game.Game;
 
 public class Client {
 
@@ -15,6 +16,7 @@ public class Client {
     private static BufferedReader input;
     private static Thread clientHandlerThread;
     private static Thread chatClientThread;
+    static ClientGame game;
 
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
@@ -36,6 +38,10 @@ public class Client {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void startGame() {
+        game = new ClientGame();
     }
 
     public static void main(String[] args) {
