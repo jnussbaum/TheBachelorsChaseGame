@@ -37,7 +37,7 @@ public class ChatClient implements Runnable {
         if (s.startsWith("@")) {
             String receiver = s.substring(1, s.indexOf(" "));
             String msg = s.substring(s.indexOf(" ") + 1);
-            if (msg.length() == 0 || msg.length()-1 == 0) {
+            if (msg.length() == 0) {
                 System.out.println("Usage: @<user> <message>.");
             } else {
                 clientHandler.sendMessage(receiver, "true", msg);
@@ -52,7 +52,7 @@ public class ChatClient implements Runnable {
         }
     }
 
-    public static void chatArrived(String sender, String isPrivateMsg, String msg) {
+    public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
             System.out.println("[PRIVATE] " + sender + ": " + msg);
         } else {
