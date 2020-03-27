@@ -8,17 +8,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Lobby extends Application {
+public class Login extends Application {
+
     @Override
     public void start(Stage primaryStage) {
         try {
-            URL lobbyFxmlUrl = new File("src/main/java/resources/LobbyFXML.fxml").toURI().toURL();
-            Parent root = FXMLLoader.load(lobbyFxmlUrl);
-            primaryStage.setTitle("The Bachelor's Chase");
-            primaryStage.setScene(new Scene(root, 1000, 600));
+            URL loginFxmlUrl = new File("src/main/java/resources/LoginFXML.fxml").toURI().toURL();
+            Parent root = FXMLLoader.load(loginFxmlUrl);
+            primaryStage.setTitle("The Bachelor's Chase - Login");
+            primaryStage.setScene(new Scene(root, 398, 581));
             primaryStage.show();
         } catch (Exception e) {
-            System.out.println("Couldn't find LobbyFXML file.");
+            System.out.println("Couldn't find LoginFXML file.");
             e.printStackTrace();
         }
     }

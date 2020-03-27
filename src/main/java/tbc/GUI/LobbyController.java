@@ -8,32 +8,26 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public class LobbyController {
     @FXML private Circle circleCards, circleRules, circleStart, circleGoal, circleSettings;
-    @FXML private BorderPane window, loginWindow;
+    @FXML private BorderPane window;
     @FXML private TextArea textArea;
-    @FXML private TextField userName;
-    @FXML private Button closeBtn, okBtn;
-    @FXML private Label labelStatus;
+    @FXML private Button closeBtn;
 
     public void showCards() {
         circleCards.setOnMouseClicked(event -> {
             System.out.println("Show cards.");
-            loginWindow.setVisible(false);
         });
     }
 
     public void showRules() {
         circleRules.setOnMouseClicked(event -> {
             System.out.println("Show rules.");
-            loginWindow.setVisible(false);
             window.setVisible(true);
             textArea.setText("Spielbeschreibung: "
                 + "\nJeder Spieler erhält am Anfang des Spieles eine zufällige Karte. "
@@ -55,19 +49,26 @@ public class LobbyController {
 
     }
 
-    public void showLogin() {
+    public void startGame() {
         circleStart.setOnMouseClicked(event -> {
-            window.setVisible(false);
-            System.out.println("Show login.");
-            loginWindow.setVisible(true);
-            userName.setText("Is your name " + System.getProperty("user.name")
-                + "? If no, please enter a name.");
+            System.out.println("Show game window.");
+            try {
+                Stage gameWindow = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                URL loginFxmlUrl = new File("src/main/java/resources/GameWindowFXML.fxml").toURI().toURL();
+                Parent root = FXMLLoader.load(loginFxmlUrl);
+                gameWindow.setTitle("The Bachelor's Chase");
+                gameWindow.setScene(new Scene(root, 600, 600));
+                gameWindow.show();
+            } catch (Exception e) {
+                System.out.println("Couldn't find GameWindowFXML file.");
+                e.printStackTrace();
+            }
+
         });
     }
 
     public void showGoal() {
         circleGoal.setOnMouseClicked(event -> {
-            loginWindow.setVisible(false);
             System.out.println("Show goal.");
             window.setVisible(true);
             textArea.setText("Ziel: \nZiel des Spiels ist es 180  Kreditpunkte zu erzielen. "
@@ -80,39 +81,45 @@ public class LobbyController {
 
     public void showSettings() {
         circleSettings.setOnMouseClicked(event -> {
-           loginWindow.setVisible(false);
            System.out.println("Show settings.");
         });
     }
 
-    public void checkName() {
-        okBtn.setOnMouseClicked(event -> {
-            System.out.println("Check name");
-            if (!userName.getText().isEmpty()) {
-                String userName_ = userName.getText();
-                System.out.println(userName.getText() + " tries to login");
-                try {
-                    URL lobbyFxmlUrl = new File("src/main/java/resources/GameWindowController.fxml").toURI().toURL();
-                    FXMLLoader loader = new FXMLLoader(lobbyFxmlUrl);
+    /*
+    public void checkName(ActionEvent event) {
+        /*
+        if (userName.getPromptText().equals("Is your name " + System.getProperty("user.name") + "?")) {
+            userName_ = System.getProperty("user.name");
+        } else {
+            userName_ = userName.getText();
+        }
 
-                    System.out.println(userName_ + " has entered the room.");
-                    GameWindowController loginGameWindow = loader.getController();
-                    loginGameWindow.getUserName(userName_);
 
-                    Parent root = FXMLLoader.load(lobbyFxmlUrl);
-                    Stage mainGameWindow = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                    mainGameWindow.setScene(new Scene(root));
-                    mainGameWindow.setTitle("The Bachelor's Chase");
-                    mainGameWindow.show();
-                } catch (Exception e) {
-                    System.out.println("Couldn't find GameWindowController file.");
-                    e.printStackTrace();
-                }
-            } else {
-                labelStatus.setText("Username nicht verfügbar.");
+        userName_ = userName.getText();
+        System.out.println(userName_);
+        if (!userName.getText().isEmpty()) {
+            System.out.println(userName.getText() + " tries to login");
+            try {
+                URL lobbyFxmlUrl = new File("src/main/java/resources/GameWindowController.fxml").toURI().toURL();
+                FXMLLoader loader = new FXMLLoader(lobbyFxmlUrl);
+
+                System.out.println(userName_ + " has entered the room.");
+                GameWindowController loginGameWindow = loader.getController();
+                loginGameWindow.getUserName(userName_);
+
+                Parent root = FXMLLoader.load(lobbyFxmlUrl);
+                Stage mainGameWindow = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                mainGameWindow.setScene(new Scene(root));
+                mainGameWindow.setTitle("The Bachelor's Chase");
+                mainGameWindow.show();
+            } catch (Exception e) {
+                System.out.println("Couldn't find GameWindowController file.");
+                e.printStackTrace();
             }
-        });
-    }
+        } else {
+            labelStatus.setText("Username nicht verfügbar.");
+        }
+    }*/
 
     public void close() {
         closeBtn.setOnAction(event -> {
@@ -121,4 +128,5 @@ public class LobbyController {
             window.setVisible(false);
         });
     }
+
 }
