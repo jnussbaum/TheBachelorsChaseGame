@@ -7,17 +7,30 @@ import java.nio.charset.StandardCharsets;
 import tbc.chat.ChatClient;
 import tbc.game.Game;
 
+/**
+ * When a client is started, its main method connects the server and starts a name setting process.
+ * Once the name is definitively set, the main method is finished, but the clientHandler and the
+ * chatClient continue their lives.
+ */
 public class Client {
 
     private static String myName;
     private static boolean nameSettingSucceeded = false;
-    private static ClientHandler clientHandler;
-    private static ChatClient chatClient;
     private static BufferedReader input;
+    private static ClientHandler clientHandler;
     private static Thread clientHandlerThread;
+    private static ChatClient chatClient;
     private static Thread chatClientThread;
-    static ClientGame game;
+    private static ClientGame game;
 
+    public static ClientGame getGame() {
+        return game;
+    }
+
+    /**
+     * When a new Client connects to the server, he chooses his name and sends a request to the
+     * server to connect with this name. The Server answers by invoking this method.
+     */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
             myName = newName;
@@ -93,14 +106,18 @@ public class Client {
             System.err.println("There was an IOException when setting the username.");
         }
 
+        //Wait until the name is definitively set
         while (!nameSettingSucceeded) {
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 //do nothing
+                //not a very elegant solution. Better ideas at https://stackoverflow.com/questions/5999100/
             }
         }
 
+        //It is important to wait until the name setting is finished, before starting the chatClientThread.
+        //Otherwise the chatClientThread will listen to the System.in at the same time than Client.main() does.
         chatClientThread.start();
     }
 

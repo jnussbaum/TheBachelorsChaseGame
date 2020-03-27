@@ -16,10 +16,10 @@ import tbc.chat.ChatServer;
 public class ServerHandler implements Runnable {
 
     private String myName;
-    public Socket clientSocket;
+    private Socket clientSocket;
     private ChatServer chatServer;
-    public BufferedReader clientInputStream;
-    public PrintWriter clientOutputStream;
+    private BufferedReader clientInputStream;
+    private PrintWriter clientOutputStream;
     private boolean exit = false;
     private Lobby lobby;
 
@@ -39,6 +39,7 @@ public class ServerHandler implements Runnable {
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
+            System.err.println("IOException while trying to create the ServerHandler " + myName);
             e.printStackTrace();
         }
     }
@@ -48,23 +49,23 @@ public class ServerHandler implements Runnable {
      * on the clientInputStream, and pass this information to decode().
      */
     public void run() {
-        try {
-            String s;
-            while (exit == false && (s = clientInputStream.readLine()) != null) {
-                decode(s);
+        while (exit == false) {
+            String s = null;
+            try {
+                s = clientInputStream.readLine();
+            } catch (IOException e) {
+                System.err.println("Reading from ClientInputStream failed: ");
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            System.err.println("The ServerHandler of client " + myName
-                + " experienced the following IOException"
-                + " while listening to its clientInputStream:\n");
-            e.printStackTrace();
+            if (s == null) System.err.println("The ServerHandler of " + myName + "received an empty message");
+            decode(s);
         }
     }
 
     /**
      * As soon as information comes in on the clientInputStream, this String is passed to decode(). This method
      * looks at the first substring (commands[0], the Network Protocol command) and then invokes the appropriate
-     * methods in this object in order to process the information. The following substrings (from commands[] on)
+     * methods in this object in order to process the information. The following substrings (from commands[1] on)
      * are the parameters of the Network Protocol command.
      */
     void decode(String s) {
@@ -81,21 +82,25 @@ public class ServerHandler implements Runnable {
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[4];
-                System.out.println("ServerHandler sent message to ChatServer");
+                System.out.println("ServerHandler " + myName + "sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
             case "CREATELOBBY":
                 String lobbyName = commands[1];
                 Server.createLobby(lobbyName, this);
+                break;
             case "GETLOBBYLIST":
                 sendLobbyList();
+                break;
             case "JOINLOBBY":
                 String name = commands[1];
                 Server.joinLobby(name, this);
+                break;
             case "STARTGAME":
                 lobby.startGame();
+                break;
             default:
-                System.err.println("No such command in the ServerHandler protocol.");
+                System.err.println("ServerHandler " + myName + "received an invalid message.");
         }
     }
 
@@ -105,7 +110,7 @@ public class ServerHandler implements Runnable {
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("ServerHandler sent message to ClientOutputStream");
+        System.out.println("ServerHandler " + myName + "sent message to ClientOutputStream");
     }
 
     /**
@@ -115,11 +120,10 @@ public class ServerHandler implements Runnable {
     public void giveFeedbackToChange(boolean feedback, String newName) {
         if (feedback) {
             clientOutputStream.println("CHANGEOK" + "#" + newName);
-            clientOutputStream.flush();
         } else {
             clientOutputStream.println("CHANGENO");
-            clientOutputStream.flush();
         }
+        clientOutputStream.flush();
     }
 
     public String getName() {
@@ -131,25 +135,30 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * This method closes all the stream and the socket of the client, who requested the LOGOUT.
+     * This method closes all the streams and the socket of the client who requested the LOGOUT.
      */
     public void closeConnection() {
         try {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
-            System.out.println("Closed stream and socket from " + myName);
+            System.out.println("Closed streams and socket from " + myName);
             Server.removeUser(myName);
             exit = true;
         } catch (IOException e) {
-            System.err.println("Closing failed in ServerHandler.");
+            System.err.println("Closing streams and socket failed in ServerHandler " + myName);
         }
     }
 
+    /**
+     * Send a list of available lobbies to the client.
+     */
     public void sendLobbyList() {
         String[] lobbies = Server.getLobbies();
+        //Create the string which will be sent to the clientOutputStream
         String s = "SENDLOBBYLIST";
         if (lobbies.length != 0) {
+            //append the lobbies to the string
             for (int i = 0; i < lobbies.length; i++) {
                 s = s + "#" + lobbies[i];
             }
@@ -160,10 +169,14 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
     }
 
+    /**
+     * Tell the client that he successfully joined the specified lobby
+     */
     public void lobbyJoined(String lobbyName) {
         clientOutputStream.println("LOBBYJOINED" + "#" + lobbyName);
         clientOutputStream.flush();
-        lobby = Server.getLobby(lobbyName);
+        //store the lobby in this object field
+        this.lobby = Server.getLobby(lobbyName);
     }
 
     public void giveCard(String cardName) {
@@ -178,5 +191,6 @@ public class ServerHandler implements Runnable {
 
     public void giveTurn() {
         clientOutputStream.println("GIVETURN");
+        //TODO: not finished yet
     }
 }

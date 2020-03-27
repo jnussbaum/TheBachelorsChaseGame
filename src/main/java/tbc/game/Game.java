@@ -35,13 +35,19 @@ public class Game implements Runnable {
      */
     private int activeClient = 0;
 
+    /**
+     * Create a game and initialize the carddeck
+     * @param lobby: The lobby from which this game was started
+     * @param clientNames: All clients who will be in this game
+     */
     public Game(Lobby lobby, String[] clientNames) {
-        clientsAsArray = clientNames;
         this.lobby = lobby;
+        clientsAsArray = clientNames;
         for (int i = 0; i < clientNames.length; i++) {
             clients.put(clientNames[i], new ArrayList<Card>());
         }
-        cardDeck.put(Card.Plagiate, 5);
+        //Fill the carddeck with the specified number of cards per card type
+        cardDeck.put(Card.Plagiarism, 5);
         cardDeck.put(Card.Party, 5);
         cardDeck.put(Card.Coffee, 10);
         cardDeck.put(Card.RedBull, 10);
@@ -58,10 +64,16 @@ public class Game implements Runnable {
         return n;
     }
 
+    /**
+     * Get the deck as String-array which contains every single card, one per array position.
+     * The cards are not mixed, but grouped together by their type.
+     */
     String[] getDeckAsArray() {
         String[] output = new String[getDeckSize()];
         int pos = 0;
+        //Iterate over the card types
         for (Card c : cardDeck.keySet()) {
+            //Iterate over the number of cards of this card type
             for (int i = 0; i < cardDeck.get(c); i++) {
                 output[pos++] = c.name();
             }
@@ -87,12 +99,15 @@ public class Game implements Runnable {
             cardsOfClient.add(Card.valueOf(randomCardName));
             lobby.getServerHandler(clientName).giveCard(randomCardName);
 
-            //Reset the number of available cards of this type
+            //Reset the number of available cards in the carddeck
             int pos = cardDeck.get(randomCardName);
             cardDeck.put(Card.valueOf(randomCardName), pos - 1);
         }
     }
 
+    /**
+     * During its lifetime, this thread communicates to the clients whose turn it is
+     */
     public void run() {
         lobby.getServerHandler(clientsAsArray[0]).giveTurn();
 

@@ -1,7 +1,10 @@
 package tbc.game;
 
+/**
+ * This enum defines the different card types and their value.
+ */
 public enum Card {
-    Plagiate(-50),
+    Plagiarism(-50),
     Party(-10),
     Coffee(10),
     RedBull(20),

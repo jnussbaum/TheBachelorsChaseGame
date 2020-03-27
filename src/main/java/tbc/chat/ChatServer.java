@@ -8,6 +8,9 @@ import tbc.server.ServerHandler;
  */
 public class ChatServer {
 
+    /**
+     * When the ChatServer receives a message, he forwards it to the correct clients.
+     */
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
             //send message to all, except the sender
@@ -35,11 +38,17 @@ public class ChatServer {
         }
     }
 
+    /**
+     * Use this method to tell the ChatServer that a new client exists.
+     */
     public void register(String clientName, ServerHandler clientServerHandler) {
         Server.addClient(clientName, clientServerHandler);
     }
 
-    public static boolean checkUser(String checkName) {
+    /**
+     * Verify if a user is registered in this ChatServer.
+     */
+    public boolean checkUser(String checkName) {
         for (ServerHandler sh : Server.getServerHandlers()) {
             if (sh.getName().equals(checkName)) {
                 return true;
