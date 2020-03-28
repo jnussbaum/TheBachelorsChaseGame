@@ -1,6 +1,7 @@
 package tbc.server;
 
-import tbc.game.Game;
+import tbc.game.ServerGame;
+
 import java.util.HashMap;
 
 /**
@@ -21,7 +22,7 @@ public class Lobby {
     /**
      * The game belonging to this lobby is stored in this variable.
      */
-    private Game game;
+    public ServerGame serverGame;
 
     /**
      * This boolean stores the information whether a game is active right now or not.
@@ -55,7 +56,7 @@ public class Lobby {
     }
 
     void startGame() {
-        game = new Game(this, (String[]) clients.keySet().toArray());
+        serverGame = new ServerGame(this, (String[]) clients.keySet().toArray());
         for (ServerHandler sh : clients.values()) {
             sh.gameStarted();
         }

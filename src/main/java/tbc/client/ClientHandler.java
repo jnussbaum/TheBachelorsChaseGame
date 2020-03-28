@@ -41,6 +41,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public String getMyName() {
+        return myName;
+    }
+
     public boolean isUnknownHostname() {
         return unknownHostname;
     }
@@ -103,6 +107,13 @@ public class ClientHandler implements Runnable {
         case "GIVETURN":
             Client.getGame().giveTurn();
             break;
+        case "ENDMATCH":
+            String winnerName = commands[1];
+            Client.getGame().endMatch(winnerName);
+            break;
+        case "SENDCOINS":
+            String allCoins = commands[1];
+            Client.getGame().receiveCoins(allCoins);
         default:
             System.err.println("ClientHandler " + myName + "received an invalid message.");
         }
@@ -127,7 +138,7 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    void sendLobbyList (String lobbyName) {
+    void sendLobbyList(String lobbyName) {
         clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
         //TODO: What did we want to do here? Method name is misleading
     }
@@ -142,9 +153,26 @@ public class ClientHandler implements Runnable {
 
     void joinLobby(String lobbyName) {
         clientOutputStream.println("JOINLOBBY" + "#" + lobbyName);
+        clientOutputStream.flush();
     }
 
     void startGame() {
         clientOutputStream.println("STARTGAME");
+        clientOutputStream.flush();
+    }
+
+    public void askForCard() {
+        clientOutputStream.println("ASKFORCARD");
+        clientOutputStream.flush();
+    }
+
+    public void throwCard(String cardName) {
+        clientOutputStream.println("THROWCARD" + "#" + cardName);
+        clientOutputStream.flush();
+    }
+
+    public void jumpThisTurn() {
+        clientOutputStream.println("JUMPTHISTURN");
+        clientOutputStream.flush();
     }
 }

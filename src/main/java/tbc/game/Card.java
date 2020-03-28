@@ -16,4 +16,7 @@ public enum Card {
 
     Card(int val) { value = val;}
 
+    public int getValue() {
+        return value;
+    }
 }

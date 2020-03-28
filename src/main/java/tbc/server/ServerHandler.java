@@ -99,6 +99,16 @@ public class ServerHandler implements Runnable {
             case "STARTGAME":
                 lobby.startGame();
                 break;
+            case "ASKFORCARD":
+                lobby.serverGame.giveCardToClient(myName);
+                break;
+            case "THROWCARD":
+                String cardName = commands[1];
+                lobby.serverGame.throwCard(myName, cardName);
+                break;
+            case "JUMPTHISTURN":
+                lobby.serverGame.giveTurnToNext();
+                break;
             default:
                 System.err.println("ServerHandler " + myName + "received an invalid message.");
         }
@@ -191,6 +201,16 @@ public class ServerHandler implements Runnable {
 
     public void giveTurn() {
         clientOutputStream.println("GIVETURN");
-        //TODO: not finished yet
+        clientOutputStream.flush();
+    }
+
+    public void endMatch(String winnerName) {
+        clientOutputStream.println("ENDMATCH" + "#" + winnerName);
+        clientOutputStream.flush();
+    }
+
+    public void sendCoins(String allCoins) {
+        clientOutputStream.println("SENDCOINS" + "#" + allCoins);
+        clientOutputStream.flush();
     }
 }
