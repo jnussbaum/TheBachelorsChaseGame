@@ -52,8 +52,9 @@ public class Client {
         }
     }
 
-    public static void startGame() {
-        game = new ClientGame();
+    public static void startGame(String player) {
+        String[] players = player.split("::");
+        game = new ClientGame(clientHandler, players);
     }
 
     public static void main(String[] args) {

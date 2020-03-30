@@ -194,8 +194,13 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    public void gameStarted() {
-        clientOutputStream.println("GAMESTARTED");
+    public void gameStarted(String[] players) {
+        String output = "GAMESTARTED"+"#" ;
+        for(int i = 0; i<players.length; i++){
+            output = output + players[i] +"::";
+        }
+        output = output.substring(0,output.length()-2);
+        clientOutputStream.println(output);
         clientOutputStream.flush();
     }
 

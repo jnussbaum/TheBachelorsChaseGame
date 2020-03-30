@@ -102,7 +102,7 @@ public class ClientHandler implements Runnable {
             Client.getGame().addCard(cardName);
             break;
         case "GAMESTARTED":
-            Client.startGame();
+            Client.startGame(commands[1]);
             break;
         case "GIVETURN":
             Client.getGame().giveTurn();

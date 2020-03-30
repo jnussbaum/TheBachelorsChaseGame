@@ -56,9 +56,10 @@ public class Lobby {
     }
 
     void startGame() {
-        serverGame = new ServerGame(this, (String[]) clients.keySet().toArray());
+        String[] players = (String[]) clients.keySet().toArray();
+        serverGame = new ServerGame(this, players);
         for (ServerHandler sh : clients.values()) {
-            sh.gameStarted();
+            sh.gameStarted(players);
         }
     }
 
