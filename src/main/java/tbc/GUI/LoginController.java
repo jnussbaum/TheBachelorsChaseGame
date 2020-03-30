@@ -12,6 +12,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Processes a client's request to login with a username. First the system-name will be requested
+ * and than the process to find a legit username will begin.
+ */
+
 public class LoginController {
 
     @FXML private TextField userName;

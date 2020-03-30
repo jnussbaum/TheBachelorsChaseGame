@@ -8,6 +8,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * The GUI for Clients to enter they username
+ */
+
 public class Login extends Application {
 
     @Override

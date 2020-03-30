@@ -13,6 +13,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+/**
+ * Processes a client's request to get the informations of the pushed Button.
+ * It opens a window for almost every Button and shows the details about the Game.
+ */
+
 public class LobbyController {
     @FXML private Circle circleCards, circleRules, circleStart, circleGoal, circleSettings;
     @FXML private BorderPane window;
