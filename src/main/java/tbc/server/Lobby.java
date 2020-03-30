@@ -61,6 +61,8 @@ public class Lobby {
         for (ServerHandler sh : clients.values()) {
             sh.gameStarted(players);
         }
+        Thread gamethread = new Thread(serverGame);
+        gamethread.start();
     }
 
     public ServerHandler getServerHandler(String clientName) {

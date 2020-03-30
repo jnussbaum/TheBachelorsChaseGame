@@ -107,7 +107,7 @@ public class ServerHandler implements Runnable {
                 lobby.serverGame.throwCard(myName, cardName);
                 break;
             case "JUMPTHISTURN":
-                lobby.serverGame.giveTurnToNext();
+                lobby.serverGame.jumpThisTurn();
                 break;
             default:
                 System.err.println("ServerHandler " + myName + "received an invalid message.");

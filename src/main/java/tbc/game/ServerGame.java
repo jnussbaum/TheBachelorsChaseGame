@@ -1,5 +1,7 @@
 package tbc.game;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import tbc.server.Lobby;
 
 import java.util.ArrayList;
@@ -13,6 +15,10 @@ public class ServerGame implements Runnable {
      */
     private String[] clientsAsArray = new String[4];
 
+
+    private Timer timer;
+
+    private boolean matchEnd = false;
 
     /**
      * The lobby from which this game was started.
@@ -62,7 +68,8 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.Study, 5);
         cardDeck.put(Card.GoodLecturer, 2);
 
-        startMatch();
+        //startMatch();
+
     }
 
     void startMatch() {
@@ -98,13 +105,13 @@ public class ServerGame implements Runnable {
      * Initial distribution of one card to each client.
      */
     public void distributeCards() {
-        for (int i = 0; i < clientsAsArray.length; i++) {
-            String clientName = clientsAsArray[i];
+        for (String clientName : clientsAsArray) {
             giveRandomCard(clientName);
         }
     }
 
     public void giveCardToClient(String clientName) {
+        timer.cancel();
         giveRandomCard(clientName);
         giveTurnToNext();
     }
@@ -126,10 +133,16 @@ public class ServerGame implements Runnable {
 
     public void throwCard(String clientName, String cardName) {
         //Remove the card from the client's cardset, and if not possible, print error message.
+        timer.cancel();
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
             System.err.println("The client " + clientName + "cannot throw away the card "
             + cardName + " because he does not have such a card.");
         }
+        giveTurnToNext();
+    }
+
+    public void jumpThisTurn() {
+        timer.cancel();
         giveTurnToNext();
     }
 
@@ -155,6 +168,7 @@ public class ServerGame implements Runnable {
 
     void endMatch(String winnerName) {
         //Give coins to all clients
+        matchEnd = true;
         calculateCoins();
         // Tell all clients that XY won and that they receive now their coins
         for (int i = 0; i < clientsAsArray.length; i++) {
@@ -221,13 +235,35 @@ public class ServerGame implements Runnable {
         }
     }
 
+    public void startTimer() {
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                giveTurnToNext();
+            }
+        };
+    }
 
     /**
      * During its lifetime, this thread communicates to the clients whose turn it is
      */
     public void run() {
-        //lobby.getServerHandler(/*client*/.giveTurn(); //TODO
+        //TODO
+        distributeCards();
+        while(matchEnd == false) {
+            giveTurnToNext();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    giveTurnToNext();
+                }
+            }, 11000);
+        }
+
+        //lobby.getServerHandler(/*client*/.giveTurn();
         //wait(10000);
         //calculatePoints();
     }
+
+
 }
