@@ -22,7 +22,7 @@ public class ChatServer {
                 if (!sh.getName().equals(sender)) {
                     sh.sendChatMessage(sender, "false", msg);
                     logger.info("ChatServer sent message to the ServerHandler of "
-                        + sh.getName());
+                            + sh.getName());
                 }
             }
         } else {
@@ -35,7 +35,7 @@ public class ChatServer {
                     if (sh.getName().equals(receiver)) {
                         sh.sendChatMessage(sender, "true", msg);
                         logger.info("ChatServer sent message to the ServerHandler of "
-                            + sh.getName());
+                                + sh.getName());
                     }
                 }
             }

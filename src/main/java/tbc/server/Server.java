@@ -1,15 +1,16 @@
 package tbc.server;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.util.Arrays;
-import java.net.Socket;
-import java.util.Collection;
-import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * All that the Server makes during his lifetime (in the main method) is to listen to new incoming connections,
@@ -46,47 +47,48 @@ public class Server {
         }
     }
 
-	/**
-	 * This method removes the client from the list.
-	 * @param logoutUser The client who requested the LOGOUT.
-	 */
-	public static void removeUser(String logoutUser) {
-		clients.remove(logoutUser);
-		//TODO: Inform other clients that this client logged out.
-		logger.info(logoutUser + " removed from the Server");
-	}
+    /**
+     * This method removes the client from the list.
+     *
+     * @param logoutUser The client who requested the LOGOUT.
+     */
+    public static void removeUser(String logoutUser) {
+        clients.remove(logoutUser);
+        //TODO: Inform other clients that this client logged out.
+        logger.info(logoutUser + " removed from the Server");
+    }
 
-	public static void createLobby(String lobbyName, ServerHandler sh) {
-		Lobby lobby = new Lobby(lobbyName, sh);
-		lobbies.put(lobbyName, lobby);
-	}
+    public static void createLobby(String lobbyName, ServerHandler sh) {
+        Lobby lobby = new Lobby(lobbyName, sh);
+        lobbies.put(lobbyName, lobby);
+    }
 
-	public static String[] getLobbies() {
-		Object[] objArray = lobbies.keySet().toArray();
-		String[] stringArray = Arrays.copyOf(objArray, objArray.length, String[].class);
-		return stringArray;
-	}
+    public static String[] getLobbies() {
+        Object[] objArray = lobbies.keySet().toArray();
+        String[] stringArray = Arrays.copyOf(objArray, objArray.length, String[].class);
+        return stringArray;
+    }
 
-	public static Lobby getLobby(String lobbyName) {
-		return lobbies.get(lobbyName);
-	}
+    public static Lobby getLobby(String lobbyName) {
+        return lobbies.get(lobbyName);
+    }
 
-	public static Collection<ServerHandler> getServerHandlers() {
-		return clients.values();
-	}
+    public static Collection<ServerHandler> getServerHandlers() {
+        return clients.values();
+    }
 
-	public static void addClient(String clientName, ServerHandler clientServerHandler) {
-		clients.put(clientName, clientServerHandler);
-	}
+    public static void addClient(String clientName, ServerHandler clientServerHandler) {
+        clients.put(clientName, clientServerHandler);
+    }
 
-	public static void joinLobby(String lobbyName, ServerHandler sh) {
-		if (lobbies.containsKey(lobbyName)) {
-			lobbies.get(lobbyName).join(sh.getName(), sh);
-		} else {
-			lobbies.put(lobbyName, new Lobby(lobbyName, sh));
-			System.out.println("Inexisting lobby, created it new.");
-		}
-	}
+    public static void joinLobby(String lobbyName, ServerHandler sh) {
+        if (lobbies.containsKey(lobbyName)) {
+            lobbies.get(lobbyName).join(sh.getName(), sh);
+        } else {
+            lobbies.put(lobbyName, new Lobby(lobbyName, sh));
+            System.out.println("Inexisting lobby, created it new.");
+        }
+    }
 
     public static void main(String[] args) {
         int portNumber = Integer.parseInt(args[1]);

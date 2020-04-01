@@ -1,13 +1,10 @@
 package tbc.server;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import tbc.chat.ChatServer;
+
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import tbc.chat.ChatServer;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -25,10 +22,11 @@ public class ServerHandler implements Runnable {
 
     /**
      * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to it:
-     * @param myName Identifier of the client for which this serverHandler is responsible.
+     *
+     * @param myName       Identifier of the client for which this serverHandler is responsible.
      * @param clientSocket The socket which belongs to this client. Needed to open the I/O-Streams.
-     * @param chatServer The chat Headquarter on server side, to which all incoming chat messages are
-     *                   forwarded.
+     * @param chatServer   The chat Headquarter on server side, to which all incoming chat messages are
+     *                     forwarded.
      */
     public ServerHandler(String myName, Socket clientSocket, ChatServer chatServer) {
         this.myName = myName;
@@ -198,11 +196,11 @@ public class ServerHandler implements Runnable {
     }
 
     public void gameStarted(String[] players) {
-        String output = "GAMESTARTED"+"#" ;
-        for(int i = 0; i<players.length; i++){
-            output = output + players[i] +"::";
+        String output = "GAMESTARTED" + "#";
+        for (int i = 0; i < players.length; i++) {
+            output = output + players[i] + "::";
         }
-        output = output.substring(0,output.length()-2);
+        output = output.substring(0, output.length() - 2);
         clientOutputStream.println(output);
         clientOutputStream.flush();
     }

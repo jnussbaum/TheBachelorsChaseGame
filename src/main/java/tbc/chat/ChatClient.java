@@ -1,11 +1,12 @@
 package tbc.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
 import tbc.client.ClientHandler;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /**
  * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the client
@@ -66,7 +67,7 @@ public class ChatClient implements Runnable {
                 clientHandler.sendMessage(receiver, "true", msg);
             }
 
-        // send public message
+            // send public message
         } else {
             if (s.length() == 0) {
                 logger.info("Please enter a message.");
@@ -82,7 +83,7 @@ public class ChatClient implements Runnable {
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
-           logger.info("[PRIVATE] " + sender + ": " + msg);
+            logger.info("[PRIVATE] " + sender + ": " + msg);
         } else {
             logger.info(sender + ": " + msg);
         }

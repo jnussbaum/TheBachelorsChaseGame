@@ -1,12 +1,13 @@
 package tbc.client;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.chat.ChatClient;
 
 /**
  * When a client is started, its main method connects the server and starts a name setting process.
@@ -45,7 +46,7 @@ public class Client {
                 name = input.readLine();
                 while (name.indexOf('@') != -1 || name.length() == 0) {
                     logger.info("The name should not be empty nor contain the '@' character."
-                        + "\nPlease try another name.");
+                            + "\nPlease try another name.");
                     name = input.readLine();
                 }
                 clientHandler.changeName(name);
@@ -71,7 +72,7 @@ public class Client {
             try {
                 //hostName = input.readLine();
                 clientHandlerThread = new Thread(
-                    clientHandler = new ClientHandler(hostName, portNumber));
+                        clientHandler = new ClientHandler(hostName, portNumber));
                 chatClientThread = new Thread(chatClient = new ChatClient(clientHandler, input));
             } catch (Exception e) {
                 logger.error("Couldn't get I/O for the connection to the hostname");
@@ -97,8 +98,8 @@ public class Client {
                     name = input.readLine();
                     while (name.indexOf('@') != -1 || name.length() == 0) {
                         logger.info(
-                            "The name should not be empty nor contain the '@' character." +
-                                "\nPlease try another name.");
+                                "The name should not be empty nor contain the '@' character." +
+                                        "\nPlease try another name.");
                         name = input.readLine();
                     }
                 } else {

@@ -14,7 +14,7 @@ public class ServerMatch implements Runnable {
     public void run() {
         System.out.println("ServerMatch started run method");
         serverGame.distributeCards();
-        while(serverGame.matchEnd == false) {
+        while (serverGame.matchEnd == false) {
             serverGame.giveTurnToNext();
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {

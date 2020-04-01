@@ -42,8 +42,9 @@ public class Lobby {
 
     /**
      * A client's join request leads to the invocation of this method
+     *
      * @param clientName: Name of the client who wants to join
-     * @param sh: This client's ServerHandler
+     * @param sh:         This client's ServerHandler
      */
     void join(String clientName, ServerHandler sh) {
         if (clients.size() > 3) {
@@ -61,7 +62,7 @@ public class Lobby {
         System.out.println("Lobby's startGame() method was invoked");
         if (isGameActive == false) {
             Object[] playersAsObj = clients.keySet().toArray();
-            String [] players = Arrays.copyOf(playersAsObj, playersAsObj.length, String[].class);
+            String[] players = Arrays.copyOf(playersAsObj, playersAsObj.length, String[].class);
             serverGame = new ServerGame(this, players);
             for (ServerHandler sh : clients.values()) {
                 sh.gameStarted(players);

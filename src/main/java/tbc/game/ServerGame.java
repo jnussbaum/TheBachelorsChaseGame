@@ -1,12 +1,11 @@
 package tbc.game;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import tbc.server.Lobby;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
@@ -49,7 +48,8 @@ public class ServerGame implements Runnable {
 
     /**
      * Create a game and initialize the carddeck
-     * @param lobby: The lobby from which this game was started
+     *
+     * @param lobby:       The lobby from which this game was started
      * @param clientNames: All clients who will be in this game
      */
     public ServerGame(Lobby lobby, String[] clientNames) {
@@ -57,7 +57,7 @@ public class ServerGame implements Runnable {
         clientsAsArray = clientNames;
         players = new Player[clientNames.length];
         for (int i = 0; i < clientNames.length; i++) {
-            int x= 0;
+            int x = 0;
             players[i] = new Player(clientNames[i]);
         }
         //Fill the carddeck with the specified number of cards per card type
@@ -150,7 +150,7 @@ public class ServerGame implements Runnable {
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
             System.err.println("The client " + clientName + "cannot throw away the card "
-            + cardName + " because he does not have such a card.");
+                    + cardName + " because he does not have such a card.");
         }
         giveTurnToNext();
     }
@@ -166,7 +166,7 @@ public class ServerGame implements Runnable {
         System.out.println("ServerGame's method giveTurnToNext() was called. Initial values: \n" +
                 "numOfDroppedOut = " + numOfDroppedOut +
                 "\nactiveClient = " + activeClient);
-        if(numOfDroppedOut < clientsAsArray.length) {
+        if (numOfDroppedOut < clientsAsArray.length) {
             if (activeClient == players.length - 1) {
                 activeClient = 0;
                 System.out.println("ServerGame's method giveTurnToNext() set activeClient to 0");
@@ -181,12 +181,10 @@ public class ServerGame implements Runnable {
                 lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
                 System.out.println("ServerGame's method giveTurnToNext() gave turn to active client = " + activeClient);
             }
-        }
-        else {
+        } else {
             System.out.println("All players dropped out of the game");
         }
     }
-
 
 
     void endMatch(String winnerName) {
@@ -210,12 +208,12 @@ public class ServerGame implements Runnable {
             s = s + clientName + "::";
             s = s + players[i].getNumOfCoins() + "::";
         }
-        return s.substring(0,s.length()-2);
+        return s.substring(0, s.length() - 2);
     }
 
-    private Player nametoPlayer(String clientName){
-        for (int i = 0; i<players.length; i++){
-            if(players[i].getName().equals(clientName)){
+    private Player nametoPlayer(String clientName) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getName().equals(clientName)) {
                 return players[i];
             }
         }
@@ -249,9 +247,9 @@ public class ServerGame implements Runnable {
         for (int i = 0; i < players.length; i++) {
             Player a = players[i];
             if (a.getNumOfPoints() == 180) {
-                a.setNumOfCoins(a.getNumOfCoins()+180*2);
-            } else if(a.getNumOfPoints() < 180){
-                a.setNumOfCoins(a.getNumOfCoins()+a.getNumOfPoints());
+                a.setNumOfCoins(a.getNumOfCoins() + 180 * 2);
+            } else if (a.getNumOfPoints() < 180) {
+                a.setNumOfCoins(a.getNumOfCoins() + a.getNumOfPoints());
             }
             a.setNumOfPoints(0);
         }

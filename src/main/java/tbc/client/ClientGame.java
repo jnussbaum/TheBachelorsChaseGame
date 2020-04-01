@@ -1,13 +1,13 @@
 package tbc.client;
 
 import tbc.game.Card;
+import tbc.game.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import tbc.game.Player;
 
 public class ClientGame {
 
@@ -40,18 +40,19 @@ public class ClientGame {
         System.out.println("It's your turn. Seconds left:");
         timer = new Timer();
         timer.schedule(new TimerTask() {
-                int countdown = 10;
-                public void run() {
-                    if (countdown > 0) {
-                        countdown = countdown - 1;
-                        //System.out.println(countdown);
-                    } else {
-                        //countdown == 0
-                        timer.cancel();
-                        //TODO: Make it impossible for this client to take further actions
-                    }
+            int countdown = 10;
+
+            public void run() {
+                if (countdown > 0) {
+                    countdown = countdown - 1;
+                    //System.out.println(countdown);
+                } else {
+                    //countdown == 0
+                    timer.cancel();
+                    //TODO: Make it impossible for this client to take further actions
                 }
-            },0, 1000);
+            }
+        }, 0, 1000);
         //TODO: What to do when the user takes an action before the 10 secs are left
         //TODO: Use this countdown in the GUI
         selectWithoutGUI();
@@ -144,9 +145,9 @@ public class ClientGame {
         }
     }
 
-    private Player nametoPlayer(String clientName){
-        for (int i = 0; i<players.length; i++){
-            if(players[i].getName().equals(clientName)){
+    private Player nametoPlayer(String clientName) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getName().equals(clientName)) {
                 return players[i];
             }
         }
