@@ -1,4 +1,4 @@
-package ch.unibas.dmi.dbis.cs108.example.gui.javafx;
+package ch.unibas.dmi.dbis.cs108.example;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -13,7 +13,7 @@ public class GUI extends Application {
 
     /**
      * Launching this method will not work on some platforms.
-     * What you should do is to create a separate main class and launch the GUI class from there as is done in {@link Main}
+     * What you should do is to create a separate main class and launch the tbc.GUI class from there as is done in {@link Main}
      */
     public static void main(String[] args) {
         launch(args);

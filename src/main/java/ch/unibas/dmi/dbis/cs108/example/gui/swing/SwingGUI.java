@@ -22,7 +22,7 @@ public class SwingGUI {
     }
 
     public static void main(String[] args) {
-        // Schedule a job for the event-dispatching thread: // creating and showing this application's GUI
+        // Schedule a job for the event-dispatching thread: // creating and showing this application's tbc.GUI
         javax.swing.SwingUtilities.invokeLater(() -> createAndShowGUI());
     }
 

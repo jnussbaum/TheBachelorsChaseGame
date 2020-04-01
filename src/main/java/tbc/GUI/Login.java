@@ -1,0 +1,41 @@
+package tbc.GUI;
+
+import java.io.File;
+import java.net.URL;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import tbc.client.Client;
+import tbc.server.Server;
+
+/**
+ * The GUI for Clients to enter they username
+ */
+
+public class Login extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            URL loginFxmlUrl = new File("src/main/java/resources/LoginFXML.fxml").toURI().toURL();
+            Parent root = FXMLLoader.load(loginFxmlUrl);
+            primaryStage.setTitle("The Bachelor's Chase - Login");
+            primaryStage.setScene(new Scene(root, 398, 581));
+            primaryStage.show();
+        } catch (Exception e) {
+            System.out.println("Couldn't find LoginFXML file.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        if (args[0].equals("client")) {
+            Client.main(args);
+            launch(args);
+        } else if (args[0].equals("server")) {
+            Server.main(args);
+        }
+    }
+}

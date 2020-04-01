@@ -62,6 +62,15 @@ jar {
     }
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java"]
+            includes = ["**/*.fxml"]
+        }
+    }
+}
+
 task("build-cs108", type: GradleBuild) {
     tasks = ['build','javadoc']
 }
