@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import tbc.client.Client;
+import tbc.server.Server;
 
 /**
  * The GUI for Clients to enter they username
@@ -29,6 +31,11 @@ public class Login extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+        if (args[0].equals("client")) {
+            Client.main(args);
+            launch(args);
+        } else if (args[0].equals("server")) {
+            Server.main(args);
+        }
     }
 }
