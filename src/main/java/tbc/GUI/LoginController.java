@@ -12,6 +12,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Processes a client's request to login with a username. First the system-name will be requested
@@ -19,6 +21,8 @@ import javafx.stage.Stage;
  */
 
 public class LoginController {
+
+    private static final Logger logger = LogManager.getLogger(LoginController.class);
 
     @FXML private TextField userName;
     @FXML private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
@@ -40,17 +44,17 @@ public class LoginController {
                 lobbyWindow.setTitle("The Bachelor's Chase - Lobby");
                 lobbyWindow.setScene(new Scene(root, 1000, 600));
                 lobbyWindow.show();
-                System.out.println(userName_ + " has logged in.");
-                System.out.println(userName_ + " has chosen the logo: " + chosenLogo);
+                logger.info(userName_ + " has logged in.");
+                logger.info(userName_ + " has chosen the logo: " + chosenLogo);
             } catch (Exception e) {
-                System.out.println("Couldn't find LobbyFXML file.");
+                logger.error("Couldn't find LobbyFXML file.");
                 e.printStackTrace();
             }
         }
     }
 
     public void girly() {
-        System.out.println("Girly has been chosen.");
+        logger.info("Girly has been chosen.");
         chosenLogo = "girly";
         labelNerd.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -59,7 +63,7 @@ public class LoginController {
     }
 
     public void nerd() {
-        System.out.println("Nerd has been chosen.");
+        logger.info("Nerd has been chosen.");
         chosenLogo = "nerd";
         labelGirly.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -68,7 +72,7 @@ public class LoginController {
     }
 
     public void hippy() {
-        System.out.println("Hippy has been chosen.");
+        logger.info("Hippy has been chosen.");
         chosenLogo = "hippy";
         labelGirly.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -77,7 +81,7 @@ public class LoginController {
     }
 
     public void emo() {
-        System.out.println("Emo has been chosen.");
+        logger.info("Emo has been chosen.");
         chosenLogo = "emo";
         labelGirly.setFont(Font.font(24));
         labelNerd.setFont(Font.font(24));

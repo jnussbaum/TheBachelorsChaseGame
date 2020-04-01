@@ -7,14 +7,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import tbc.client.Client;
-import tbc.server.Server;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The GUI for Clients to enter they username
  */
 
 public class Login extends Application {
+
+    private static final Logger logger = LogManager.getLogger(Login.class);
 
     @Override
     public void start(Stage primaryStage) {
@@ -25,17 +27,12 @@ public class Login extends Application {
             primaryStage.setScene(new Scene(root, 398, 581));
             primaryStage.show();
         } catch (Exception e) {
-            System.out.println("Couldn't find LoginFXML file.");
+            logger.error("Couldn't find LoginFXML file.");
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        if (args[0].equals("client")) {
-            Client.main(args);
-            launch(args);
-        } else if (args[0].equals("server")) {
-            Server.main(args);
-        }
+        launch(args);
     }
 }

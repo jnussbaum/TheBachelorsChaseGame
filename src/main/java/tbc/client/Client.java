@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
 
 /**
@@ -12,6 +14,8 @@ import tbc.chat.ChatClient;
  * chatClient continue their lives.
  */
 public class Client {
+
+    private static final Logger logger = LogManager.getLogger(Client.class);
 
     private static String myName;
     private static boolean nameSettingSucceeded = false;
@@ -34,14 +38,14 @@ public class Client {
         if (feedback) {
             myName = newName;
             nameSettingSucceeded = true;
-            System.out.println("Hello " + myName + ", welcome to our chat!");
+            logger.info("Hello " + myName + ", welcome to our chat!");
         } else {
             String name;
-            System.out.println("This name is not available any more. Please enter another name.");
+            logger.info("This name is not available any more. Please enter another name.");
             try {
                 name = input.readLine();
                 while (name.indexOf('@') != -1 || name.length() == 0) {
-                    System.out.println("The name should not be empty nor contain the '@' character."
+                    logger.info("The name should not be empty nor contain the '@' character."
                         + "\nPlease try another name.");
                     name = input.readLine();
                 }
@@ -58,18 +62,18 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        String hostName;
-        int portNumber = 8096;
+        String hostName = args[1].substring(0, args[0].indexOf(':'));
+        int portNumber = Integer.parseInt(String.valueOf(args[1].indexOf(':')));
         do {
-            System.out.println("Please enter the IP address given from the server: ");
+            logger.info("Please enter the IP address given from the server: ");
             input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             try {
-                hostName = input.readLine();
+                //hostName = input.readLine();
                 clientHandlerThread = new Thread(
                     clientHandler = new ClientHandler(hostName, portNumber));
                 chatClientThread = new Thread(chatClient = new ChatClient(clientHandler, input));
-            } catch (IOException ex) {
-                System.err.println("Couldn't get I/O for the connection to the hostname");
+            } catch (Exception e) {
+                logger.error("Couldn't get I/O for the connection to the hostname");
             }
         } while (clientHandler.isUnknownHostname() == true);
 
@@ -80,30 +84,30 @@ public class Client {
             if (systemName.indexOf('@') != -1) {
                 systemName.replace('@', '_');
             }
-            System.out.println("Is your name " + systemName + "? ");
-            System.out.println("Please answer with yes or no.");
+            logger.info("Is your name " + systemName + "? ");
+            logger.info("Please answer with yes or no.");
             String name = null;
             String s = input.readLine();
             while (name == null)
                 if (s.equalsIgnoreCase("yes")) {
                     name = systemName;
                 } else if (s.equalsIgnoreCase("no")) {
-                    System.out.println("Ok, what's your name then?");
+                    logger.info("Ok, what's your name then?");
                     name = input.readLine();
                     while (name.indexOf('@') != -1 || name.length() == 0) {
-                        System.out.println(
+                        logger.info(
                             "The name should not be empty nor contain the '@' character." +
                                 "\nPlease try another name.");
                         name = input.readLine();
                     }
                 } else {
-                    System.out.println("Please answer with yes or no.");
+                    logger.info("Please answer with yes or no.");
                     name = null;
                     s = input.readLine();
                 }
             clientHandler.changeName(name);
         } catch (IOException e) {
-            System.err.println("There was an IOException when setting the username.");
+            logger.error("There was an IOException when setting the username.");
         }
 
         //Wait until the name is definitively set
@@ -116,8 +120,12 @@ public class Client {
             }
         }
 
-        //It is important to wait until the name setting is finished, before starting the chatClientThread.
-        //Otherwise the chatClientThread will listen to the System.in at the same time than Client.main() does.
+        /**
+         * It is important to wait until the name setting is finished,
+         * before starting the chatClientThread.
+         * Otherwise the chatClientThread will listen to the System.in at the same time
+         * than Client.main() does.
+         */
         chatClientThread.start();
     }
 
