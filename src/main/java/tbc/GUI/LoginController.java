@@ -22,12 +22,12 @@ import org.apache.logging.log4j.LogManager;
 
 public class LoginController {
 
-    private static final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @FXML private TextField userName;
     @FXML private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
     public static String userName_;
-    public String chosenLogo;
+    public static String chosenLogo;
 
     public void checkName(ActionEvent event) {
         if (userName.getText().isEmpty()) {

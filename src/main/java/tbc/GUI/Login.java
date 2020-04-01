@@ -16,7 +16,9 @@ import org.apache.logging.log4j.Logger;
 
 public class Login extends Application {
 
-    private static final Logger logger = LogManager.getLogger(Login.class);
+    private static final Logger logger = LogManager.getLogger();
+
+    private static String userName;
 
     @Override
     public void start(Stage primaryStage) {
@@ -33,6 +35,10 @@ public class Login extends Application {
     }
 
     public static void main(String[] args) {
+        if (!args[2].isEmpty()) {
+            userName = args[2];
+        }
+
         launch(args);
     }
 }

@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LobbyController {
 
-    private static final Logger logger = LogManager.getLogger(LoginController.class);
+    private static final Logger logger = LogManager.getLogger();
 
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
