@@ -7,6 +7,7 @@ import tbc.server.Lobby;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
 
@@ -18,6 +19,7 @@ public class ServerGame implements Runnable {
     boolean matchEnd = false;
 
     private Timer timer;
+    private Semaphore turnController = new Semaphore(1);
 
     /**
      * The lobby from which this game was started.
@@ -107,13 +109,22 @@ public class ServerGame implements Runnable {
         }
     }
 
+    /**
+     * First of the three possibilities when it is a client's turn: Give a card to the client.
+     */
     public void giveCardToClient(String clientName) {
         timer.cancel();
+        turnController.release();
+        calculatePoints();
         giveRandomCard(clientName);
         giveTurnToNext();
         System.out.println("ServerGame called giveRandomCard and giveTurnToNext");
     }
 
+    /**
+     * Helper method to give a random card to a client. This method is invoked by other methods who want to
+     * give out cards.
+     */
     public void giveRandomCard(String clientName) {
         //Choose a random card
         Random random = new Random();
@@ -129,9 +140,14 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.valueOf(randomCardName), pos - 1);
     }
 
+    /**
+     * Third of the three possibilities when it is a client's turn: throw away a card.
+     */
     public void throwCard(String clientName, String cardName) {
-        //Remove the card from the client's cardset, and if not possible, print error message.
         timer.cancel();
+        turnController.release();
+        calculatePoints();
+        //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
             System.err.println("The client " + clientName + "cannot throw away the card "
             + cardName + " because he does not have such a card.");
@@ -141,6 +157,8 @@ public class ServerGame implements Runnable {
 
     public void jumpThisTurn() {
         timer.cancel();
+        turnController.release();
+        calculatePoints();
         giveTurnToNext();
     }
 
@@ -209,9 +227,9 @@ public class ServerGame implements Runnable {
      * Checks all Players if the Win or Lose-Conditions are met
      */
     // wird nach jedem zug aufgerufen
-    void calculatePoints(){
+    void calculatePoints() {
         String winner = null;
-        for(int i = 0; i<players.length; i++){
+        for (int i = 0; i < players.length; i++) {
             int sum = players[i].calculatePoints();
             if (sum == 180) {
                 winner = players[i].name;
@@ -219,17 +237,16 @@ public class ServerGame implements Runnable {
                 players[i].tooMuchPoints = true;
             }
         }
-        if(winner != null){
+        if (winner != null) {
             endMatch(winner);
         }
-
     }
 
     /**
      * Calculates the Coins of all Players and resets the Points to 0
      */
-    void calculateCoins(){
-        for(int i = 0; i<players.length; i++){
+    void calculateCoins() {
+        for (int i = 0; i < players.length; i++) {
             Player a = players[i];
             if (a.getNumOfPoints() == 180) {
                 a.setNumOfCoins(a.getNumOfCoins()+180*2);
@@ -253,19 +270,24 @@ public class ServerGame implements Runnable {
      * During its lifetime, this thread communicates to the clients whose turn it is
      */
     public void run() {
-        distributeCards();
-        giveTurnToNext();
-        while(matchEnd == false) {
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
-                public void run() {
-                    giveTurnToNext();
-                }
-            }, 10000);
-            //TODO: Block until TimerTask finished
-        }
-        if (matchEnd == true) {
-            //TODO
+        try {
+            distributeCards();
+            giveTurnToNext();
+            while (matchEnd == false) {
+                turnController.acquire();
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        giveTurnToNext();
+                        turnController.release();
+                    }
+                }, 10000);
+            }
+            if (matchEnd == true) {
+                //TODO
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

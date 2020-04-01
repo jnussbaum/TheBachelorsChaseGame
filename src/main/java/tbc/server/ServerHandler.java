@@ -188,7 +188,7 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
         //store the lobby in this object field
         this.lobby = Server.getLobby(lobbyName);
-        System.out.println("ServerHandler of " + myName + "set its lobby variable.");
+        System.out.println("ServerHandler of " + myName + " set its lobby variable.");
     }
 
     public void giveCard(String cardName) {

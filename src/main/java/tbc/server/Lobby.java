@@ -37,6 +37,7 @@ public class Lobby {
     public Lobby(String lobbyName, ServerHandler sh) {
         this.lobbyName = lobbyName;
         clients.put(sh.getName(), sh);
+        sh.lobbyJoined(lobbyName);
     }
 
     /**
