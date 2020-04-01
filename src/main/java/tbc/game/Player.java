@@ -10,7 +10,7 @@ public class Player {
   int numOfCoins;
   int numOfCards;
   ServerHandler serverHandler;
-  ArrayList<Card> cards;
+  ArrayList<Card> cards = new ArrayList<>();
 
   public Player(String name) {
     this.name = name;

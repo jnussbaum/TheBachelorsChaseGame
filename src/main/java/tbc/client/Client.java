@@ -54,7 +54,9 @@ public class Client {
 
     public static void startGame(String player) {
         String[] players = player.split("::");
-        game = new ClientGame(clientHandler, players);
+        game = new ClientGame(clientHandler, players, input);
+        System.out.println("Client's startGame() was invoked");
+        //TODO: oben input wieder rausnehmen
     }
 
     public static void main(String[] args) {
@@ -118,7 +120,33 @@ public class Client {
 
         //It is important to wait until the name setting is finished, before starting the chatClientThread.
         //Otherwise the chatClientThread will listen to the System.in at the same time than Client.main() does.
-        chatClientThread.start();
+        //TODO: Hier Kommentare wieder rausnehmen:
+        //chatClientThread.start();
+
+        joinALobby();
     }
 
+    static void joinALobby() {
+        try {
+            clientHandler.askForLobbyList();
+            System.out.println("Please type the name of an existing lobby or type a new lobby name");
+            String lobby = input.readLine();
+            System.out.println("A request will be sent to join the lobby " + lobby);
+            clientHandler.joinLobby(lobby);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void askToStartAGame() {
+        try {
+            System.out.println("Would you like to start a game? Type yes or no.");
+            String answer = input.readLine();
+            if (answer.equalsIgnoreCase("yes")) {
+                clientHandler.startGame();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

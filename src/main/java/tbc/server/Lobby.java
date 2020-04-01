@@ -2,6 +2,7 @@ package tbc.server;
 
 import tbc.game.ServerGame;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -27,7 +28,7 @@ public class Lobby {
     /**
      * This boolean stores the information whether a game is active right now or not.
      */
-    private boolean gameActive = false;
+    private boolean isGameActive = false;
 
     /**
      * When a new lobby is created, the serverHandler of the client who initiated this lobby
@@ -56,16 +57,26 @@ public class Lobby {
     }
 
     void startGame() {
-        String[] players = (String[]) clients.keySet().toArray();
-        serverGame = new ServerGame(this, players);
-        for (ServerHandler sh : clients.values()) {
-            sh.gameStarted(players);
+        System.out.println("Lobby's startGame() method was invoked");
+        if (isGameActive == false) {
+            Object[] playersAsObj = clients.keySet().toArray();
+            String [] players = Arrays.copyOf(playersAsObj, playersAsObj.length, String[].class);
+            serverGame = new ServerGame(this, players);
+            for (ServerHandler sh : clients.values()) {
+                sh.gameStarted(players);
+            }
+            Thread gamethread = new Thread(serverGame);
+            gamethread.start();
+            isGameActive = true;
+            System.out.println("Lobby's startGame() method terminated successfully");
         }
-        Thread gamethread = new Thread(serverGame);
-        gamethread.start();
     }
 
     public ServerHandler getServerHandler(String clientName) {
         return clients.get(clientName);
+    }
+
+    public boolean isGameActive() {
+        return isGameActive;
     }
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -86,7 +87,9 @@ public class Server {
 	}
 
 	public static String[] getLobbies() {
-		return (String[]) lobbies.keySet().toArray();
+		Object[] objArray = lobbies.keySet().toArray();
+		String[] stringArray = Arrays.copyOf(objArray, objArray.length, String[].class);
+		return stringArray;
 	}
 
 	public static Lobby getLobby(String lobbyName) {
@@ -104,7 +107,9 @@ public class Server {
 	public static void joinLobby(String lobbyName, ServerHandler sh) {
 		if (lobbies.containsKey(lobbyName)) {
 			lobbies.get(lobbyName).join(sh.getName(), sh);
+		} else {
+			lobbies.put(lobbyName, new Lobby(lobbyName, sh));
+			System.out.println("Inexisting lobby, created it new.");
 		}
 	}
-
 }

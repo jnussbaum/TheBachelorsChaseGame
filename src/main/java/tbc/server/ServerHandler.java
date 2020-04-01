@@ -101,6 +101,7 @@ public class ServerHandler implements Runnable {
                 break;
             case "ASKFORCARD":
                 lobby.serverGame.giveCardToClient(myName);
+                System.out.println("ServerHandler invoked giveCardToClient() in ServerGame");
                 break;
             case "THROWCARD":
                 String cardName = commands[1];
@@ -187,11 +188,13 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
         //store the lobby in this object field
         this.lobby = Server.getLobby(lobbyName);
+        System.out.println("ServerHandler of " + myName + "set its lobby variable.");
     }
 
     public void giveCard(String cardName) {
         clientOutputStream.println("GIVECARD" + "#" + cardName);
         clientOutputStream.flush();
+        System.out.println("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
     }
 
     public void gameStarted(String[] players) {

@@ -96,10 +96,12 @@ public class ClientHandler implements Runnable {
         case "LOBBYJOINED":
             String lobbyName = commands[1];
             System.out.println("You joined the lobby " + lobbyName);
+            Client.askToStartAGame();
             break;
         case "GIVECARD":
             String cardName = commands[1];
             Client.getGame().addCard(cardName);
+            System.out.println("ClientHandler received card " + cardName);
             break;
         case "GAMESTARTED":
             Client.startGame(commands[1]);
@@ -138,17 +140,30 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    void sendLobbyList(String lobbyName) {
+    void askForLobbyList() {
+        clientOutputStream.println("GETLOBBYLIST");
+        clientOutputStream.flush();
+    }
+
+    void createLobby(String lobbyName) {
         clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
-        //TODO: What did we want to do here? Method name is misleading
     }
 
     void receiveLobbyList(String[] commands) {
-        String[] lobbies = new String[commands.length - 1];
-        for (int i = 1; i < commands.length; i++) {
-            lobbies[i - 1] = commands[i];
+        if (commands.length > 1) {
+            String[] lobbies = new String[commands.length - 1];
+            for (int i = 1; i < commands.length; i++) {
+                lobbies[i - 1] = commands[i];
+            }
+            //TODO: Further processing of available lobbies --> GUI
+            System.out.println("These are the available lobbies: ");
+            for (String s : lobbies) {
+                System.out.println(s);
+            }
+        } else {
+            //There are no lobbies
+            System.out.println("There are no lobbies");
         }
-        //TODO: Further processing of available lobbies --> GUI
     }
 
     void joinLobby(String lobbyName) {
