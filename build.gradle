@@ -9,9 +9,9 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.base']
 }
 
-group 'ch.unibas.dmi.dbis'
-version '0.0.1-ALPHA'
-mainClassName = 'ch.unibas.dmi.dbis.cs108.example.HelloWorld'
+group 'tbc'
+version '0.0.1'
+mainClassName = 'tbc/GUI/Main'
 
 //specifies source compatibility to Java 11
 sourceCompatibility = 1.11
@@ -31,8 +31,8 @@ dependencies {
     Since these are `implementation` dependencies, they are packed in the final jar.
     Read the documentation at https://docs.gradle.org/current/userguide/declaring_dependencies.html to learn more
      */
-    //implementation 'org.apache.logging.log4j:log4j-api:2.+'
-    //implementation 'org.apache.logging.log4j:log4j-core:2.+'
+    implementation 'org.apache.logging.log4j:log4j-api:2.+'
+    implementation 'org.apache.logging.log4j:log4j-core:2.+'
 
     /*
     This is another example - it imports the javafx-controls dependency
@@ -59,6 +59,15 @@ jar {
     from {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/java"]
+            includes = ["**/*.fxml"]
+        }
     }
 }
 

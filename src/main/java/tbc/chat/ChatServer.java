@@ -1,5 +1,7 @@
 package tbc.chat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.server.Server;
 import tbc.server.ServerHandler;
 
@@ -7,6 +9,8 @@ import tbc.server.ServerHandler;
  * The Server starts this thread, which will be the Headquarter of the Chat application.
  */
 public class ChatServer {
+
+    private static final Logger logger = LogManager.getLogger(Server.class);
 
     /**
      * When the ChatServer receives a message, he forwards it to the correct clients.
@@ -17,20 +21,20 @@ public class ChatServer {
             for (ServerHandler sh : Server.getServerHandlers()) {
                 if (!sh.getName().equals(sender)) {
                     sh.sendChatMessage(sender, "false", msg);
-                    System.out.println("ChatServer sent message to the ServerHandler of "
+                    logger.info("ChatServer sent message to the ServerHandler of "
                         + sh.getName());
                 }
             }
         } else {
             //if receiver does not exist
             if (!checkUser(receiver)) {
-                System.out.println("User not found.");
+                logger.info("User not found.");
             } else {
                 //send message to specific receiver
                 for (ServerHandler sh : Server.getServerHandlers()) {
                     if (sh.getName().equals(receiver)) {
                         sh.sendChatMessage(sender, "true", msg);
-                        System.out.println("ChatServer sent message to the ServerHandler of "
+                        logger.info("ChatServer sent message to the ServerHandler of "
                             + sh.getName());
                     }
                 }
