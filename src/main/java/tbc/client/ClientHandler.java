@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
 
 /**
@@ -16,27 +18,30 @@ import tbc.chat.ChatClient;
  */
 public class ClientHandler implements Runnable {
 
+    private final static Logger LOGGER = LogManager.getLogger(ClientHandler.class);
+
     private String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
     private PrintWriter clientOutputStream;
-    private boolean unknownHostname = false;
+    //private boolean unknownHostname = false;
 
     /**
      * The constructor of ClientHandler tries to connect to the server.
      */
-    public ClientHandler(String hostName, int portNumber) {
+    public ClientHandler(String myName, String hostName, int portNumber) {
+        this.myName = myName;
         try {
             clientSocket = new Socket(hostName, portNumber);
             clientInputStream = new BufferedReader(new InputStreamReader(
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (UnknownHostException e) {
-            unknownHostname = true;
-            System.err.println("Unknown hostname: " + hostName);
+            //unknownHostname = true;
+            LOGGER.error("Unknown hostname: " + hostName);
         } catch (IOException e) {
-            System.err.println("IOException when creating the ClientHandler " + myName);
+            LOGGER.error("IOException when creating the ClientHandler " + myName);
             e.printStackTrace();
         }
     }
@@ -45,24 +50,27 @@ public class ClientHandler implements Runnable {
         return myName;
     }
 
+    /*
     public boolean isUnknownHostname() {
         return unknownHostname;
     }
+    */
 
     /**
      * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming information
      * on the clientInputStream, and pass this information to decode().
      */
+
     public void run() {
         while (true) {
             String s = null;
             try {
                 s = clientInputStream.readLine();
             } catch (IOException e) {
-                System.err.println("Reading from ClientInputStream failed: ");
+                LOGGER.error("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) System.err.println("ClientHandler " + myName + "received an empty message.");
+            if (s == null) System.err.println("ClientHandler " + myName + " received an empty message.");
             decode(s);
         }
     }
@@ -74,48 +82,50 @@ public class ClientHandler implements Runnable {
      * are the parameters of the Network Protocol command.
      */
     void decode(String s) {
-    String[] commands = s.split("#");
-    switch (commands[0]) {
-        case "CHAT":
-            String sender = commands[1];
-            String isPrivateMessage = commands[3];
-            String msg = commands[4];
-            chatClient.chatArrived(sender, isPrivateMessage, msg);
-            break;
-        case "CHANGEOK":
-            String newName = commands[1];
-            Client.nameChangeFeedback(true, newName);
-            myName = newName;
-            break;
-        case "CHANGENO":
-            Client.nameChangeFeedback(false, "xyz");
-            break;
-        case "SENDLOBBYLIST":
-            receiveLobbyList(commands);
-            break;
-        case "LOBBYJOINED":
-            String lobbyName = commands[1];
-            System.out.println("You joined the lobby " + lobbyName);
-            break;
-        case "GIVECARD":
-            String cardName = commands[1];
-            Client.getGame().addCard(cardName);
-            break;
-        case "GAMESTARTED":
-            Client.startGame(commands[1]);
-            break;
-        case "GIVETURN":
-            Client.getGame().giveTurn();
-            break;
-        case "ENDMATCH":
-            String winnerName = commands[1];
-            Client.getGame().endMatch(winnerName);
-            break;
-        case "SENDCOINS":
-            String allCoins = commands[1];
-            Client.getGame().receiveCoins(allCoins);
-        default:
-            System.err.println("ClientHandler " + myName + "received an invalid message.");
+        String[] commands = s.split("#");
+        switch (commands[0]) {
+            case "CHAT":
+                String sender = commands[1];
+                String isPrivateMessage = commands[3];
+                String msg = commands[4];
+                chatClient.chatArrived(sender, isPrivateMessage, msg);
+                break;
+            case "CHANGEOK":
+                String newName = commands[1];
+                Client.nameChangeFeedback(true, newName);
+                myName = newName;
+                break;
+            case "CHANGENO":
+                Client.nameChangeFeedback(false, "xyz");
+                break;
+            case "SENDLOBBYLIST":
+                receiveLobbyList(commands);
+                break;
+            case "LOBBYJOINED":
+                String lobbyName = commands[1];
+                LOGGER.info("You joined the lobby " + lobbyName);
+                Client.askToStartAGame();
+                break;
+            case "GIVECARD":
+                String cardName = commands[1];
+                Client.getGame().addCard(cardName);
+                LOGGER.info("ClientHandler received card " + cardName);
+                break;
+            case "GAMESTARTED":
+                Client.startGame(commands[1]);
+                break;
+            case "GIVETURN":
+                Client.getGame().giveTurn();
+                break;
+            case "ENDMATCH":
+                String winnerName = commands[1];
+                Client.getGame().endMatch(winnerName);
+                break;
+            case "SENDCOINS":
+                String allCoins = commands[1];
+                Client.getGame().receiveCoins(allCoins);
+            default:
+                LOGGER.error("ClientHandler " + myName + "received an invalid message.");
         }
     }
 
@@ -138,17 +148,30 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    void sendLobbyList(String lobbyName) {
+    void askForLobbyList() {
+        clientOutputStream.println("GETLOBBYLIST");
+        clientOutputStream.flush();
+    }
+
+    void createLobby(String lobbyName) {
         clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
-        //TODO: What did we want to do here? Method name is misleading
     }
 
     void receiveLobbyList(String[] commands) {
-        String[] lobbies = new String[commands.length - 1];
-        for (int i = 1; i < commands.length; i++) {
-            lobbies[i - 1] = commands[i];
+        if (commands.length > 1) {
+            String[] lobbies = new String[commands.length - 1];
+            for (int i = 1; i < commands.length; i++) {
+                lobbies[i - 1] = commands[i];
+            }
+            //TODO: Further processing of available lobbies --> GUI
+            LOGGER.info("These are the available lobbies: ");
+            for (String s : lobbies) {
+                LOGGER.info(s);
+            }
+        } else {
+            //There are no lobbies
+            LOGGER.info("There are no lobbies");
         }
-        //TODO: Further processing of available lobbies --> GUI
     }
 
     void joinLobby(String lobbyName) {
@@ -173,6 +196,11 @@ public class ClientHandler implements Runnable {
 
     public void jumpThisTurn() {
         clientOutputStream.println("JUMPTHISTURN");
+        clientOutputStream.flush();
+    }
+
+    public void readyForGame() {
+        clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }
 }

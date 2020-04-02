@@ -1,24 +1,28 @@
 package tbc.game;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.server.Lobby;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
+
+    private final static Logger LOGGER = LogManager.getLogger(ServerGame.class);
 
     /**
      * Here, the clients are stored in a String-Array
      */
     private String[] clientsAsArray = new String[4];
 
+    boolean matchEnd = false;
 
     private Timer timer;
-
-    private boolean matchEnd = false;
+    private Semaphore turnController = new Semaphore(1);
 
     /**
      * The lobby from which this game was started.
@@ -37,7 +41,7 @@ public class ServerGame implements Runnable {
      * Card: Type of card
      * Integer: number of cards of this type which are still available.
      */
-    private HashMap<Card, Integer> cardDeck;
+    private HashMap<Card, Integer> cardDeck = new HashMap<>();
 
     /**
      * Counts through the clients and represents which client's turn it is.
@@ -48,7 +52,8 @@ public class ServerGame implements Runnable {
 
     /**
      * Create a game and initialize the carddeck
-     * @param lobby: The lobby from which this game was started
+     *
+     * @param lobby:       The lobby from which this game was started
      * @param clientNames: All clients who will be in this game
      */
     public ServerGame(Lobby lobby, String[] clientNames) {
@@ -56,7 +61,7 @@ public class ServerGame implements Runnable {
         clientsAsArray = clientNames;
         players = new Player[clientNames.length];
         for (int i = 0; i < clientNames.length; i++) {
-            int x= 0;
+            int x = 0;
             players[i] = new Player(clientNames[i]);
         }
         //Fill the carddeck with the specified number of cards per card type
@@ -67,13 +72,11 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.WLAN, 10);
         cardDeck.put(Card.Study, 5);
         cardDeck.put(Card.GoodLecturer, 2);
-
-        //startMatch();
-
     }
 
     void startMatch() {
         Thread matchThread = new Thread(new ServerMatch(this));
+        matchThread.start();
     }
 
     int getDeckSize() {
@@ -110,12 +113,10 @@ public class ServerGame implements Runnable {
         }
     }
 
-    public void giveCardToClient(String clientName) {
-        timer.cancel();
-        giveRandomCard(clientName);
-        giveTurnToNext();
-    }
-
+    /**
+     * Helper method to give a random card to a client. This method is invoked by other methods who want to
+     * give out cards.
+     */
     public void giveRandomCard(String clientName) {
         //Choose a random card
         Random random = new Random();
@@ -127,43 +128,67 @@ public class ServerGame implements Runnable {
         lobby.getServerHandler(clientName).giveCard(randomCardName);
 
         //Reset the number of available cards in the carddeck
-        int pos = cardDeck.get(randomCardName);
+        int pos = cardDeck.get(Card.valueOf(randomCardName));
         cardDeck.put(Card.valueOf(randomCardName), pos - 1);
     }
 
-    public void throwCard(String clientName, String cardName) {
-        //Remove the card from the client's cardset, and if not possible, print error message.
+    /**
+     * First of the three possibilities when it is a client's turn: Give a card to the client.
+     */
+    public void giveCardToClient(String clientName) {
         timer.cancel();
-        if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
-            System.err.println("The client " + clientName + "cannot throw away the card "
-            + cardName + " because he does not have such a card.");
-        }
+        turnController.release();
+        calculatePoints();
+        giveRandomCard(clientName);
         giveTurnToNext();
+        LOGGER.info("ServerGame called giveRandomCard and giveTurnToNext");
     }
 
+    /**
+     * Second of the three possibilities when it is a client's turn: Jump this turn.
+     */
     public void jumpThisTurn() {
         timer.cancel();
+        calculatePoints();
+        giveTurnToNext();
+        turnController.release();
+    }
+
+    /**
+     * Third of the three possibilities when it is a client's turn: throw away a card.
+     */
+    public void throwCard(String clientName, String cardName) {
+        timer.cancel();
+        //Remove the card from the client's cardset, and if not possible, print error message.
+        if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
+            LOGGER.error("The client " + clientName + "cannot throw away the card "
+                    + cardName + " because he does not have such a card.");
+        }
+        turnController.release();
+        calculatePoints();
         giveTurnToNext();
     }
 
     public void giveTurnToNext() {
-        if(numOfDroppedOut < clientsAsArray.length) {
-            if (activeClient == 3) {
+        LOGGER.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
+        if (numOfDroppedOut < clientsAsArray.length) {
+            //Find out the number of the next client
+            if (activeClient == players.length - 1) {
                 activeClient = 0;
             } else {
                 activeClient++;
             }
+            //Give the turn to the client whose number was set before
             if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
                 giveTurnToNext();
             } else {
                 lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
+                System.out.println("ServerGame's method giveTurnToNext() gave turn to " + clientsAsArray[activeClient]);
             }
-        }
-        else{
-            System.out.println("All Players Dropped out of the Game");
+        } else {
+            System.out.println("All players dropped out of the game");
         }
     }
-
 
 
     void endMatch(String winnerName) {
@@ -187,16 +212,16 @@ public class ServerGame implements Runnable {
             s = s + clientName + "::";
             s = s + players[i].getNumOfCoins() + "::";
         }
-        return s.substring(0,s.length()-2);
+        return s.substring(0, s.length() - 2);
     }
 
-    private Player nametoPlayer(String clientName){
-        for (int i = 0; i<players.length; i++){
-            if(players[i].getName().equals(clientName)){
+    private Player nametoPlayer(String clientName) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getName().equals(clientName)) {
                 return players[i];
             }
         }
-        System.err.println("no Player with that name ");
+        LOGGER.error("no Player with that name ");
         return new Player("Badplayer");
     }
 
@@ -204,9 +229,9 @@ public class ServerGame implements Runnable {
      * Checks all Players if the Win or Lose-Conditions are met
      */
     // wird nach jedem zug aufgerufen
-    void calculatePoints(){
+    void calculatePoints() {
         String winner = null;
-        for(int i = 0; i<players.length; i++){
+        for (int i = 0; i < players.length; i++) {
             int sum = players[i].calculatePoints();
             if (sum == 180) {
                 winner = players[i].name;
@@ -214,22 +239,21 @@ public class ServerGame implements Runnable {
                 players[i].tooMuchPoints = true;
             }
         }
-        if(winner != null){
+        if (winner != null) {
             endMatch(winner);
         }
-
     }
 
     /**
      * Calculates the Coins of all Players and resets the Points to 0
      */
-    void calculateCoins(){
-        for(int i = 0; i<players.length; i++){
+    void calculateCoins() {
+        for (int i = 0; i < players.length; i++) {
             Player a = players[i];
-            if(a.getNumOfPoints() == 180){
-                a.setNumOfCoins(a.getNumOfCoins()+180*2);
-            }else if(a.getNumOfPoints() < 180){
-                a.setNumOfCoins(a.getNumOfCoins()+a.getNumOfPoints());
+            if (a.getNumOfPoints() == 180) {
+                a.setNumOfCoins(a.getNumOfCoins() + 180 * 2);
+            } else if (a.getNumOfPoints() < 180) {
+                a.setNumOfCoins(a.getNumOfCoins() + a.getNumOfPoints());
             }
             a.setNumOfPoints(0);
         }
@@ -248,21 +272,25 @@ public class ServerGame implements Runnable {
      * During its lifetime, this thread communicates to the clients whose turn it is
      */
     public void run() {
-        //TODO
-        distributeCards();
-        while(matchEnd == false) {
+        try {
+            distributeCards();
             giveTurnToNext();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    giveTurnToNext();
-                }
-            }, 11000);
+            while (matchEnd == false) {
+                turnController.acquire();
+                timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    public void run() {
+                        giveTurnToNext();
+                        turnController.release();
+                    }
+                }, 10000);
+            }
+            if (matchEnd == true) {
+                //TODO
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
-        //lobby.getServerHandler(/*client*/.giveTurn();
-        //wait(10000);
-        //calculatePoints();
     }
 
 

@@ -1,13 +1,12 @@
 package tbc.server;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatServer;
+
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import tbc.chat.ChatServer;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -15,6 +14,7 @@ import tbc.chat.ChatServer;
  */
 public class ServerHandler implements Runnable {
 
+    private final static Logger LOGGER = LogManager.getLogger(ServerHandler.class);
     private String myName;
     private Socket clientSocket;
     private ChatServer chatServer;
@@ -25,10 +25,11 @@ public class ServerHandler implements Runnable {
 
     /**
      * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to it:
-     * @param myName Identifier of the client for which this serverHandler is responsible.
+     *
+     * @param myName       Identifier of the client for which this serverHandler is responsible.
      * @param clientSocket The socket which belongs to this client. Needed to open the I/O-Streams.
-     * @param chatServer The chat Headquarter on server side, to which all incoming chat messages are
-     *                   forwarded.
+     * @param chatServer   The chat Headquarter on server side, to which all incoming chat messages are
+     *                     forwarded.
      */
     public ServerHandler(String myName, Socket clientSocket, ChatServer chatServer) {
         this.myName = myName;
@@ -82,7 +83,7 @@ public class ServerHandler implements Runnable {
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[4];
-                System.out.println("ServerHandler " + myName + "sent message to ChatServer");
+                System.out.println("ServerHandler " + myName + " sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
             case "CREATELOBBY":
@@ -96,11 +97,18 @@ public class ServerHandler implements Runnable {
                 String name = commands[1];
                 Server.joinLobby(name, this);
                 break;
+            case "READYFORGAME":
+                System.out.println("ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
+                        "this lobby: " + lobby);
+                System.out.println(myName);
+                lobby.readyForGame(myName);
+                break;
             case "STARTGAME":
                 lobby.startGame();
                 break;
             case "ASKFORCARD":
                 lobby.serverGame.giveCardToClient(myName);
+                LOGGER.info("ServerHandler invoked giveCardToClient() in ServerGame");
                 break;
             case "THROWCARD":
                 String cardName = commands[1];
@@ -110,7 +118,7 @@ public class ServerHandler implements Runnable {
                 lobby.serverGame.jumpThisTurn();
                 break;
             default:
-                System.err.println("ServerHandler " + myName + "received an invalid message.");
+                LOGGER.error("ServerHandler " + myName + "received an invalid message.");
         }
     }
 
@@ -120,7 +128,7 @@ public class ServerHandler implements Runnable {
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("ServerHandler " + myName + "sent message to ClientOutputStream");
+        LOGGER.info("ServerHandler " + myName + "sent message to ClientOutputStream");
     }
 
     /**
@@ -152,11 +160,11 @@ public class ServerHandler implements Runnable {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
-            System.out.println("Closed streams and socket from " + myName);
+            LOGGER.info("Closed streams and socket from " + myName);
             Server.removeUser(myName);
             exit = true;
         } catch (IOException e) {
-            System.err.println("Closing streams and socket failed in ServerHandler " + myName);
+            LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
         }
     }
 
@@ -187,19 +195,21 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
         //store the lobby in this object field
         this.lobby = Server.getLobby(lobbyName);
+        LOGGER.info("ServerHandler of " + myName + " set its lobby variable.");
     }
 
     public void giveCard(String cardName) {
         clientOutputStream.println("GIVECARD" + "#" + cardName);
         clientOutputStream.flush();
+        LOGGER.info("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
     }
 
     public void gameStarted(String[] players) {
-        String output = "GAMESTARTED"+"#" ;
-        for(int i = 0; i<players.length; i++){
-            output = output + players[i] +"::";
+        String output = "GAMESTARTED" + "#";
+        for (int i = 0; i < players.length; i++) {
+            output = output + players[i] + "::";
         }
-        output = output.substring(0,output.length()-2);
+        output = output.substring(0, output.length() - 2);
         clientOutputStream.println(output);
         clientOutputStream.flush();
     }
@@ -217,5 +227,9 @@ public class ServerHandler implements Runnable {
     public void sendCoins(String allCoins) {
         clientOutputStream.println("SENDCOINS" + "#" + allCoins);
         clientOutputStream.flush();
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

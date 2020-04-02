@@ -1,51 +1,91 @@
 package tbc.client;
 
 import tbc.game.Card;
+import tbc.game.Player;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import tbc.game.Player;
 
 public class ClientGame {
-
 
     private String myName;
     private ClientHandler clientHandler;
     private int points;
-    private ArrayList<Card> cards;
+    private ArrayList<Card> cards = new ArrayList<>();
     private Player[] players;
-    private boolean isMyTurn;
-
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
+    private BufferedReader input;
+    private Timer timer;
 
-    public ClientGame(ClientHandler ch, String[] namePlayers) {
+    public ClientGame(ClientHandler ch, String[] namePlayers, BufferedReader input) {
         this.clientHandler = ch;
+        this.input = input; //TODO: diesen input wieder aus dieser klasse rausnehmen
         myName = clientHandler.getMyName();
-        for(int i = 0; i<players.length; i++){
-            players[i].setName(namePlayers[i]);
+        players = new Player[namePlayers.length];
+        for (int i = 0; i < namePlayers.length; i++) {
+            players[i] = new Player(namePlayers[i]);
         }
     }
 
     public void addCard(String cardName) {
         cards.add(Card.valueOf(cardName));
+        System.out.println("You received the card " + cardName);
     }
 
     public void giveTurn() {
-        isMyTurn = true;
         System.out.println("It's your turn. Seconds left:");
-        new Timer().schedule(new TimerTask() {
-                public void run() {
-                    int countdown = 10;
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            int countdown = 10;
+
+            public void run() {
+                if (countdown > 0) {
                     countdown = countdown - 1;
-                    System.out.println(countdown);
+                    //System.out.println(countdown);
+                } else {
+                    //countdown == 0
+                    timer.cancel();
+                    //TODO: Make it impossible for this client to take further actions
                 }
-            },0, 1000);
+            }
+        }, 0, 1000);
         //TODO: What to do when the user takes an action before the 10 secs are left
         //TODO: Use this countdown in the GUI
+        selectWithoutGUI();
+    }
+
+    void selectWithoutGUI() {
+        System.out.println("Please select your turn: \n" +
+                "Type 1 to take a card,\n" +
+                "Type 2 to throw a card\n" +
+                "Type 3 to jump this turn."
+        );
+        try {
+            String answer = input.readLine();
+            System.out.println("Your input was: " + answer);
+            if (answer == null) {
+                jumpThisTurn();
+            } else if (answer.contains("1")) {
+                takeCard();
+                System.out.println("takeCard() was invoked in ClientCame");
+            } else if (answer.contains("2")) {
+                //throwCard();
+            } else if (answer.contains("3")) {
+                jumpThisTurn();
+            } else {
+                System.out.println("User input could not be parsed to one of the three actions");
+            }
+        } catch (IOException e) {
+            System.out.println("IO Error while reading user input to select a turn.");
+            e.printStackTrace();
+        }
     }
 
     void takeCard() {
+        timer.cancel();
         clientHandler.askForCard();
         calculatePoints();
     }
@@ -83,7 +123,7 @@ public class ClientGame {
     public void endMatch(String winnerName) {
         System.out.println("The match has ended, the winner is " + winnerName +
                 "Your received " + points + "coins"); //TODO: calculate the coins received (!= points)
-        //TODO: What else has to be done to end the match?
+        System.out.println("Would you like to start a new match?");
     }
 
     public void receiveCoins(String allCoins) {
@@ -104,9 +144,9 @@ public class ClientGame {
         }
     }
 
-    private Player nametoPlayer(String clientName){
-        for (int i = 0; i<players.length; i++){
-            if(players[i].getName().equals(clientName)){
+    private Player nametoPlayer(String clientName) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getName().equals(clientName)) {
                 return players[i];
             }
         }
