@@ -125,40 +125,4 @@ public class Server {
 				}
 		}
 
-		/**
-		 * This method removes the client from the list.
-		 * @param logoutUser The client who requested the LOGOUT.
-		 */
-		public static void removeUser(String logoutUser) {
-				clients.remove(logoutUser);
-				LOGGER.info(logoutUser + " removed from the Server");
-		}
-
-		public static void createLobby(String lobbyName, ServerHandler sh) {
-				Lobby lobby = new Lobby(lobbyName, sh);
-				lobbies.put(lobbyName, lobby);
-		}
-
-		public static String[] getLobbies() {
-				return (String[]) lobbies.keySet().toArray();
-		}
-
-		public static Lobby getLobby(String lobbyName) {
-				return lobbies.get(lobbyName);
-		}
-
-		public static Collection<ServerHandler> getServerHandlers() {
-				return clients.values();
-		}
-
-		public static void addClient(String clientName, ServerHandler clientServerHandler) {
-				clients.put(clientName, clientServerHandler);
-		}
-
-		public static void joinLobby(String lobbyName, ServerHandler sh) {
-				if (lobbies.containsKey(lobbyName)) {
-					lobbies.get(lobbyName).join(sh.getName(), sh);
-				}
-		}
-
 }

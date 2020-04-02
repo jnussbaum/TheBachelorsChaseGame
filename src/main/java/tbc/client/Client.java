@@ -1,9 +1,5 @@
 package tbc.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.chat.ChatClient;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,7 +17,8 @@ import tbc.chat.ChatClient;
  */
 public class Client {
 
-    private static final Logger logger = LogManager.getLogger(Client.class);
+    private final static Logger LOGGER = LogManager.getLogger(Client.class);
+
     public static String myName;
     private static boolean nameSettingSucceeded = false;
     private static BufferedReader input;
@@ -46,11 +43,11 @@ public class Client {
             System.out.println("Hello " + myName + ", welcome to our chat!");
         } else {
             String name;
-            logger.error("This name is not available any more. Please enter another name.");
+            LOGGER.error("This name is not available any more. Please enter another name.");
             try {
                 name = input.readLine();
                 while (name.indexOf('@') != -1 || name.length() == 0) {
-                    logger.error("The name should not be empty nor contain the '@' character."
+                    LOGGER.error("The name should not be empty nor contain the '@' character."
                         + "\nPlease try another name.");
                     name = input.readLine();
                 }
@@ -69,7 +66,6 @@ public class Client {
     }
 
     public static void main(String[] args) {
-
         // run jar without a username
         if (args.length < 3) {
             myName = System.getProperty("user.name");
@@ -91,7 +87,7 @@ public class Client {
             clientHandlerThread = new Thread(clientHandler = new ClientHandler(myName, hostName, portNumber));
             chatClient = new ChatClient(clientHandler);
         } catch (Exception e) {
-            logger.error("Couldn't get I/O for the connection to the hostname");
+            LOGGER.error("Couldn't get I/O for the connection to the hostname");
         }
 
         try {
@@ -99,7 +95,7 @@ public class Client {
             clientHandler.registerChatClient(chatClient);
             clientHandler.changeName(myName);
         } catch (Exception e) {
-            logger.error("Could not set the username.");
+            LOGGER.error("Could not set the username.");
         }
 
         /*
@@ -172,10 +168,6 @@ public class Client {
         //chatClientThread.start();
 
         Application.launch(Login.class, args);
-        //It is important to wait until the name setting is finished, before starting the chatClientThread.
-        //Otherwise the chatClientThread will listen to the System.in at the same time than Client.main() does.
-        //TODO: Hier Kommentare wieder rausnehmen:
-        //chatClientThread.start();
 
         joinALobby();
     }

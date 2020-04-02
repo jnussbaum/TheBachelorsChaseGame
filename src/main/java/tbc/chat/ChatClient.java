@@ -1,15 +1,10 @@
 package tbc.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.GUI.GameWindowController;
 import tbc.client.Client;
 import tbc.client.ClientHandler;
-
-import java.io.BufferedReader;
-import java.io.IOException;
 
 /**
  * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the client
@@ -17,7 +12,7 @@ import java.io.IOException;
  */
 public class ChatClient {
 
-    private static final Logger logger = LogManager.getLogger(Client.class);
+    private final static Logger LOGGER = LogManager.getLogger(Client.class);
 
     /**
      * The clientHandler who is responsible for the communication with the server.
@@ -26,7 +21,6 @@ public class ChatClient {
 
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.input = input;
     }
 
     /**
@@ -51,7 +45,7 @@ public class ChatClient {
         // the client wants to logout
         if (s.startsWith("LOGOUT")) {
             clientHandler.logOut();
-            logger.info("You have logged out.");
+            LOGGER.info("You have logged out.");
             return;
         }
 
@@ -60,7 +54,7 @@ public class ChatClient {
             String receiver = s.substring(1, s.indexOf(" "));
             String msg = s.substring(s.indexOf(" ") + 1);
             if (msg.length() == 0) {
-                logger.info("Usage: @<user> <message>.");
+                LOGGER.info("Usage: @<user> <message>.");
             } else {
                 clientHandler.sendMessage(receiver, "true", msg);
             }
@@ -68,7 +62,7 @@ public class ChatClient {
         // send public message
         } else {
             if (s.length() == 0) {
-                logger.info("Please enter a message.");
+                LOGGER.info("Please enter a message.");
             } else {
                 clientHandler.sendMessage("ALL", "false", s);
             }
@@ -82,10 +76,10 @@ public class ChatClient {
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         GameWindowController gameWindowController = new GameWindowController();
         if (isPrivateMsg.equals("true")) {
-           logger.info("[PRIVATE] " + sender + ": " + msg);
+           LOGGER.info("[PRIVATE] " + sender + ": " + msg);
            gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
-           logger.info(sender + ": " + msg);
+           LOGGER.info(sender + ": " + msg);
            gameWindowController.appendMsg(sender + ": " + msg);
         }
     }

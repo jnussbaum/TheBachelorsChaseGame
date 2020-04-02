@@ -11,7 +11,6 @@ import java.util.TimerTask;
 
 public class ClientGame {
 
-
     private String myName;
     private ClientHandler clientHandler;
     private int points;

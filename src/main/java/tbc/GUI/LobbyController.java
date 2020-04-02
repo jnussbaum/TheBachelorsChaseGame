@@ -21,13 +21,13 @@ import org.apache.logging.log4j.Logger;
 
 public class LobbyController {
 
-    private static final Logger logger = LogManager.getLogger();
+    private final static Logger LOGGER = LogManager.getLogger(LobbyController.class);
 
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
 
     public void startGame(MouseEvent mouseEvent) {
-        logger.info("Show game window.");
+        LOGGER.info("Show game window.");
         try {
             Stage gameWindow = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
             URL loginFxmlUrl = new File("src/main/resources/GameWindowFXML.fxml").toURI().toURL();
@@ -36,18 +36,18 @@ public class LobbyController {
             gameWindow.setScene(new Scene(root, 1000, 600));
             gameWindow.show();
         } catch (Exception e) {
-            logger.error("Couldn't find GameWindowFXML file.");
+            LOGGER.error("Couldn't find GameWindowFXML file.");
             e.printStackTrace();
         }
     }
 
     public void showCards() {
         // TODO show the cards if clicked on it
-        logger.info("Show cards.");
+        LOGGER.info("Show cards.");
     }
 
     public void showRules() {
-        logger.info("Show rules.");
+        LOGGER.info("Show rules.");
         window.setVisible(true);
         textArea.setText("Spielbeschreibung: "
             + "\nJeder Spieler erhält am Anfang des Spieles eine zufällige Karte. "
@@ -68,7 +68,7 @@ public class LobbyController {
     }
 
     public void showGoal() {
-        logger.info("Show goal.");
+        LOGGER.info("Show goal.");
         window.setVisible(true);
         textArea.setText("Ziel: \nZiel des Spiels ist es 180  Kreditpunkte zu erzielen. "
             + "In jeder Runde darf der Spieler entscheiden ob er eine Karte ziehen, "
@@ -79,11 +79,11 @@ public class LobbyController {
 
     public void showSettings() {
         // TODO maybe a feature...
-        logger.info("Show settings.");
+        LOGGER.info("Show settings.");
     }
 
     public void close() {
-        logger.info("Close current window.");
+        LOGGER.info("Close current window.");
         textArea.clear();
         window.setVisible(false);
     }

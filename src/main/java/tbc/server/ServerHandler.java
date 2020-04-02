@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ServerHandler implements Runnable {
 
-    private final Logger logger = LogManager.getLogger(ServerHandler.class);
+    private final static Logger LOGGER = LogManager.getLogger(ServerHandler.class);
     private String myName;
     private Socket clientSocket;
     private ChatServer chatServer;
@@ -108,7 +108,7 @@ public class ServerHandler implements Runnable {
                 break;
             case "ASKFORCARD":
                 lobby.serverGame.giveCardToClient(myName);
-                logger.info("ServerHandler invoked giveCardToClient() in ServerGame");
+                LOGGER.info("ServerHandler invoked giveCardToClient() in ServerGame");
                 break;
             case "THROWCARD":
                 String cardName = commands[1];
@@ -118,7 +118,7 @@ public class ServerHandler implements Runnable {
                 lobby.serverGame.jumpThisTurn();
                 break;
             default:
-                logger.error("ServerHandler " + myName + "received an invalid message.");
+                LOGGER.error("ServerHandler " + myName + "received an invalid message.");
         }
     }
 
@@ -128,7 +128,7 @@ public class ServerHandler implements Runnable {
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        logger.info("ServerHandler " + myName + "sent message to ClientOutputStream");
+        LOGGER.info("ServerHandler " + myName + "sent message to ClientOutputStream");
     }
 
     /**
@@ -160,11 +160,11 @@ public class ServerHandler implements Runnable {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
-            logger.info("Closed streams and socket from " + myName);
+            LOGGER.info("Closed streams and socket from " + myName);
             Server.removeUser(myName);
             exit = true;
         } catch (IOException e) {
-            logger.error("Closing streams and socket failed in ServerHandler " + myName);
+            LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
         }
     }
 
@@ -195,13 +195,13 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
         //store the lobby in this object field
         this.lobby = Server.getLobby(lobbyName);
-        logger.info("ServerHandler of " + myName + " set its lobby variable.");
+        LOGGER.info("ServerHandler of " + myName + " set its lobby variable.");
     }
 
     public void giveCard(String cardName) {
         clientOutputStream.println("GIVECARD" + "#" + cardName);
         clientOutputStream.flush();
-        logger.info("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
+        LOGGER.info("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
     }
 
     public void gameStarted(String[] players) {

@@ -24,7 +24,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginController implements Initializable {
 
-    private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
+    private final static Logger LOGGER = LogManager.getLogger(LoginController.class);
 
     @FXML public TextField userName;
     @FXML private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;

@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class Lobby {
 
-    private static final Logger logger = LogManager.getLogger(Lobby.class);
+    private final static Logger LOGGER = LogManager.getLogger(Lobby.class);
 
     /**
      * Name of this lobby as string.
@@ -64,7 +64,7 @@ public class Lobby {
             clients.put(clientName, sh);
             sh.lobbyJoined(lobbyName);
         } else {
-            logger.error("This client cannot join the lobby twice");
+            LOGGER.error("This client cannot join the lobby twice");
         }
     }
 
@@ -76,7 +76,7 @@ public class Lobby {
     }
 
     void startGame() {
-        logger.info("Lobby's startGame() method was invoked");
+        LOGGER.info("Lobby's startGame() method was invoked");
         if (isGameActive == false) {
             Object[] playersAsObj = clients.keySet().toArray();
             String[] players = Arrays.copyOf(playersAsObj, playersAsObj.length, String[].class);
@@ -87,7 +87,7 @@ public class Lobby {
             Thread gamethread = new Thread(serverGame);
             gamethread.start();
             isGameActive = true;
-            logger.info("Lobby's startGame() method terminated successfully");
+            LOGGER.info("Lobby's startGame() method terminated successfully");
         }
     }
 

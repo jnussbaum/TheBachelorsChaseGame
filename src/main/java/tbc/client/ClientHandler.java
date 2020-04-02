@@ -1,11 +1,16 @@
 package tbc.client;
 
-import tbc.chat.ChatClient;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatClient;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -13,12 +18,14 @@ import java.nio.charset.StandardCharsets;
  */
 public class ClientHandler implements Runnable {
 
+    private final static Logger LOGGER = LogManager.getLogger(ClientHandler.class);
+
     private String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
     private PrintWriter clientOutputStream;
-    private boolean unknownHostname = false;
+    //private boolean unknownHostname = false;
 
     /**
      * The constructor of ClientHandler tries to connect to the server.
@@ -31,10 +38,10 @@ public class ClientHandler implements Runnable {
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (UnknownHostException e) {
-            unknownHostname = true;
-            System.err.println("Unknown hostname: " + hostName);
+            //unknownHostname = true;
+            LOGGER.error("Unknown hostname: " + hostName);
         } catch (IOException e) {
-            System.err.println("IOException when creating the ClientHandler " + myName);
+            LOGGER.error("IOException when creating the ClientHandler " + myName);
             e.printStackTrace();
         }
     }
@@ -43,9 +50,11 @@ public class ClientHandler implements Runnable {
         return myName;
     }
 
+    /*
     public boolean isUnknownHostname() {
         return unknownHostname;
     }
+    */
 
     /**
      * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming information
@@ -58,7 +67,7 @@ public class ClientHandler implements Runnable {
             try {
                 s = clientInputStream.readLine();
             } catch (IOException e) {
-                System.err.println("Reading from ClientInputStream failed: ");
+                LOGGER.error("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
             if (s == null) System.err.println("ClientHandler " + myName + " received an empty message.");
@@ -94,13 +103,13 @@ public class ClientHandler implements Runnable {
                 break;
             case "LOBBYJOINED":
                 String lobbyName = commands[1];
-                System.out.println("You joined the lobby " + lobbyName);
+                LOGGER.info("You joined the lobby " + lobbyName);
                 Client.askToStartAGame();
                 break;
             case "GIVECARD":
                 String cardName = commands[1];
                 Client.getGame().addCard(cardName);
-                System.out.println("ClientHandler received card " + cardName);
+                LOGGER.info("ClientHandler received card " + cardName);
                 break;
             case "GAMESTARTED":
                 Client.startGame(commands[1]);
@@ -116,7 +125,7 @@ public class ClientHandler implements Runnable {
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
             default:
-                System.err.println("ClientHandler " + myName + "received an invalid message.");
+                LOGGER.error("ClientHandler " + myName + "received an invalid message.");
         }
     }
 
@@ -155,13 +164,13 @@ public class ClientHandler implements Runnable {
                 lobbies[i - 1] = commands[i];
             }
             //TODO: Further processing of available lobbies --> GUI
-            System.out.println("These are the available lobbies: ");
+            LOGGER.info("These are the available lobbies: ");
             for (String s : lobbies) {
-                System.out.println(s);
+                LOGGER.info(s);
             }
         } else {
             //There are no lobbies
-            System.out.println("There are no lobbies");
+            LOGGER.info("There are no lobbies");
         }
     }
 

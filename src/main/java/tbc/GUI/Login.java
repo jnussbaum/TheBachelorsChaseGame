@@ -17,7 +17,7 @@ import tbc.client.Client;
 
 public class Login extends Application {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private final static Logger LOGGER = LogManager.getLogger(Login.class);
 
     @Override
     public void start(Stage primaryStage) {

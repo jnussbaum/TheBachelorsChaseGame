@@ -12,7 +12,7 @@ import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
 
-    private final Logger logger = LogManager.getLogger(ServerGame.class);
+    private final static Logger LOGGER = LogManager.getLogger(ServerGame.class);
 
     /**
      * Here, the clients are stored in a String-Array
@@ -141,7 +141,7 @@ public class ServerGame implements Runnable {
         calculatePoints();
         giveRandomCard(clientName);
         giveTurnToNext();
-        logger.info("ServerGame called giveRandomCard and giveTurnToNext");
+        LOGGER.info("ServerGame called giveRandomCard and giveTurnToNext");
     }
 
     /**
@@ -161,7 +161,7 @@ public class ServerGame implements Runnable {
         timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
-            logger.error("The client " + clientName + "cannot throw away the card "
+            LOGGER.error("The client " + clientName + "cannot throw away the card "
                     + cardName + " because he does not have such a card.");
         }
         turnController.release();
@@ -170,7 +170,7 @@ public class ServerGame implements Runnable {
     }
 
     public void giveTurnToNext() {
-        logger.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
+        LOGGER.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
         if (numOfDroppedOut < clientsAsArray.length) {
             //Find out the number of the next client
             if (activeClient == players.length - 1) {
@@ -221,7 +221,7 @@ public class ServerGame implements Runnable {
                 return players[i];
             }
         }
-        logger.error("no Player with that name ");
+        LOGGER.error("no Player with that name ");
         return new Player("Badplayer");
     }
 
