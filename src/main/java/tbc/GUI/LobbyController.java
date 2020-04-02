@@ -30,7 +30,7 @@ public class LobbyController {
         logger.info("Show game window.");
         try {
             Stage gameWindow = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
-            URL loginFxmlUrl = new File("src/main/java/resources/GameWindowFXML.fxml").toURI().toURL();
+            URL loginFxmlUrl = new File("src/main/resources/GameWindowFXML.fxml").toURI().toURL();
             Parent root = FXMLLoader.load(loginFxmlUrl);
             gameWindow.setTitle("The Bachelor's Chase");
             gameWindow.setScene(new Scene(root, 1000, 600));

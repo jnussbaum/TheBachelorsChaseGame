@@ -82,7 +82,7 @@ public class ServerHandler implements Runnable {
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[4];
-                System.out.println("ServerHandler " + myName + "sent message to ChatServer");
+                System.out.println("ServerHandler " + myName + " sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
             case "CREATELOBBY":

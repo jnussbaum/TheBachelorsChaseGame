@@ -2,9 +2,11 @@ package tbc.GUI;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,49 +14,52 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Processes a client's request to login with a username. First the system-name will be requested
  * and than the process to find a legit username will begin.
  */
 
-public class LoginController {
+public class LoginController implements Initializable {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
 
-    @FXML private TextField userName;
+    @FXML public TextField userName;
     @FXML private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
     public static String userName_;
     public static String chosenLogo;
 
+    public void setUserName(String name) {
+        userName.setText(name);
+        System.out.println(userName.getText());
+    }
+
     public void checkName(ActionEvent event) {
-        if (userName.getText().isEmpty()) {
-            userName.setPromptText("Ist dein Name " + System.getProperty("user.name") + "?");
-            labelStatus.setText("Bitte tippe deinen Namen ein.");
-        } else if (logoChosen() == false) {
+        if (logoChosen() == false) {
             labelStatus.setText("Bitte wähle einen Logo aus.");
         } else {
             userName_ = userName.getText();
             try {
-                URL loginFxmlUrl = new File("src/main/java/resources/LobbyFXML.fxml").toURI().toURL();
+                URL loginFxmlUrl = new File("src/main/resources/LobbyFXML.fxml").toURI().toURL();
                 Parent root = FXMLLoader.load(loginFxmlUrl);
                 Stage lobbyWindow = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 lobbyWindow.setTitle("The Bachelor's Chase - Lobby");
                 lobbyWindow.setScene(new Scene(root, 1000, 600));
                 lobbyWindow.show();
-                logger.info(userName_ + " has logged in.");
-                logger.info(userName_ + " has chosen the logo: " + chosenLogo);
+
+                LOGGER.info(userName_ + " has logged in.");
+                LOGGER.info(userName_ + " has chosen the logo: " + chosenLogo);
             } catch (Exception e) {
-                logger.error("Couldn't find LobbyFXML file.");
+                LOGGER.error("Couldn't find LobbyFXML file.");
                 e.printStackTrace();
             }
         }
     }
 
     public void girly() {
-        logger.info("Girly has been chosen.");
+        LOGGER.info("Girly has been chosen.");
         chosenLogo = "girly";
         labelNerd.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -63,7 +68,7 @@ public class LoginController {
     }
 
     public void nerd() {
-        logger.info("Nerd has been chosen.");
+        LOGGER.info("Nerd has been chosen.");
         chosenLogo = "nerd";
         labelGirly.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -72,7 +77,7 @@ public class LoginController {
     }
 
     public void hippy() {
-        logger.info("Hippy has been chosen.");
+        LOGGER.info("Hippy has been chosen.");
         chosenLogo = "hippy";
         labelGirly.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -81,7 +86,7 @@ public class LoginController {
     }
 
     public void emo() {
-        logger.info("Emo has been chosen.");
+        LOGGER.info("Emo has been chosen.");
         chosenLogo = "emo";
         labelGirly.setFont(Font.font(24));
         labelNerd.setFont(Font.font(24));
@@ -96,5 +101,10 @@ public class LoginController {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }

@@ -16,7 +16,7 @@ import tbc.chat.ChatServer;
  */
 public class Server {
 
-		private static final Logger logger = LogManager.getLogger(Server.class);
+		private final static Logger LOGGER = LogManager.getLogger(Server.class);
 
 		/**
 		 * This HashMap administrates all clients by their name and ServerHandler.
@@ -54,7 +54,7 @@ public class Server {
 
 				try {
 						serverSocket = new ServerSocket(portNumber);
-						logger.info("Type this address in the client after starting the client: "
+						System.out.println("Type this address in the client after starting the client: "
 								+ InetAddress.getLocalHost().getHostAddress());
 						Socket socket;
 						int i = 0;
@@ -69,7 +69,7 @@ public class Server {
 								chatServer.register(name, serverHandler);
 						}
 				} catch (IOException e) {
-						logger.error("IOException while creating serverSocket or while listening " +
+						LOGGER.error("IOException while creating serverSocket or while listening " +
 								"to new incoming connections");
 						e.printStackTrace();
 				}
@@ -81,7 +81,7 @@ public class Server {
 		 */
 		public static void removeUser(String logoutUser) {
 				clients.remove(logoutUser);
-				logger.info(logoutUser + " removed from the Server");
+				LOGGER.info(logoutUser + " removed from the Server");
 		}
 
 		public static void createLobby(String lobbyName, ServerHandler sh) {

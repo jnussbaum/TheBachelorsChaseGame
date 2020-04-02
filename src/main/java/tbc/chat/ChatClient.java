@@ -1,9 +1,8 @@
 package tbc.chat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.GUI.GameWindowController;
 import tbc.client.Client;
 import tbc.client.ClientHandler;
 
@@ -11,7 +10,7 @@ import tbc.client.ClientHandler;
  * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the client
  * side of the chat.
  */
-public class ChatClient implements Runnable {
+public class ChatClient {
 
     private static final Logger logger = LogManager.getLogger(Client.class);
 
@@ -20,20 +19,14 @@ public class ChatClient implements Runnable {
      */
     private ClientHandler clientHandler;
 
-    /**
-     * Input Reader from System.in
-     */
-    private BufferedReader input;
-
-    public ChatClient(ClientHandler clientHandler, BufferedReader input) {
+    public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
-        this.input = input;
     }
 
     /**
      * The run method listens to the keyboard inputs and sends them to processInput().
      */
-    public void run() {
+   /* public void run() {
         String s;
         try {
             while ((s = input.readLine()) != null) {
@@ -43,7 +36,7 @@ public class ChatClient implements Runnable {
             logger.error("IOException when the ChatClient tried to read from System.in");
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * When something was typed on the keyboard, the run method passes it to this method.
@@ -81,10 +74,13 @@ public class ChatClient implements Runnable {
      * be printed out.
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
+        GameWindowController gameWindowController = new GameWindowController();
         if (isPrivateMsg.equals("true")) {
            logger.info("[PRIVATE] " + sender + ": " + msg);
+           gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
-            logger.info(sender + ": " + msg);
+           logger.info(sender + ": " + msg);
+           gameWindowController.appendMsg(sender + ": " + msg);
         }
     }
 }

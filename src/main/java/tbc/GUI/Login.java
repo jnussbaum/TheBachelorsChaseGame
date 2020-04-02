@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.client.Client;
 
 /**
  * The GUI for Clients to enter they username
@@ -16,29 +17,30 @@ import org.apache.logging.log4j.Logger;
 
 public class Login extends Application {
 
-    private static final Logger logger = LogManager.getLogger();
-
-    private static String userName;
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void start(Stage primaryStage) {
         try {
-            URL loginFxmlUrl = new File("src/main/java/resources/LoginFXML.fxml").toURI().toURL();
-            Parent root = FXMLLoader.load(loginFxmlUrl);
+            URL loginFxmlUrl = new File("src/main/resources/LoginFXML.fxml").toURI().toURL();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(loginFxmlUrl);
+            Parent root = loader.load();
+
             primaryStage.setTitle("The Bachelor's Chase - Login");
             primaryStage.setScene(new Scene(root, 398, 581));
             primaryStage.show();
+
+            LoginController loginController = loader.getController();
+            loginController.setUserName(Client.myName);
+
         } catch (Exception e) {
-            logger.error("Couldn't find LoginFXML file.");
+            LOGGER.error("Couldn't find LoginFXML file.");
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        if (!args[2].isEmpty()) {
-            userName = args[2];
-        }
-
         launch(args);
     }
 }

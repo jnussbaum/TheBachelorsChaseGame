@@ -26,7 +26,8 @@ public class ClientHandler implements Runnable {
     /**
      * The constructor of ClientHandler tries to connect to the server.
      */
-    public ClientHandler(String hostName, int portNumber) {
+    public ClientHandler(String myName, String hostName, int portNumber) {
+        this.myName = myName;
         try {
             clientSocket = new Socket(hostName, portNumber);
             clientInputStream = new BufferedReader(new InputStreamReader(
@@ -53,6 +54,7 @@ public class ClientHandler implements Runnable {
      * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming information
      * on the clientInputStream, and pass this information to decode().
      */
+
     public void run() {
         while (true) {
             String s = null;
@@ -62,7 +64,7 @@ public class ClientHandler implements Runnable {
                 System.err.println("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) System.err.println("ClientHandler " + myName + "received an empty message.");
+            if (s == null) System.err.println("ClientHandler " + myName + " received an empty message.");
             decode(s);
         }
     }

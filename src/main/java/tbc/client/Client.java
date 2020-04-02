@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import javafx.application.Application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.GUI.Login;
 import tbc.chat.ChatClient;
 
 /**
@@ -17,12 +19,12 @@ public class Client {
 
     private static final Logger logger = LogManager.getLogger(Client.class);
 
-    private static String myName;
+    public static String myName;
     private static boolean nameSettingSucceeded = false;
     private static BufferedReader input;
     private static ClientHandler clientHandler;
     private static Thread clientHandlerThread;
-    private static ChatClient chatClient;
+    public static ChatClient chatClient;
     private static Thread chatClientThread;
     private static ClientGame game;
 
@@ -41,11 +43,11 @@ public class Client {
             logger.info("Hello " + myName + ", welcome to our chat!");
         } else {
             String name;
-            logger.info("This name is not available any more. Please enter another name.");
+            logger.error("This name is not available any more. Please enter another name.");
             try {
                 name = input.readLine();
                 while (name.indexOf('@') != -1 || name.length() == 0) {
-                    logger.info("The name should not be empty nor contain the '@' character."
+                    logger.error("The name should not be empty nor contain the '@' character."
                         + "\nPlease try another name.");
                     name = input.readLine();
                 }
@@ -62,8 +64,40 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        String hostName = args[1].substring(0, args[0].indexOf(':'));
-        int portNumber = Integer.parseInt(String.valueOf(args[1].indexOf(':')));
+
+        // run jar without a username
+        if (args.length < 3) {
+            myName = System.getProperty("user.name");
+            System.out.println(myName);
+        } else {
+            // run jar with name
+            myName = args[2];
+            System.out.println(myName);
+        }
+
+        String hostName = args[1].substring(0, args[1].indexOf(':'));
+        System.out.println("Hostname: " + hostName);
+        int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
+        System.out.println("Portnumber: " + portNumber);
+
+        input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+
+        try {
+            clientHandlerThread = new Thread(clientHandler = new ClientHandler(myName, hostName, portNumber));
+            chatClient = new ChatClient(clientHandler);
+        } catch (Exception e) {
+            logger.error("Couldn't get I/O for the connection to the hostname");
+        }
+
+        try {
+            clientHandlerThread.start();
+            clientHandler.registerChatClient(chatClient);
+            clientHandler.changeName(myName);
+        } catch (Exception e) {
+            logger.error("Could not set the username.");
+        }
+
+        /*
         do {
             logger.info("Please enter the IP address given from the server: ");
             input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
@@ -76,7 +110,9 @@ public class Client {
                 logger.error("Couldn't get I/O for the connection to the hostname");
             }
         } while (clientHandler.isUnknownHostname() == true);
+         */
 
+        /*
         try {
             clientHandlerThread.start();
             clientHandler.registerChatClient(chatClient);
@@ -109,6 +145,7 @@ public class Client {
         } catch (IOException e) {
             logger.error("There was an IOException when setting the username.");
         }
+         */
 
         //Wait until the name is definitively set
         while (!nameSettingSucceeded) {
@@ -126,7 +163,9 @@ public class Client {
          * Otherwise the chatClientThread will listen to the System.in at the same time
          * than Client.main() does.
          */
-        chatClientThread.start();
+        //chatClientThread.start();
+
+        Application.launch(Login.class, args);
     }
 
 }

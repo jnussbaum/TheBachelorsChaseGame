@@ -1,8 +1,5 @@
 package tbc.GUI;
 
-import javafx.application.Application;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
 import tbc.server.Server;
 
@@ -12,16 +9,15 @@ import tbc.server.Server;
 
 public class Main {
 
-    private static final Logger logger = LogManager.getLogger();
-
     public static void main(String[] args) {
         if (args[0].equals("client")) {
+            System.out.println("Client started...");
             Client.main(args);
-            Application.launch(Login.class, args);
         } else if (args[0].equals("server")) {
+            System.out.println("Server started...");
             Server.main(args);
         } else {
-            logger.error("Usage: client <hostadress>:<port> [<username>] | server <port>");
+            System.out.println("Usage: client <hostadress>:<port> [<username>] | server <port>");
         }
     }
 
