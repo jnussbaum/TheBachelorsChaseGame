@@ -14,7 +14,9 @@ public enum Card {
 
     private int value;
 
-    Card(int val) { value = val;}
+    Card(int val) {
+        value = val;
+    }
 
     public int getValue() {
         return value;

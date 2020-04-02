@@ -1,10 +1,15 @@
 package tbc.chat;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.GUI.GameWindowController;
 import tbc.client.Client;
 import tbc.client.ClientHandler;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /**
  * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the client
@@ -21,6 +26,7 @@ public class ChatClient {
 
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
+        this.input = input;
     }
 
     /**

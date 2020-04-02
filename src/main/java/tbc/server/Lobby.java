@@ -1,13 +1,19 @@
 package tbc.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.game.ServerGame;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
  * Server-side lobby, created by the Server.
  */
 public class Lobby {
+
+    private static final Logger logger = LogManager.getLogger(Lobby.class);
 
     /**
      * Name of this lobby as string.
@@ -20,6 +26,11 @@ public class Lobby {
     private HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
+     * Controls all clients if they are ready to start a game or not.
+     */
+    private ArrayList<String> readyClients = new ArrayList<>();
+
+    /**
      * The game belonging to this lobby is stored in this variable.
      */
     public ServerGame serverGame;
@@ -27,7 +38,7 @@ public class Lobby {
     /**
      * This boolean stores the information whether a game is active right now or not.
      */
-    private boolean gameActive = false;
+    private boolean isGameActive = false;
 
     /**
      * When a new lobby is created, the serverHandler of the client who initiated this lobby
@@ -36,12 +47,14 @@ public class Lobby {
     public Lobby(String lobbyName, ServerHandler sh) {
         this.lobbyName = lobbyName;
         clients.put(sh.getName(), sh);
+        sh.lobbyJoined(lobbyName);
     }
 
     /**
      * A client's join request leads to the invocation of this method
+     *
      * @param clientName: Name of the client who wants to join
-     * @param sh: This client's ServerHandler
+     * @param sh:         This client's ServerHandler
      */
     void join(String clientName, ServerHandler sh) {
         if (clients.size() > 3) {
@@ -51,21 +64,38 @@ public class Lobby {
             clients.put(clientName, sh);
             sh.lobbyJoined(lobbyName);
         } else {
-            System.err.println("This client cannot join the lobby twice");
+            logger.error("This client cannot join the lobby twice");
+        }
+    }
+
+    void readyForGame(String myName) {
+        readyClients.add(myName);
+        if (readyClients.size() == clients.size() && readyClients.size() > 1) {
+            startGame();
         }
     }
 
     void startGame() {
-        String[] players = (String[]) clients.keySet().toArray();
-        serverGame = new ServerGame(this, players);
-        for (ServerHandler sh : clients.values()) {
-            sh.gameStarted(players);
+        logger.info("Lobby's startGame() method was invoked");
+        if (isGameActive == false) {
+            Object[] playersAsObj = clients.keySet().toArray();
+            String[] players = Arrays.copyOf(playersAsObj, playersAsObj.length, String[].class);
+            serverGame = new ServerGame(this, players);
+            for (ServerHandler sh : clients.values()) {
+                sh.gameStarted(players);
+            }
+            Thread gamethread = new Thread(serverGame);
+            gamethread.start();
+            isGameActive = true;
+            logger.info("Lobby's startGame() method terminated successfully");
         }
-        Thread gamethread = new Thread(serverGame);
-        gamethread.start();
     }
 
     public ServerHandler getServerHandler(String clientName) {
         return clients.get(clientName);
+    }
+
+    public boolean isGameActive() {
+        return isGameActive;
     }
 }

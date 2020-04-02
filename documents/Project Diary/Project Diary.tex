@@ -7,25 +7,27 @@
 \author{\\Adrian Prokopczyk\\Johannes Nussbaum\\Anna Diack\\Meipei Nghiem}
 
 \begin{document}
-\[\[\maketitle
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
 \setcounter{tocdepth}{2}
 
-\end{titlepage}
 
 \paragraph{Eintrag 1:}
 Donnerstag, 20.02.2020 \\
-Erster Termin der Einf\"uhrungsvorlesung. Sehr rasch nachdem wir unsere Gruppe gebildet hatten, einigten wir uns auf Black Jack als Basis für unser Spiel. Um es etwas spannender zu gestalten, m\"ochten wir Begriffe aus dem Studentenleben einbauen: Das Ziel ist es, 180 Punkte zu sammeln ("Bachelor"). Die Karten k\"onnten benannt werden nach Ereignissen im Studentenleben: Kaffee und Lernen gibt Pluspunkte; Partymachen und Schw\"anzen gibt Minuspunkte.\\
+Erster Termin der Einf\"uhrungsvorlesung. Sehr rasch nachdem wir unsere Gruppe gebildet hatten, einigten wir uns auf Black Jack als Basis f\"ur unser Spiel. Um es etwas spannender zu gestalten, m\"ochten wir Begriffe aus dem Studentenleben einbauen: Das Ziel ist es, 180 Punkte zu sammeln ("Bachelor"). Die Karten k\"onnten benannt werden nach Ereignissen im Studentenleben: Kaffee und Lernen gibt Pluspunkte; Partymachen und Schw\"anzen gibt Minuspunkte.\\
 Wir erstellen eine WhatsApp-Gruppe zur Kommunikation untereinander.
 
 \paragraph{Eintrag 2:}
 Mittwoch, 26.02.2020\\
-Vor der ersten \"Ubungsstunde trafen wir uns, um uns Gedanken zu machen \"uber unser Spiel. Wir beschliessen einige Veränderungen und Verfeinerungen, die Anna in einem Word-Dokument festh\"alt. Der Name unseres Spiels wird "Bachelor's Chase" sein, und wir sind die "Chaser".\\
+Vor der ersten \"Ubungsstunde trafen wir uns, um uns Gedanken zu machen \"uber unser Spiel. Wir beschliessen einige Ver\"anderungen und Verfeinerungen, die Anna in einem Word-Dokument festh\"alt. Der Name unseres Spiels wird "Bachelor's Chase" sein, und wir sind die "Chaser".\\
 Als n\"achstes Treffen (neben den Vorlesungsstunden) wird Do, 5. M\"arz, 10 Uhr an der Spiegelgasse festgelegt.\\
 Vorl\"aufig gelten folgende Zust\"andigkeiten:
 \begin{itemize}
-\item Anna bereitet die PowerPoint für den Meilenstein 1 vor, und den Gantt-Projektplan.
+\item Anna bereitet die PowerPoint f\"ur den Meilenstein 1 vor, und den Gantt-Projektplan.
 \item Meipei macht das Mock-up unseres Spiels.
-\item Johannes wird während der ganzen Projektdauer das Tagebuch betreuen.
+\item Johannes wird w\"ahrend der ganzen Projektdauer das Tagebuch betreuen.
 \item Adrian f\"angt mit dem Networking an.
 \end{itemize}
 
@@ -60,7 +62,7 @@ Pr\"asentation ein\"uben
 \paragraph{Eintrag 5:}
 Freitag, 06.03.2020\\
 Treffen von Meipei, Adrian und Anna. Johannes ist krank und steht deshalb nur per WhatsApp-Chat zur Verf\"ugung.\\
-Wir legen folgende Aufteilung für die Pr\"asentation fest:
+Wir legen folgende Aufteilung f\"ur die Pr\"asentation fest:
 \begin{itemize}
 \item Anna: Spielidee, Spielbeschreibung/Regeln
 \item Mei: Karten, Mockup
@@ -76,7 +78,7 @@ Anna hat das gantt fertiggestellt.
 \paragraph{Eintrag 6:}
 Montag, 09.03.2020\\
 Treffen von Meipei, Adrian und Anna. Johannes ist krank und schaltet sich per Skype zu.\\
-Wir übten die Pr\"asentation ein und stoppten die Zeit. Für die kommenden Tage gilt die folgende Arbeitsteilung:
+Wir \"ubten die Pr\"asentation ein und stoppten die Zeit. F\"ur die kommenden Tage gilt die folgende Arbeitsteilung:
 \begin{itemize} 
 \item Mei und Adrian beginnen, den Chat zu programmieren.
 \item Anna beginnt mit einem Client und versucht es an den Chat von Mei und Adrian anzupassen.
@@ -101,7 +103,7 @@ Das Netzwerkprotokoll steht gr\"osstenteils, und wird in den kommenden Tagen von
 Mei k\"ummert sich um die Usernamen.\\
 Anna k\"ummert sich um Hamachi.\\
 Johannes verschiebt das Login und Logout vom Chat zum Handler.\\
-Wir setzen uns Freitag, 20. M\"arz als Deadline für alle Anforderungen von Milestone 2. Sollte dann etwas nicht klappen, haben wir noch das Wochenende als Puffer.
+Wir setzen uns Freitag, 20. M\"arz als Deadline f\"ur alle Anforderungen von Milestone 2. Sollte dann etwas nicht klappen, haben wir noch das Wochenende als Puffer.
 
 \paragraph{Eintrag 10:}
 Mittwoch, 18.03.2020\\
@@ -114,9 +116,9 @@ Wir beginnen um 13 Uhr ein Zoom-Meeting. Mei hat auf\\ https://github.com/RuthRa
 Leider m\"ussen wir unsere Versuche aufgeben, unseren bisherigen Code zu verbessern. Wir beginnen bei Null, und einigen uns auf folgendes Modell:\\
 Sowohl Server als auch Client werden als statische Klassen von der Konsole aus gestartet; sie haben ihren Code jeweils in ihrer main-Methode.\\
 Der Client startet aus der main-Methode heraus ein ClientHandler-Objekt, das die gesamte Netzwerkkommunikation \"ubernimmt. Ebenfalls startet der Client einen ChatClient, welcher f\"ur den Chat verantwortlich ist.\\
-Sobald der Server die einkommende Verbindung erhalten hat, erstellt er ein ServerHandler-Objekt, das fortan für die Kommunikation zwischen dem Server und *diesem* Client zust\"andig ist. Ebenso startet er einen Chatserver.\\
+Sobald der Server die einkommende Verbindung erhalten hat, erstellt er ein ServerHandler-Objekt, das fortan f\"ur die Kommunikation zwischen dem Server und *diesem* Client zust\"andig ist. Ebenso startet er einen Chatserver.\\
 Die beiden Handler-Klassen haben zwei Aufgaben: Erstens lauschen sie in ihrer run()-Methode auf eingehende Nachrichten, entschl\"usseln diese ankommenden Strings gem\"ass Netzwerkprotokoll, und rufen die entsprechenden Methoden auf, um die Informationen weiterzuleiten. Zweitens haben sie Methoden, die vom dahinterstehenden Server/Client aufgerufen werden k\"onnen, um eine Nachricht gem\"ass Netzwerkprotokoll rauszuschicken.\\
-Wir verwenden den ganzen Nachmittag bis 18 Uhr, um im Pair-Programming diese ganze Architektur umzusetzen. Johannes tippt und gibt seinen Bildschirm frei, während die anderen ihm laufend Feedback und Korrekturen mitteilen.\\
+Wir verwenden den ganzen Nachmittag bis 18 Uhr, um im Pair-Programming diese ganze Architektur umzusetzen. Johannes tippt und gibt seinen Bildschirm frei, w\"ahrend die anderen ihm laufend Feedback und Korrekturen mitteilen.\\
 Das n\"achste Zoom-Meeting ist morgen nach der Vorlesung.
 
 \paragraph{Eintrag 12:}
@@ -126,7 +128,7 @@ Morgen um 10 Uhr wollen wir fortfahren, um bestehende Schw\"achen zu beseitigen,
 
 \paragraph{Eintrag 13:}
 Samstag, 21.03.2020\\
-Wir beginnen um 10 Uhr ein Zoom-Meeting. Zun\"achst machen wir weiter im Pair-Programming (Johannes tippt). Als die Grundstruktur fehlerfrei steht und keine gr\"osseren Bugs mehr vorhanden sind, beschliessen wir, für die \"ubrigbleibende Detailarbeit in Einzelarbeit fortzufahren. Auf GitLab erstellen wir Issues, um den \"Uberblick zu haben, was bis Meilenstein 2 erledigt sein muss: 
+Wir beginnen um 10 Uhr ein Zoom-Meeting. Zun\"achst machen wir weiter im Pair-Programming (Johannes tippt). Als die Grundstruktur fehlerfrei steht und keine gr\"osseren Bugs mehr vorhanden sind, beschliessen wir, f\"ur die \"ubrigbleibende Detailarbeit in Einzelarbeit fortzufahren. Auf GitLab erstellen wir Issues, um den \"Uberblick zu haben, was bis Meilenstein 2 erledigt sein muss: 
 \begin{itemize} 
 \item Johannes aktualisiert das Tagebuch.
 \item Anna implementiert das Logout.
@@ -137,34 +139,38 @@ Wir beginnen um 10 Uhr ein Zoom-Meeting. Zun\"achst machen wir weiter im Pair-Pr
 
 \paragraph{Eintrag 14:}
 Sonntag, 22.03.2020\\
-Meipei und Anna beginnen um 14 Uhr ein Discord-Meeting. Zu Beginn rekapitulieren wir nochmals die Grundprinzipien der Threads und Streams innerhalb des Codes um via Pair-Programming das Logout für den Chat sinnvoll implementieren zu können. Des Weiteren schauen wir uns die Achievements für den Meilenstein II an, um abzugleichen was wir schon erledigt haben und was noch offen steht. Diesbezüglich gibt es noch Issues auf GitLab mit internen Erledigungen die wir für uns noch erledigen wollten.
+Meipei und Anna beginnen um 14 Uhr ein Discord-Meeting. Zu Beginn rekapitulieren wir nochmals die Grundprinzipien der Threads und Streams innerhalb des Codes, um im Pair-Programming das Logout f\"ur den Chat sinnvoll implementieren zu k\"onnen. Des Weiteren schauen wir uns die Achievements f\"ur den Meilenstein II an, um abzugleichen, was wir schon erledigt haben und was noch offen steht. Diesbez\"uglich gibt es noch Issues auf GitLab mit Dingen, die zu erledigen sind.
 Heute haben wir:
 \begin{itemize}
 \item Logout implementiert
 \item 2. Hashmap aus dem ChatServer rausgenommen
-\item Diary-Eintrag ergänzt
+\item Diary-Eintrag erg\"anzt
 \item Netzwerkprotokoll angepasst
 \item Richtiges \"Uberpr\"ufen der Localhostabfrage
-\end{itemize}\]
+\end{itemize}
 
 \paragraph{Eintrag 15:}
 Mittwoch, 25.03.20\\
-Um 14 Uhr loggen sich alle für die \"Ubungsstunde in Zoom ein, um Meilenstein II vorzuzeigen. Nachdem wir alles vorgezeigt haben, diskutieren wir welche Achievements bis zum dritten Meilenstein zu erreichen sind. Dabei kommen fragen auf, weil die Formulierung mancher Achievements für uns nicht eindeutig sind. Deshalb fragen wir unseren Tutor diese genauer zu erläutern. Simon erkl\"art sie ganz gut und wir f\"uhren mit unserer Aufteilung fort. Für den kommenden Freitag werden sich Adrian und Johannes um die Implemntierung der Spiellogic kümmern, während Meipei und Anna die GUI für den Chat schonmal beginnen. 
+Um 14 Uhr loggen sich alle f\"ur die \"Ubungsstunde in Zoom ein, um Meilenstein II vorzuzeigen. Nachdem wir alles vorgezeigt haben, diskutieren wir, welche Achievements bis zum dritten Meilenstein zu erreichen sind. Dabei kommen Fragen auf, weil die Formulierung mancher Achievements f\"ur uns nicht eindeutig sind. Deshalb bitten wir unseren Tutor, diese genauer zu erl\"autern. Simon erkl\"art sie ganz gut und wir fahren mit unserer Aufteilung fort. F\"ur den kommenden Freitag werden sich Adrian und Johannes um die Implementierung der Spiellogik k\"ummern, w\"ahrend Meipei und Anna die GUI f\"ur den Chat in Angriff nehmen. 
 
 \paragraph{Eintrag 16:}
 Freitag, 27.03.20\\
 Um 9 Uhr fangen wir getrennt mit unserer Arbeit an.\\
-Meipei und Anna beginnen mit ihrem Discord-Meeting und implementieren die Anfangs-GUI für den Chat. 
-Das Fenster öffnet sich und die Auswahl, wie wir sie im Mockup bei Präsentation I gezeigt haben, Start, Ziel, Karten, Regeln und Einstellungen ist zu sehen.
-Nun schauen wir, dass sich weitere Fenster öffnen sobald man auf eine Auswahl klickt.\]
+Meipei und Anna beginnen mit ihrem Discord-Meeting und implementieren die Anfangs-GUI f\"ur den Chat. Das Fenster \"offnet sich und die Auswahl erscheint, wie wir sie im Mockup bei Pr\"asentation I gezeigt haben: Start, Ziel, Karten, Regeln und Einstellungen.Nun schauen wir, dass sich weitere Fenster \"offnen, sobald man auf eine Auswahl klickt.\\
+Johannes und Adrian beginnen mit der Spiellogik. Dazu \"uberlegen wir uns die Abl\"aufe, und welche Klassen daf\"ur n\"otig sind. Am Ende des Tages haben wir aber noch nichts, was funktionsf\"ahig w\"are.
 
 \paragraph{Eintrag 17:}
 Montag, 30.03.20\\
-Um 13 Uhr starten wir ein Zoom-Meeting indem wir alle uns über den gegenwertigen Zustand austauschen. Johannes und Adrian sind für die Spiellogik zuständig und fragen die GUI-Gruppe wie weit sie gekommen sind und welche Informationen sie für das GUI brauchen. Die GUI Gruppe schlägt der Logik Gruppe vor die Hashmaps zu reduzieren damit nicht so viele Fehler auftauchen und die Lesbarkeit besser wird. 
+Um 13 Uhr starten wir ein Zoom-Meeting, in welchem wir alle uns \"uber den gegenw\"artigen Stand der Dinge austauschen. Johannes und Adrian sind f\"ur die Spiellogik zust\"andig und fragen die GUI-Gruppe, wie weit sie gekommen sind, und welche Informationen sie f\"ur das GUI brauchen. Die GUI-Gruppe schl\"agt der Logik-Gruppe vor, f\"ur die Spielerverwaltung eine eigene Player-Klasse zu implementieren statt der vielen verschiedenen Hashmaps, damit nicht so viele Fehler auftauchen und die Lesbarkeit besser wird.\\
+Adrian und Johannes setzen diesen Vorschlag anschliessend um und arbeiten weiter an der Spiellogik.
 
 \paragraph{Eintrag 18:}
 Mittwoch, 01.04.20\\
-Um 10.30 Uhr beginnen Mei und Anna ihr Zoom-Meeting um weiter an der GUI zu arbeiten. Adrian und Johannes beginnen ebenfalls separat mit ihrem Meeting.
-Um 14 Uhr beginnt das Zoom-Meeting für die Übungsstunde. Dort tauschen sich beide Gruppen nochmal aus wie weit sie gekommen sind und welche Fragen noch offen sind. Unser Tutor Simon stellt nochmal für alle klar, welche Vorraussetzungen bis kommenden Montag erfüllt sein müssen.
-\]
+Um 10.30 Uhr beginnen Mei und Anna ihr Zoom-Meeting, um weiter an der GUI zu arbeiten. Adrian und Johannes beginnen ebenfalls separat mit ihrem Meeting.
+Um 14 Uhr beginnt das Zoom-Meeting f\"ur die \"Ubungsstunde. Dort tauschen sich beide Gruppen nochmal aus, wie weit sie gekommen sind, und welche Fragen noch offen sind. Unser Tutor Simon stellt nochmal f\"ur alle klar, welche Vorraussetzungen bis kommenden Montag erf\"ullt sein m\"ussen.\\
+Am Abend haben Johannes uns Adrian eine erste funktionierende Version des Spiels, die allerdings noch viele Fehler enth\"alt.
+
+\paragraph{Eintrag 19:}
+Donnerstag, 02.04.2020\\
+Um 15 Uhr treffen sich Johannes und Adrian, um im Pair Programming weiterzufahren mit dem Spiel, was vor allem Debugging bedeutet. Bis 18 Uhr schaffen wir es, viele Fehler auszumerzen. 
 \end{document}

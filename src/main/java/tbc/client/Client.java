@@ -1,5 +1,9 @@
 package tbc.client;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatClient;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,7 +22,6 @@ import tbc.chat.ChatClient;
 public class Client {
 
     private static final Logger logger = LogManager.getLogger(Client.class);
-
     public static String myName;
     private static boolean nameSettingSucceeded = false;
     private static BufferedReader input;
@@ -40,7 +43,7 @@ public class Client {
         if (feedback) {
             myName = newName;
             nameSettingSucceeded = true;
-            logger.info("Hello " + myName + ", welcome to our chat!");
+            System.out.println("Hello " + myName + ", welcome to our chat!");
         } else {
             String name;
             logger.error("This name is not available any more. Please enter another name.");
@@ -60,7 +63,9 @@ public class Client {
 
     public static void startGame(String player) {
         String[] players = player.split("::");
-        game = new ClientGame(clientHandler, players);
+        game = new ClientGame(clientHandler, players, input);
+        System.out.println("Client's startGame() was invoked");
+        //TODO: oben input wieder rausnehmen
     }
 
     public static void main(String[] args) {
@@ -120,27 +125,28 @@ public class Client {
             if (systemName.indexOf('@') != -1) {
                 systemName.replace('@', '_');
             }
-            logger.info("Is your name " + systemName + "? ");
-            logger.info("Please answer with yes or no.");
+            System.out.println("Is your name " + systemName + "? ");
+            System.out.println("Please answer with yes or no.");
             String name = null;
             String s = input.readLine();
-            while (name == null)
+            while (name == null) {
                 if (s.equalsIgnoreCase("yes")) {
                     name = systemName;
                 } else if (s.equalsIgnoreCase("no")) {
-                    logger.info("Ok, what's your name then?");
+                    System.out.println("Ok, what's your name then?");
                     name = input.readLine();
                     while (name.indexOf('@') != -1 || name.length() == 0) {
-                        logger.info(
-                            "The name should not be empty nor contain the '@' character." +
-                                "\nPlease try another name.");
+                        System.out.println(
+                                "The name should not be empty nor contain the '@' character." +
+                                        "\nPlease try another name.");
                         name = input.readLine();
                     }
                 } else {
-                    logger.info("Please answer with yes or no.");
+                    System.out.println("Please answer with yes or no.");
                     name = null;
                     s = input.readLine();
                 }
+            }
             clientHandler.changeName(name);
         } catch (IOException e) {
             logger.error("There was an IOException when setting the username.");
@@ -166,6 +172,36 @@ public class Client {
         //chatClientThread.start();
 
         Application.launch(Login.class, args);
+        //It is important to wait until the name setting is finished, before starting the chatClientThread.
+        //Otherwise the chatClientThread will listen to the System.in at the same time than Client.main() does.
+        //TODO: Hier Kommentare wieder rausnehmen:
+        //chatClientThread.start();
+
+        joinALobby();
     }
 
+    static void joinALobby() {
+        try {
+            clientHandler.askForLobbyList();
+            System.out.println("Please type the name of an existing lobby or type a new lobby name");
+            String lobby = input.readLine();
+            System.out.println("A request will be sent to join the lobby " + lobby);
+            clientHandler.joinLobby(lobby);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static void askToStartAGame() {
+        try {
+            System.out.println("Would you like to start a game? Type yes or no.");
+            String answer = input.readLine();
+            System.out.println(answer);
+            if (answer.contains("yes")) {
+                clientHandler.readyForGame();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
