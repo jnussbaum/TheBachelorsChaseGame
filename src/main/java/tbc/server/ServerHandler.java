@@ -1,5 +1,7 @@
 package tbc.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
 
 import java.io.*;
@@ -12,6 +14,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ServerHandler implements Runnable {
 
+    private final Logger logger = LogManager.getLogger(ServerHandler.class);
     private String myName;
     private Socket clientSocket;
     private ChatServer chatServer;
@@ -94,12 +97,18 @@ public class ServerHandler implements Runnable {
                 String name = commands[1];
                 Server.joinLobby(name, this);
                 break;
+            case "READYFORGAME":
+                System.out.println("ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
+                        "this lobby: " + lobby);
+                System.out.println(myName);
+                lobby.readyForGame(myName);
+                break;
             case "STARTGAME":
                 lobby.startGame();
                 break;
             case "ASKFORCARD":
                 lobby.serverGame.giveCardToClient(myName);
-                System.out.println("ServerHandler invoked giveCardToClient() in ServerGame");
+                logger.info("ServerHandler invoked giveCardToClient() in ServerGame");
                 break;
             case "THROWCARD":
                 String cardName = commands[1];
@@ -109,7 +118,7 @@ public class ServerHandler implements Runnable {
                 lobby.serverGame.jumpThisTurn();
                 break;
             default:
-                System.err.println("ServerHandler " + myName + "received an invalid message.");
+                logger.error("ServerHandler " + myName + "received an invalid message.");
         }
     }
 
@@ -119,7 +128,7 @@ public class ServerHandler implements Runnable {
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("ServerHandler " + myName + "sent message to ClientOutputStream");
+        logger.info("ServerHandler " + myName + "sent message to ClientOutputStream");
     }
 
     /**
@@ -151,11 +160,11 @@ public class ServerHandler implements Runnable {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
-            System.out.println("Closed streams and socket from " + myName);
+            logger.info("Closed streams and socket from " + myName);
             Server.removeUser(myName);
             exit = true;
         } catch (IOException e) {
-            System.err.println("Closing streams and socket failed in ServerHandler " + myName);
+            logger.error("Closing streams and socket failed in ServerHandler " + myName);
         }
     }
 
@@ -186,13 +195,13 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
         //store the lobby in this object field
         this.lobby = Server.getLobby(lobbyName);
-        System.out.println("ServerHandler of " + myName + " set its lobby variable.");
+        logger.info("ServerHandler of " + myName + " set its lobby variable.");
     }
 
     public void giveCard(String cardName) {
         clientOutputStream.println("GIVECARD" + "#" + cardName);
         clientOutputStream.flush();
-        System.out.println("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
+        logger.info("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
     }
 
     public void gameStarted(String[] players) {
@@ -218,5 +227,9 @@ public class ServerHandler implements Runnable {
     public void sendCoins(String allCoins) {
         clientOutputStream.println("SENDCOINS" + "#" + allCoins);
         clientOutputStream.flush();
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

@@ -38,14 +38,14 @@ public class Client {
         if (feedback) {
             myName = newName;
             nameSettingSucceeded = true;
-            logger.info("Hello " + myName + ", welcome to our chat!");
+            System.out.println("Hello " + myName + ", welcome to our chat!");
         } else {
             String name;
-            logger.info("This name is not available any more. Please enter another name.");
+            System.out.println("This name is not available any more. Please enter another name.");
             try {
                 name = input.readLine();
                 while (name.indexOf('@') != -1 || name.length() == 0) {
-                    logger.info("The name should not be empty nor contain the '@' character."
+                    System.out.println("The name should not be empty nor contain the '@' character."
                             + "\nPlease try another name.");
                     name = input.readLine();
                 }
@@ -68,7 +68,10 @@ public class Client {
         int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
         clientHandlerThread = new Thread(
                 clientHandler = new ClientHandler(hostName, portNumber));
-        chatClientThread = new Thread(chatClient = new ChatClient(clientHandler, input));
+        //TODO: Remove comment slashes below and remove chat from the console to GUI:
+        //chatClientThread = new Thread(chatClient = new ChatClient(clientHandler, input));
+
+        input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 
         try {
             clientHandlerThread.start();
@@ -79,10 +82,9 @@ public class Client {
             }
             System.out.println("Is your name " + systemName + "? ");
             System.out.println("Please answer with yes or no.");
-            input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             String name = null;
             String s = input.readLine();
-            while (name == null)
+            while (name == null) {
                 if (s.equalsIgnoreCase("yes")) {
                     name = systemName;
                 } else if (s.equalsIgnoreCase("no")) {
@@ -99,6 +101,7 @@ public class Client {
                     name = null;
                     s = input.readLine();
                 }
+            }
             clientHandler.changeName(name);
         } catch (IOException e) {
             logger.error("There was an IOException when setting the username.");
@@ -138,8 +141,9 @@ public class Client {
         try {
             System.out.println("Would you like to start a game? Type yes or no.");
             String answer = input.readLine();
-            if (answer.equalsIgnoreCase("yes")) {
-                clientHandler.startGame();
+            System.out.println(answer);
+            if (answer.contains("yes")) {
+                clientHandler.readyForGame();
             }
         } catch (IOException e) {
             e.printStackTrace();

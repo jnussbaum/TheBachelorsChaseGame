@@ -1,5 +1,7 @@
 package tbc.game;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.server.Lobby;
 
 import java.util.HashMap;
@@ -9,6 +11,8 @@ import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
+
+    private final Logger logger = LogManager.getLogger(ServerGame.class);
 
     /**
      * Here, the clients are stored in a String-Array
@@ -110,18 +114,6 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * First of the three possibilities when it is a client's turn: Give a card to the client.
-     */
-    public void giveCardToClient(String clientName) {
-        timer.cancel();
-        turnController.release();
-        calculatePoints();
-        giveRandomCard(clientName);
-        giveTurnToNext();
-        System.out.println("ServerGame called giveRandomCard and giveTurnToNext");
-    }
-
-    /**
      * Helper method to give a random card to a client. This method is invoked by other methods who want to
      * give out cards.
      */
@@ -141,45 +133,57 @@ public class ServerGame implements Runnable {
     }
 
     /**
+     * First of the three possibilities when it is a client's turn: Give a card to the client.
+     */
+    public void giveCardToClient(String clientName) {
+        timer.cancel();
+        turnController.release();
+        calculatePoints();
+        giveRandomCard(clientName);
+        giveTurnToNext();
+        logger.info("ServerGame called giveRandomCard and giveTurnToNext");
+    }
+
+    /**
+     * Second of the three possibilities when it is a client's turn: Jump this turn.
+     */
+    public void jumpThisTurn() {
+        timer.cancel();
+        calculatePoints();
+        giveTurnToNext();
+        turnController.release();
+    }
+
+    /**
      * Third of the three possibilities when it is a client's turn: throw away a card.
      */
     public void throwCard(String clientName, String cardName) {
         timer.cancel();
-        turnController.release();
-        calculatePoints();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
-            System.err.println("The client " + clientName + "cannot throw away the card "
+            logger.error("The client " + clientName + "cannot throw away the card "
                     + cardName + " because he does not have such a card.");
         }
-        giveTurnToNext();
-    }
-
-    public void jumpThisTurn() {
-        timer.cancel();
         turnController.release();
         calculatePoints();
         giveTurnToNext();
     }
 
     public void giveTurnToNext() {
-        System.out.println("ServerGame's method giveTurnToNext() was called. Initial values: \n" +
-                "numOfDroppedOut = " + numOfDroppedOut +
-                "\nactiveClient = " + activeClient);
+        logger.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
         if (numOfDroppedOut < clientsAsArray.length) {
+            //Find out the number of the next client
             if (activeClient == players.length - 1) {
                 activeClient = 0;
-                System.out.println("ServerGame's method giveTurnToNext() set activeClient to 0");
             } else {
                 activeClient++;
-                System.out.println("ServerGame's method giveTurnToNext() set activeClient++, new value = " + activeClient);
             }
+            //Give the turn to the client whose number was set before
             if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
                 giveTurnToNext();
-                System.out.println("ServerGame's method giveTurnToNext() called giveTurnToNext()");
             } else {
                 lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
-                System.out.println("ServerGame's method giveTurnToNext() gave turn to active client = " + activeClient);
+                System.out.println("ServerGame's method giveTurnToNext() gave turn to " + clientsAsArray[activeClient]);
             }
         } else {
             System.out.println("All players dropped out of the game");
@@ -217,7 +221,7 @@ public class ServerGame implements Runnable {
                 return players[i];
             }
         }
-        System.err.println("no Player with that name ");
+        logger.error("no Player with that name ");
         return new Player("Badplayer");
     }
 

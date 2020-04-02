@@ -61,6 +61,7 @@ public class Server {
     public static void createLobby(String lobbyName, ServerHandler sh) {
         Lobby lobby = new Lobby(lobbyName, sh);
         lobbies.put(lobbyName, lobby);
+        sh.setLobby(lobby);
     }
 
     public static String[] getLobbies() {
@@ -83,10 +84,14 @@ public class Server {
 
     public static void joinLobby(String lobbyName, ServerHandler sh) {
         if (lobbies.containsKey(lobbyName)) {
-            lobbies.get(lobbyName).join(sh.getName(), sh);
+            Lobby lobby = lobbies.get(lobbyName);
+            lobby.join(sh.getName(), sh);
+            sh.setLobby(lobby);
         } else {
-            lobbies.put(lobbyName, new Lobby(lobbyName, sh));
-            System.out.println("Inexisting lobby, created it new.");
+            Lobby lobby = new Lobby(lobbyName, sh);
+            lobbies.put(lobbyName, lobby);
+            sh.setLobby(lobby);
+            logger.info("Inexisting lobby, created it new.");
         }
     }
 

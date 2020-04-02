@@ -1,7 +1,10 @@
 package tbc.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tbc.game.ServerGame;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -9,6 +12,8 @@ import java.util.HashMap;
  * Server-side lobby, created by the Server.
  */
 public class Lobby {
+
+    private static final Logger logger = LogManager.getLogger(Lobby.class);
 
     /**
      * Name of this lobby as string.
@@ -19,6 +24,11 @@ public class Lobby {
      * Administration of all clients by their name and serverHandler
      */
     private HashMap<String, ServerHandler> clients = new HashMap<>();
+
+    /**
+     * Controls all clients if they are ready to start a game or not.
+     */
+    private ArrayList<String> readyClients = new ArrayList<>();
 
     /**
      * The game belonging to this lobby is stored in this variable.
@@ -54,12 +64,19 @@ public class Lobby {
             clients.put(clientName, sh);
             sh.lobbyJoined(lobbyName);
         } else {
-            System.err.println("This client cannot join the lobby twice");
+            logger.error("This client cannot join the lobby twice");
+        }
+    }
+
+    void readyForGame(String myName) {
+        readyClients.add(myName);
+        if (readyClients.size() == clients.size() && readyClients.size() > 1) {
+            startGame();
         }
     }
 
     void startGame() {
-        System.out.println("Lobby's startGame() method was invoked");
+        logger.info("Lobby's startGame() method was invoked");
         if (isGameActive == false) {
             Object[] playersAsObj = clients.keySet().toArray();
             String[] players = Arrays.copyOf(playersAsObj, playersAsObj.length, String[].class);
@@ -70,7 +87,7 @@ public class Lobby {
             Thread gamethread = new Thread(serverGame);
             gamethread.start();
             isGameActive = true;
-            System.out.println("Lobby's startGame() method terminated successfully");
+            logger.info("Lobby's startGame() method terminated successfully");
         }
     }
 

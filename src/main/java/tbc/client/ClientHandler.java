@@ -187,4 +187,9 @@ public class ClientHandler implements Runnable {
         clientOutputStream.println("JUMPTHISTURN");
         clientOutputStream.flush();
     }
+
+    public void readyForGame() {
+        clientOutputStream.println("READYFORGAME");
+        clientOutputStream.flush();
+    }
 }
