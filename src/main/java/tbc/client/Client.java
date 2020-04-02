@@ -64,20 +64,11 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        String hostName = args[1].substring(0, args[0].indexOf(':'));
-        int portNumber = Integer.parseInt(String.valueOf(args[1].indexOf(':')));
-        do {
-            logger.info("Please enter the IP address given from the server: ");
-            input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
-            try {
-                //hostName = input.readLine();
-                clientHandlerThread = new Thread(
-                        clientHandler = new ClientHandler(hostName, portNumber));
-                chatClientThread = new Thread(chatClient = new ChatClient(clientHandler, input));
-            } catch (Exception e) {
-                logger.error("Couldn't get I/O for the connection to the hostname");
-            }
-        } while (clientHandler.isUnknownHostname() == true);
+        String hostName = args[1].substring(0, args[1].indexOf(':'));
+        int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
+        clientHandlerThread = new Thread(
+                clientHandler = new ClientHandler(hostName, portNumber));
+        chatClientThread = new Thread(chatClient = new ChatClient(clientHandler, input));
 
         try {
             clientHandlerThread.start();
@@ -86,24 +77,25 @@ public class Client {
             if (systemName.indexOf('@') != -1) {
                 systemName.replace('@', '_');
             }
-            logger.info("Is your name " + systemName + "? ");
-            logger.info("Please answer with yes or no.");
+            System.out.println("Is your name " + systemName + "? ");
+            System.out.println("Please answer with yes or no.");
+            input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
             String name = null;
             String s = input.readLine();
             while (name == null)
                 if (s.equalsIgnoreCase("yes")) {
                     name = systemName;
                 } else if (s.equalsIgnoreCase("no")) {
-                    logger.info("Ok, what's your name then?");
+                    System.out.println("Ok, what's your name then?");
                     name = input.readLine();
                     while (name.indexOf('@') != -1 || name.length() == 0) {
-                        logger.info(
+                        System.out.println(
                                 "The name should not be empty nor contain the '@' character." +
                                         "\nPlease try another name.");
                         name = input.readLine();
                     }
                 } else {
-                    logger.info("Please answer with yes or no.");
+                    System.out.println("Please answer with yes or no.");
                     name = null;
                     s = input.readLine();
                 }
