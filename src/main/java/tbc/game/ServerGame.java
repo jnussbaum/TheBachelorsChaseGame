@@ -12,7 +12,7 @@ import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
 
-    private final static Logger LOGGER = LogManager.getLogger(ServerGame.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Here, the clients are stored in a String-Array

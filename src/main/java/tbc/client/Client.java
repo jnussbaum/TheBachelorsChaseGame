@@ -17,15 +17,15 @@ import tbc.chat.ChatClient;
  */
 public class Client {
 
-    private final static Logger LOGGER = LogManager.getLogger(Client.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    public static String myName;
+    public static String userName;
     private static boolean nameSettingSucceeded = false;
     private static BufferedReader input;
     private static ClientHandler clientHandler;
     private static Thread clientHandlerThread;
     public static ChatClient chatClient;
-    private static Thread chatClientThread;
+    //private static Thread chatClientThread;
     private static ClientGame game;
 
     public static ClientGame getGame() {
@@ -38,9 +38,9 @@ public class Client {
      */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
-            myName = newName;
+            userName = newName;
             nameSettingSucceeded = true;
-            System.out.println("Hello " + myName + ", welcome to our chat!");
+            System.out.println("Hello " + userName + ", welcome to our chat!");
         } else {
             String name;
             LOGGER.error("This name is not available any more. Please enter another name.");
@@ -68,12 +68,12 @@ public class Client {
     public static void main(String[] args) {
         // run jar without a username
         if (args.length < 3) {
-            myName = System.getProperty("user.name");
-            System.out.println(myName);
+            userName = System.getProperty("user.name");
+            System.out.println(userName);
         } else {
             // run jar with name
-            myName = args[2];
-            System.out.println(myName);
+            userName = args[2];
+            System.out.println(userName);
         }
 
         String hostName = args[1].substring(0, args[1].indexOf(':'));
@@ -84,7 +84,7 @@ public class Client {
         input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 
         try {
-            clientHandlerThread = new Thread(clientHandler = new ClientHandler(myName, hostName, portNumber));
+            clientHandlerThread = new Thread(clientHandler = new ClientHandler(userName, hostName, portNumber));
             chatClient = new ChatClient(clientHandler);
         } catch (Exception e) {
             LOGGER.error("Couldn't get I/O for the connection to the hostname");
@@ -93,7 +93,7 @@ public class Client {
         try {
             clientHandlerThread.start();
             clientHandler.registerChatClient(chatClient);
-            clientHandler.changeName(myName);
+            clientHandler.changeName(userName);
         } catch (Exception e) {
             LOGGER.error("Could not set the username.");
         }

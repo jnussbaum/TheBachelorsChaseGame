@@ -13,7 +13,7 @@ import java.util.HashMap;
  */
 public class Lobby {
 
-    private final static Logger LOGGER = LogManager.getLogger(Lobby.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * Name of this lobby as string.

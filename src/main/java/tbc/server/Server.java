@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class Server {
 
-		private final static Logger LOGGER = LogManager.getLogger(Server.class);
+		private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * This HashMap administrates all clients by their name and ServerHandler.

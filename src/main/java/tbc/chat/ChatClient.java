@@ -3,7 +3,6 @@ package tbc.chat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.GUI.GameWindowController;
-import tbc.client.Client;
 import tbc.client.ClientHandler;
 
 /**
@@ -12,7 +11,7 @@ import tbc.client.ClientHandler;
  */
 public class ChatClient {
 
-    private final static Logger LOGGER = LogManager.getLogger(Client.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * The clientHandler who is responsible for the communication with the server.
@@ -54,7 +53,7 @@ public class ChatClient {
             String receiver = s.substring(1, s.indexOf(" "));
             String msg = s.substring(s.indexOf(" ") + 1);
             if (msg.length() == 0) {
-                LOGGER.info("Usage: @<user> <message>.");
+                LOGGER.error("Usage: @<user> <message>.");
             } else {
                 clientHandler.sendMessage(receiver, "true", msg);
             }
@@ -76,11 +75,11 @@ public class ChatClient {
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         GameWindowController gameWindowController = new GameWindowController();
         if (isPrivateMsg.equals("true")) {
-           LOGGER.info("[PRIVATE] " + sender + ": " + msg);
-           gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
+            LOGGER.info("[PRIVATE] " + sender + ": " + msg);
+            gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
-           LOGGER.info(sender + ": " + msg);
-           gameWindowController.appendMsg(sender + ": " + msg);
+            System.out.println("ChatClient.chatArrived " + sender + ": " + msg);
+            gameWindowController.appendMsg(sender + ": " + msg);
         }
     }
 }

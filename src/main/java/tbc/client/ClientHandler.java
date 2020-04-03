@@ -18,9 +18,9 @@ import tbc.chat.ChatClient;
  */
 public class ClientHandler implements Runnable {
 
-    private final static Logger LOGGER = LogManager.getLogger(ClientHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
 
-    private String myName;
+    public static String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
@@ -30,8 +30,8 @@ public class ClientHandler implements Runnable {
     /**
      * The constructor of ClientHandler tries to connect to the server.
      */
-    public ClientHandler(String myName, String hostName, int portNumber) {
-        this.myName = myName;
+    public ClientHandler(String name, String hostName, int portNumber) {
+        this.myName = name;
         try {
             clientSocket = new Socket(hostName, portNumber);
             clientInputStream = new BufferedReader(new InputStreamReader(

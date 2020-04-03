@@ -10,7 +10,7 @@ import tbc.server.ServerHandler;
  */
 public class ChatServer {
 
-    private final static Logger LOGGER = LogManager.getLogger(Server.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     /**
      * When the ChatServer receives a message, he forwards it to the correct clients.
