@@ -62,8 +62,9 @@ public class ChatClient {
             LOGGER.info("[PRIVATE] " + sender + ": " + msg);
             LobbyController.gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
-            System.out.println("ChatClient.chatArrived " + sender + ": " + msg);
+            LOGGER.info("ChatClient.chatArrived " + sender + ": " + msg);
             LobbyController.gameWindowController.appendMsg(sender + ": " + msg);
         }
     }
+
 }

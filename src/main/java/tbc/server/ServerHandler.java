@@ -129,7 +129,7 @@ public class ServerHandler implements Runnable {
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        System.out.println("ServerHandler " + myName + " sent message to ClientOutputStream");
+        LOGGER.info("ServerHandler " + myName + " sent message to ClientOutputStream");
     }
 
     /**

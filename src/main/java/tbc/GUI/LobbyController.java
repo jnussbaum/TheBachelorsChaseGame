@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,6 +26,8 @@ public class LobbyController {
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
     public static GameWindowController gameWindowController;
+    public static DiversController diversController;
+    private Stage secondStage;
 
     public void startGame(MouseEvent mouseEvent) {
         LOGGER.info("Show game window.");
@@ -38,7 +41,9 @@ public class LobbyController {
             gameWindow.show();
 
             gameWindowController = loader.getController();
+            // TODO show in other lobbies
             gameWindowController.appendMsg(Client.userName + " has entered the chat.\n");
+
         } catch (Exception e) {
             LOGGER.error("Couldn't find GameWindowFXML file.");
             e.printStackTrace();
@@ -81,9 +86,27 @@ public class LobbyController {
             + "hat er verloren und bekommt 0 Coins.");
     }
 
-    public void showSettings() {
-        // TODO maybe a feature...
-        LOGGER.info("Show settings.");
+    public void showDivers() {
+        LOGGER.info("Show divers.");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DiversFXML.fxml"));
+            BorderPane divers = loader.load();
+
+            Stage diversWindow = new Stage();
+            diversWindow.setTitle("The Bachelor's Chase - Divers");
+            diversWindow.initModality(Modality.APPLICATION_MODAL);
+            diversWindow.initOwner(secondStage);
+            Scene diversScene = new Scene(divers);
+            diversWindow.setScene(diversScene);
+            diversWindow.show();
+
+            diversController = loader.getController();
+
+        } catch (Exception e) {
+            LOGGER.error("Couldn't find DiversFXML file.");
+            e.printStackTrace();
+        }
     }
 
     public void close() {

@@ -20,7 +20,7 @@
                   <Circle fx:id="circleGoal" layoutX="120.0" layoutY="475.0" onMouseClicked="#showGoal" radius="76.0" stroke="BLACK" strokeType="INSIDE" />
                   <Circle fx:id="circleStart" layoutX="290.0" layoutY="300.0" onMouseClicked="#startGame" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
                   <Circle fx:id="circleRules" layoutX="460.0" layoutY="125.0" onMouseClicked="#showRules" radius="78.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fx:id="circleSettings" layoutX="460.0" layoutY="475.0" onMouseClicked="#showSettings" radius="76.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="circleDivers" layoutX="460.0" layoutY="475.0" onMouseClicked="#showDivers" radius="76.0" stroke="BLACK" strokeType="INSIDE" />
                   <Circle fx:id="circleCards" layoutX="120.0" layoutY="125.0" onMouseClicked="#showCards" radius="78.0" stroke="BLACK" strokeType="INSIDE" />
                   <Label alignment="CENTER" layoutX="43.0" layoutY="101.0" mouseTransparent="true" prefHeight="48.0" prefWidth="154.0" text="Karten" textFill="WHITE">
                      <font>
@@ -42,7 +42,7 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" layoutX="385.0" layoutY="462.0" mouseTransparent="true" prefHeight="17.0" prefWidth="151.0" text="Einstellungen" textFill="WHITE">
+                  <Label alignment="CENTER" layoutX="385.0" layoutY="462.0" mouseTransparent="true" prefHeight="17.0" prefWidth="151.0" text="Divers" textFill="WHITE">
                      <font>
                         <Font size="20.0" />
                      </font>

@@ -51,6 +51,7 @@ public class LoginController implements Initializable {
 
                 LOGGER.info(Client.userName + " has logged in.");
                 LOGGER.info(Client.userName + " has chosen the logo: " + chosenLogo);
+
             } catch (Exception e) {
                 LOGGER.error("Couldn't find LobbyFXML file.");
                 e.printStackTrace();
@@ -59,7 +60,6 @@ public class LoginController implements Initializable {
     }
 
     public void girly() {
-        LOGGER.info("Girly has been chosen.");
         chosenLogo = "girly";
         labelNerd.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -68,7 +68,6 @@ public class LoginController implements Initializable {
     }
 
     public void nerd() {
-        LOGGER.info("Nerd has been chosen.");
         chosenLogo = "nerd";
         labelGirly.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -77,7 +76,6 @@ public class LoginController implements Initializable {
     }
 
     public void hippy() {
-        LOGGER.info("Hippy has been chosen.");
         chosenLogo = "hippy";
         labelGirly.setFont(Font.font(24));
         labelEmo.setFont(Font.font(24));
@@ -86,7 +84,6 @@ public class LoginController implements Initializable {
     }
 
     public void emo() {
-        LOGGER.info("Emo has been chosen.");
         chosenLogo = "emo";
         labelGirly.setFont(Font.font(24));
         labelNerd.setFont(Font.font(24));

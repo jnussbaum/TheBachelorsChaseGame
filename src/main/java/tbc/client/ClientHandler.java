@@ -85,6 +85,18 @@ public class ClientHandler implements Runnable {
             case "CHANGEOK":
                 String newName = commands[1];
                 Client.nameChangeFeedback(true, newName);
+
+                /*
+                Exception in thread "Thread-0" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-0
+
+                warum geht das chatClient.chatArrived(), aber das untere nicht?
+                transition vom ClientHandler thread (also hier) hin zum FX application thread, gibt es eine transition?
+                 */
+                /*if (myName.equals(newName) == false)
+                    chatClient.test("new Name: " + newName);
+                    //if (LobbyController.diversController != null)
+                        //LobbyController.diversController.setStatus("new Name: " + newName);*/
+
                 myName = newName;
                 break;
             case "CHANGENO":

@@ -21,7 +21,7 @@ public class Client {
 
     public static String userName;
     private static BufferedReader input;
-    private static ClientHandler clientHandler;
+    public static ClientHandler clientHandler;
     private static Thread clientHandlerThread;
     public static ChatClient chatClient;
     private static ClientGame game;
