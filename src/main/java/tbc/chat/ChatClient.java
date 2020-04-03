@@ -2,7 +2,7 @@ package tbc.chat;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.GUI.GameWindowController;
+import tbc.GUI.LobbyController;
 import tbc.client.ClientHandler;
 
 /**
@@ -11,7 +11,7 @@ import tbc.client.ClientHandler;
  */
 public class ChatClient {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(ChatClient.class);
 
     /**
      * The clientHandler who is responsible for the communication with the server.
@@ -73,13 +73,12 @@ public class ChatClient {
      * be printed out.
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
-        GameWindowController gameWindowController = new GameWindowController();
         if (isPrivateMsg.equals("true")) {
             LOGGER.info("[PRIVATE] " + sender + ": " + msg);
-            gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
+            LobbyController.gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
             System.out.println("ChatClient.chatArrived " + sender + ": " + msg);
-            gameWindowController.appendMsg(sender + ": " + msg);
+            LobbyController.gameWindowController.appendMsg(sender + ": " + msg);
         }
     }
 }

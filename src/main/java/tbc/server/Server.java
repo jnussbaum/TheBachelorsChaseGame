@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class Server {
 
-		private static final Logger LOGGER = LogManager.getLogger();
+		private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     /**
      * This HashMap administrates all clients by their name and ServerHandler.
@@ -97,6 +97,7 @@ public class Server {
 
     public static void main(String[] args) {
         int portNumber = Integer.parseInt(args[1]);
+        LOGGER.info("Port: " + portNumber);
         ServerSocket serverSocket;
 
         //This is the Headquarter of the Chat application.
@@ -104,7 +105,7 @@ public class Server {
 
 				try {
 						serverSocket = new ServerSocket(portNumber);
-						System.out.println("Type this address in the client after starting the client: "
+						LOGGER.info("Type this address in the client after starting the client: "
 								+ InetAddress.getLocalHost().getHostAddress());
 						Socket socket;
 						int i = 0;

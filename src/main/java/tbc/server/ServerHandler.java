@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class ServerHandler implements Runnable {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(ServerHandler.class);
 
     private String myName;
     private Socket clientSocket;
@@ -41,7 +41,7 @@ public class ServerHandler implements Runnable {
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
-            System.err.println("IOException while trying to create the ServerHandler " + myName);
+            LOGGER.error("IOException while trying to create the ServerHandler " + myName);
             e.printStackTrace();
         }
     }
@@ -56,7 +56,7 @@ public class ServerHandler implements Runnable {
             try {
                 s = clientInputStream.readLine();
             } catch (IOException e) {
-                System.err.println("Reading from ClientInputStream failed: ");
+                LOGGER.error("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
             if (s == null) System.err.println("The ServerHandler of " + myName + " received an empty message");
@@ -84,7 +84,7 @@ public class ServerHandler implements Runnable {
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[4];
-                System.out.println("ServerHandler " + myName + " sent message to ChatServer");
+                LOGGER.info("ServerHandler " + myName + " sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
             case "CREATELOBBY":

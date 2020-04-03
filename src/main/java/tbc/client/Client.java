@@ -17,7 +17,7 @@ import tbc.chat.ChatClient;
  */
 public class Client {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
     public static String userName;
     private static boolean nameSettingSucceeded = false;
@@ -40,7 +40,7 @@ public class Client {
         if (feedback) {
             userName = newName;
             nameSettingSucceeded = true;
-            System.out.println("Hello " + userName + ", welcome to our chat!");
+            LOGGER.info("Hello " + userName + ", welcome to our chat!");
         } else {
             String name;
             LOGGER.error("This name is not available any more. Please enter another name.");
@@ -69,17 +69,17 @@ public class Client {
         // run jar without a username
         if (args.length < 3) {
             userName = System.getProperty("user.name");
-            System.out.println(userName);
+            LOGGER.info("User: " + userName);
         } else {
             // run jar with name
             userName = args[2];
-            System.out.println(userName);
+            LOGGER.info("User: " + userName);
         }
 
         String hostName = args[1].substring(0, args[1].indexOf(':'));
-        System.out.println("Hostname: " + hostName);
+        LOGGER.info("Hostname: " + hostName);
         int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
-        System.out.println("Portnumber: " + portNumber);
+        LOGGER.info("Portnumber: " + portNumber);
 
         input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 

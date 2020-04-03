@@ -1,6 +1,5 @@
 package tbc.GUI;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -41,15 +40,17 @@ public class LoginController implements Initializable {
             labelStatus.setText("Bitte wähle einen Logo aus.");
         } else {
             try {
-                URL loginFxmlUrl = new File("src/main/resources/tbc/GUI/LobbyFXML.fxml").toURI().toURL();
-                Parent root = FXMLLoader.load(loginFxmlUrl);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyFXML.fxml"));
+                Parent root =loader.load();
                 Stage lobbyWindow = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 lobbyWindow.setTitle("The Bachelor's Chase - Lobby");
                 lobbyWindow.setScene(new Scene(root, 1000, 600));
                 lobbyWindow.show();
 
-                System.out.println(Client.userName + " has logged in.");
-                System.out.println(Client.userName + " has chosen the logo: " + chosenLogo);
+                LobbyController lobbyController = loader.getController();
+
+                LOGGER.info(Client.userName + " has logged in.");
+                LOGGER.info(Client.userName + " has chosen the logo: " + chosenLogo);
             } catch (Exception e) {
                 LOGGER.error("Couldn't find LobbyFXML file.");
                 e.printStackTrace();

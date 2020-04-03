@@ -1,7 +1,5 @@
 package tbc.GUI;
 
-import java.io.File;
-import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,14 +15,12 @@ import tbc.client.Client;
 
 public class Login extends Application {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(Login.class);
 
     @Override
     public void start(Stage primaryStage) {
         try {
-            URL loginFxmlUrl = new File("src/main/resources/tbc/GUI/LoginFXML.fxml").toURI().toURL();
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(loginFxmlUrl);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginFXML.fxml"));
             Parent root = loader.load();
 
             primaryStage.setTitle("The Bachelor's Chase - Login");
@@ -43,4 +39,5 @@ public class Login extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

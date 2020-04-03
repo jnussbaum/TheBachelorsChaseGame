@@ -1,7 +1,5 @@
 package tbc.GUI;
 
-import java.io.File;
-import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.client.Client;
 
 /**
  * Processes a client's request to get the informations of the pushed Button.
@@ -25,16 +24,21 @@ public class LobbyController {
 
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
+    public static GameWindowController gameWindowController;
 
     public void startGame(MouseEvent mouseEvent) {
         LOGGER.info("Show game window.");
         try {
             Stage gameWindow = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
-            URL loginFxmlUrl = new File("src/main/resources/tbc/GUI/GameWindowFXML.fxml").toURI().toURL();
-            Parent root = FXMLLoader.load(loginFxmlUrl);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindowFXML.fxml"));
+            Parent root = loader.load();
+
             gameWindow.setTitle("The Bachelor's Chase");
             gameWindow.setScene(new Scene(root, 1000, 600));
             gameWindow.show();
+
+            gameWindowController = loader.getController();
+            gameWindowController.appendMsg(Client.userName + " has entered the chat.\n");
         } catch (Exception e) {
             LOGGER.error("Couldn't find GameWindowFXML file.");
             e.printStackTrace();

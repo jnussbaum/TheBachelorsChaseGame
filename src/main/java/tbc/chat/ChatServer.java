@@ -10,7 +10,7 @@ import tbc.server.ServerHandler;
  */
 public class ChatServer {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(ChatServer.class);
 
     /**
      * When the ChatServer receives a message, he forwards it to the correct clients.
@@ -20,7 +20,7 @@ public class ChatServer {
             //send message to all, except the sender
             for (ServerHandler sh : Server.getServerHandlers()) {
                 sh.sendChatMessage(sender, "false", msg);
-                System.out.println("ChatServer sent message to the ServerHandler of "
+                LOGGER.info("ChatServer sent message to the ServerHandler of "
                     + sh.getName());
             }
         } else {
@@ -32,7 +32,7 @@ public class ChatServer {
                 for (ServerHandler sh : Server.getServerHandlers()) {
                     if (sh.getName().equals(receiver)) {
                         sh.sendChatMessage(sender, "true", msg);
-                        System.out.println("ChatServer sent message to the ServerHandler of "
+                        LOGGER.info("ChatServer sent message to the ServerHandler of "
                             + sh.getName());
                     }
                 }

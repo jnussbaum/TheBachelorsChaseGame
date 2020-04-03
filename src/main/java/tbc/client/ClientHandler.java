@@ -25,7 +25,6 @@ public class ClientHandler implements Runnable {
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
     private PrintWriter clientOutputStream;
-    //private boolean unknownHostname = false;
 
     /**
      * The constructor of ClientHandler tries to connect to the server.
@@ -38,7 +37,6 @@ public class ClientHandler implements Runnable {
                     new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (UnknownHostException e) {
-            //unknownHostname = true;
             LOGGER.error("Unknown hostname: " + hostName);
         } catch (IOException e) {
             LOGGER.error("IOException when creating the ClientHandler " + myName);
@@ -49,12 +47,6 @@ public class ClientHandler implements Runnable {
     public String getMyName() {
         return myName;
     }
-
-    /*
-    public boolean isUnknownHostname() {
-        return unknownHostname;
-    }
-    */
 
     /**
      * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming information
