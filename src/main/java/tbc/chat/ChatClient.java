@@ -23,21 +23,6 @@ public class ChatClient {
     }
 
     /**
-     * The run method listens to the keyboard inputs and sends them to processInput().
-     */
-   /* public void run() {
-        String s;
-        try {
-            while ((s = input.readLine()) != null) {
-                processInput(s);
-            }
-        } catch (IOException e) {
-            logger.error("IOException when the ChatClient tried to read from System.in");
-            e.printStackTrace();
-        }
-    }*/
-
-    /**
      * When something was typed on the keyboard, the run method passes it to this method.
      */
     public void processInput(String s) {

@@ -30,6 +30,8 @@ public class Server {
      */
     private static HashMap<String, Lobby> lobbies = new HashMap<>();
 
+    private static int clientNameCount = 0;
+
     /**
      * Processes a client's request to change his name. If newUserName is occupied, it sends a negative
      * answer back. If newUserName is available, it changes requester's name to newUserName and sends a
@@ -37,7 +39,8 @@ public class Server {
      */
     public static void changeName(String requester, String newUserName) {
         if (clients.containsKey(newUserName)) {
-            clients.get(requester).giveFeedbackToChange(false, "xy");
+            clients.get(requester).giveFeedbackToChange(false, newUserName + clientNameCount);
+            clientNameCount++;
         } else {
             ServerHandler sh = clients.get(requester);
             clients.remove(requester);

@@ -39,19 +39,9 @@ public class Client {
             userName = newName;
             LOGGER.info("Hello " + userName + ", welcome to our chat!");
         } else {
-            String name;
-            LOGGER.error("This name is not available any more. Please enter another name.");
-            try {
-                name = input.readLine();
-                while (name.indexOf('@') != -1 || name.length() == 0) {
-                    LOGGER.error("The name should not be empty nor contain the '@' character."
-                        + "\nPlease try another name.");
-                    name = input.readLine();
-                }
-                clientHandler.changeName(name);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            LOGGER.error("This name is not available any more. "
+                + "Your name has been set from the server.");
+            clientHandler.changeName(newName);
         }
     }
 
@@ -66,11 +56,11 @@ public class Client {
         // run jar without a username
         if (args.length < 3) {
             userName = System.getProperty("user.name");
-            LOGGER.info("User: " + userName);
+            LOGGER.info("Username has been set from the server: " + userName);
         } else {
-            // run jar with name
+            // run jar with username
             userName = args[2];
-            LOGGER.info("User: " + userName);
+            LOGGER.info("User has been set from the client: " + userName);
         }
 
         String hostName = args[1].substring(0, args[1].indexOf(':'));

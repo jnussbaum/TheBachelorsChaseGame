@@ -20,7 +20,7 @@ public class ClientHandler implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
 
-    public static String myName;
+    private String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
@@ -88,7 +88,8 @@ public class ClientHandler implements Runnable {
                 myName = newName;
                 break;
             case "CHANGENO":
-                Client.nameChangeFeedback(false, "xyz");
+                String name = commands[1];
+                Client.nameChangeFeedback(false, name);
                 break;
             case "SENDLOBBYLIST":
                 receiveLobbyList(commands);
