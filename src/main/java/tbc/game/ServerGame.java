@@ -137,11 +137,11 @@ public class ServerGame implements Runnable {
      */
     public void giveCardToClient(String clientName) {
         timer.cancel();
-        turnController.release();
+
         calculatePoints();
         giveRandomCard(clientName);
-        giveTurnToNext();
-        LOGGER.info("ServerGame called giveRandomCard and giveTurnToNext");
+        turnController.release();
+        LOGGER.info("ServerGame called giveRandomCard");
     }
 
     /**
@@ -150,7 +150,7 @@ public class ServerGame implements Runnable {
     public void jumpThisTurn() {
         timer.cancel();
         calculatePoints();
-        giveTurnToNext();
+
         turnController.release();
     }
 
@@ -164,9 +164,13 @@ public class ServerGame implements Runnable {
             LOGGER.error("The client " + clientName + "cannot throw away the card "
                     + cardName + " because he does not have such a card.");
         }
-        turnController.release();
+        LOGGER.info("number of coins pre-calculatePoints: "+nametoPlayer(clientName).getNumOfPoints());
         calculatePoints();
-        giveTurnToNext();
+        LOGGER.info("number of coins after calculatePoints: "+nametoPlayer(clientName).getNumOfPoints());
+        //Subtract an coin from player
+        //TODO add trowCost instead of a 1
+        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins()-1);
+        turnController.release();
     }
 
     public void giveTurnToNext() {
@@ -259,28 +263,18 @@ public class ServerGame implements Runnable {
         }
     }
 
-    public void startTimer() {
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                giveTurnToNext();
-            }
-        };
-    }
-
     /**
      * During its lifetime, this thread communicates to the clients whose turn it is
      */
     public void run() {
         try {
             distributeCards();
-            giveTurnToNext();
             while (matchEnd == false) {
                 turnController.acquire();
+                giveTurnToNext();
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     public void run() {
-                        giveTurnToNext();
                         turnController.release();
                     }
                 }, 10000);
