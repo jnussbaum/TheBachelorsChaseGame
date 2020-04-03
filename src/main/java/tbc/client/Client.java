@@ -20,12 +20,10 @@ public class Client {
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
     public static String userName;
-    private static boolean nameSettingSucceeded = false;
     private static BufferedReader input;
     private static ClientHandler clientHandler;
     private static Thread clientHandlerThread;
     public static ChatClient chatClient;
-    //private static Thread chatClientThread;
     private static ClientGame game;
 
     public static ClientGame getGame() {
@@ -39,7 +37,6 @@ public class Client {
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
             userName = newName;
-            nameSettingSucceeded = true;
             LOGGER.info("Hello " + userName + ", welcome to our chat!");
         } else {
             String name;
@@ -148,24 +145,6 @@ public class Client {
             logger.error("There was an IOException when setting the username.");
         }
          */
-
-        //Wait until the name is definitively set
-        while (!nameSettingSucceeded) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                //do nothing
-                //not a very elegant solution. Better ideas at https://stackoverflow.com/questions/5999100/
-            }
-        }
-
-        /**
-         * It is important to wait until the name setting is finished,
-         * before starting the chatClientThread.
-         * Otherwise the chatClientThread will listen to the System.in at the same time
-         * than Client.main() does.
-         */
-        //chatClientThread.start();
 
         Application.launch(Login.class, args);
 
