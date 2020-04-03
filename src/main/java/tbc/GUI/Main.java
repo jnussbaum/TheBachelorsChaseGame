@@ -11,7 +11,7 @@ import tbc.server.Server;
 
 public class Main {
 
-    private final static Logger LOGGER = LogManager.getLogger(Main.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) {
         if (args[0].equals("client")) {

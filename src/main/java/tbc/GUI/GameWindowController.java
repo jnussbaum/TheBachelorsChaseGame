@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import tbc.client.Client;
 
 /**
@@ -16,7 +17,7 @@ public class GameWindowController {
 
     @FXML private TableView highscore;
     @FXML private TableColumn highscoreName, highscoreCoins;
-    @FXML private TextArea txtAMsg;
+    @FXML private TextField msgField;
     @FXML public static TextArea txtAChat;
 
     /*
@@ -31,9 +32,9 @@ public class GameWindowController {
     }*/
 
     public void sendMsg(ActionEvent actionEvent) {
-        Client.chatClient.processInput(txtAMsg.getText());
-        System.out.println(txtAMsg.getText());
-        txtAMsg.clear();
+        Client.chatClient.processInput(msgField.getText());
+        System.out.println("GameWindowController.sendMsg" + msgField.getText());
+        msgField.clear();
     }
 
     public void appendMsg(String msg) {

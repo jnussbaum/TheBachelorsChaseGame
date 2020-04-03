@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LobbyController {
 
-    private final static Logger LOGGER = LogManager.getLogger(LobbyController.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
@@ -30,7 +30,7 @@ public class LobbyController {
         LOGGER.info("Show game window.");
         try {
             Stage gameWindow = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
-            URL loginFxmlUrl = new File("src/main/resources/GameWindowFXML.fxml").toURI().toURL();
+            URL loginFxmlUrl = new File("src/main/resources/tbc/GUI/GameWindowFXML.fxml").toURI().toURL();
             Parent root = FXMLLoader.load(loginFxmlUrl);
             gameWindow.setTitle("The Bachelor's Chase");
             gameWindow.setScene(new Scene(root, 1000, 600));

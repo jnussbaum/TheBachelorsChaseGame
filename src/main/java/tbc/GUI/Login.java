@@ -17,12 +17,12 @@ import tbc.client.Client;
 
 public class Login extends Application {
 
-    private final static Logger LOGGER = LogManager.getLogger(Login.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void start(Stage primaryStage) {
         try {
-            URL loginFxmlUrl = new File("src/main/resources/LoginFXML.fxml").toURI().toURL();
+            URL loginFxmlUrl = new File("src/main/resources/tbc/GUI/LoginFXML.fxml").toURI().toURL();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(loginFxmlUrl);
             Parent root = loader.load();
@@ -32,7 +32,7 @@ public class Login extends Application {
             primaryStage.show();
 
             LoginController loginController = loader.getController();
-            loginController.setUserName(Client.myName);
+            loginController.setUserName(Client.userName);
 
         } catch (Exception e) {
             LOGGER.error("Couldn't find LoginFXML file.");

@@ -14,7 +14,8 @@ import java.nio.charset.StandardCharsets;
  */
 public class ServerHandler implements Runnable {
 
-    private final static Logger LOGGER = LogManager.getLogger(ServerHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private String myName;
     private Socket clientSocket;
     private ChatServer chatServer;
@@ -58,7 +59,7 @@ public class ServerHandler implements Runnable {
                 System.err.println("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) System.err.println("The ServerHandler of " + myName + "received an empty message");
+            if (s == null) System.err.println("The ServerHandler of " + myName + " received an empty message");
             decode(s);
         }
     }
@@ -118,7 +119,7 @@ public class ServerHandler implements Runnable {
                 lobby.serverGame.jumpThisTurn();
                 break;
             default:
-                LOGGER.error("ServerHandler " + myName + "received an invalid message.");
+                LOGGER.error("ServerHandler " + myName + " received an invalid message.");
         }
     }
 
@@ -128,7 +129,7 @@ public class ServerHandler implements Runnable {
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
-        LOGGER.info("ServerHandler " + myName + "sent message to ClientOutputStream");
+        System.out.println("ServerHandler " + myName + " sent message to ClientOutputStream");
     }
 
     /**

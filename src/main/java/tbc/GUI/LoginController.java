@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.client.Client;
 
 /**
  * Processes a client's request to login with a username. First the system-name will be requested
@@ -24,11 +25,10 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginController implements Initializable {
 
-    private final static Logger LOGGER = LogManager.getLogger(LoginController.class);
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @FXML public TextField userName;
     @FXML private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
-    public static String userName_;
     public static String chosenLogo;
 
     public void setUserName(String name) {
@@ -40,17 +40,16 @@ public class LoginController implements Initializable {
         if (logoChosen() == false) {
             labelStatus.setText("Bitte wähle einen Logo aus.");
         } else {
-            userName_ = userName.getText();
             try {
-                URL loginFxmlUrl = new File("src/main/resources/LobbyFXML.fxml").toURI().toURL();
+                URL loginFxmlUrl = new File("src/main/resources/tbc/GUI/LobbyFXML.fxml").toURI().toURL();
                 Parent root = FXMLLoader.load(loginFxmlUrl);
                 Stage lobbyWindow = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 lobbyWindow.setTitle("The Bachelor's Chase - Lobby");
                 lobbyWindow.setScene(new Scene(root, 1000, 600));
                 lobbyWindow.show();
 
-                LOGGER.info(userName_ + " has logged in.");
-                LOGGER.info(userName_ + " has chosen the logo: " + chosenLogo);
+                System.out.println(Client.userName + " has logged in.");
+                System.out.println(Client.userName + " has chosen the logo: " + chosenLogo);
             } catch (Exception e) {
                 LOGGER.error("Couldn't find LobbyFXML file.");
                 e.printStackTrace();
