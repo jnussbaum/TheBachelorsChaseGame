@@ -8,7 +8,7 @@ public class Player {
     boolean tooMuchPoints = false;
     String name;
     int numOfPoints;
-    int numOfCoins;
+    int numOfCoins = 10;
     int numOfCards;
     ServerHandler serverHandler;
     ArrayList<Card> cards = new ArrayList<>();

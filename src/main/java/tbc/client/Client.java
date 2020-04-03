@@ -47,9 +47,8 @@ public class Client {
 
     public static void startGame(String player) {
         String[] players = player.split("::");
-        game = new ClientGame(clientHandler, players, input);
+        game = new ClientGame(clientHandler, players);
         System.out.println("Client's startGame() was invoked");
-        //TODO: oben input wieder rausnehmen
     }
 
     public static void main(String[] args) {
@@ -100,10 +99,10 @@ public class Client {
         } while (clientHandler.isUnknownHostname() == true);
          */
 
-        /*
+    /*
         try {
-            clientHandlerThread.start();
-            clientHandler.registerChatClient(chatClient);
+            //clientHandlerThread.start();
+            //clientHandler.registerChatClient(chatClient);
             String systemName = System.getProperty("user.name");
             if (systemName.indexOf('@') != -1) {
                 systemName.replace('@', '_');
@@ -130,14 +129,13 @@ public class Client {
                     s = input.readLine();
                 }
             }
-            clientHandler.changeName(name);
+            //clientHandler.changeName(name);
         } catch (IOException e) {
-            logger.error("There was an IOException when setting the username.");
+            LOGGER.error("There was an IOException when setting the username.");
         }
-         */
+    */
 
         Application.launch(Login.class, args);
-
         joinALobby();
     }
 
@@ -161,6 +159,7 @@ public class Client {
             if (answer.contains("yes")) {
                 clientHandler.readyForGame();
             }
+            input.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

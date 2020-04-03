@@ -1,5 +1,8 @@
 package tbc.client;
 
+import java.io.DataInputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import tbc.game.Card;
 import tbc.game.Player;
 
@@ -16,13 +19,12 @@ public class ClientGame {
     private int points;
     private ArrayList<Card> cards = new ArrayList<>();
     private Player[] players;
-    private final int THROWCOST = 10; //number of coins you pay to throw away a card
+    private final int THROWCOST = 1; //number of coins you pay to throw away a card
     private BufferedReader input;
     private Timer timer;
 
-    public ClientGame(ClientHandler ch, String[] namePlayers, BufferedReader input) {
+    public ClientGame(ClientHandler ch, String[] namePlayers) {
         this.clientHandler = ch;
-        this.input = input; //TODO: diesen input wieder aus dieser klasse rausnehmen
         myName = clientHandler.getMyName();
         players = new Player[namePlayers.length];
         for (int i = 0; i < namePlayers.length; i++) {
@@ -48,7 +50,8 @@ public class ClientGame {
                 } else {
                     //countdown == 0
                     timer.cancel();
-                    //TODO: Make it impossible for this client to take further actions
+                    jumpThisTurn();
+                    System.out.println("Your Turn has ended");
                 }
             }
         }, 0, 1000);
@@ -58,11 +61,19 @@ public class ClientGame {
     }
 
     void selectWithoutGUI() {
+        String s = "";
+        for(Card c : cards){
+            s = s + c.toString() + " ";
+        }
+        System.out.println("Your Cards are: "+s);
+
+        System.out.println("Number of your coins"+ nametoPlayer(myName).getNumOfCoins());
         System.out.println("Please select your turn: \n" +
                 "Type 1 to take a card,\n" +
                 "Type 2 to throw a card\n" +
                 "Type 3 to jump this turn."
         );
+        input = new BufferedReader(new InputStreamReader( System.in, StandardCharsets.UTF_8));
         try {
             String answer = input.readLine();
             System.out.println("Your input was: " + answer);
@@ -72,12 +83,14 @@ public class ClientGame {
                 takeCard();
                 System.out.println("takeCard() was invoked in ClientCame");
             } else if (answer.contains("2")) {
-                //throwCard();
+                answer = input.readLine();
+                throwCard(answer);
             } else if (answer.contains("3")) {
                 jumpThisTurn();
             } else {
                 System.out.println("User input could not be parsed to one of the three actions");
             }
+            input.close();
         } catch (IOException e) {
             System.out.println("IO Error while reading user input to select a turn.");
             e.printStackTrace();
@@ -91,6 +104,7 @@ public class ClientGame {
     }
 
     void throwCard(String cardName) {
+        timer.cancel();
         int coins = -1;
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(myName)) {
@@ -102,12 +116,13 @@ public class ClientGame {
             cards.remove(Card.valueOf(cardName));
             clientHandler.throwCard(cardName);
             coins -= THROWCOST;
-
+            nametoPlayer(myName).setNumOfCoins(coins);
             calculatePoints();
         }
     }
 
     void jumpThisTurn() {
+        timer.cancel();
         clientHandler.jumpThisTurn();
         calculatePoints();
     }
