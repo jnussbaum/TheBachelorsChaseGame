@@ -140,7 +140,7 @@ public class ServerHandler implements Runnable {
         if (feedback) {
             clientOutputStream.println("CHANGEOK" + "#" + newName);
         } else {
-            clientOutputStream.println("CHANGENO");
+            clientOutputStream.println("CHANGENO" + "#" + newName);
         }
         clientOutputStream.flush();
     }
