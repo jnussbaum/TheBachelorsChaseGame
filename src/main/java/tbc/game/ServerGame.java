@@ -1,14 +1,12 @@
 package tbc.game;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
-
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
 
 public class ServerGame implements Runnable {
 
@@ -136,21 +134,20 @@ public class ServerGame implements Runnable {
      * First of the three possibilities when it is a client's turn: Give a card to the client.
      */
     public void giveCardToClient(String clientName) {
-        timer.cancel();
-        turnController.release();
-        calculatePoints();
+        //timer.cancel();
         giveRandomCard(clientName);
-        giveTurnToNext();
-        LOGGER.info("ServerGame called giveRandomCard and giveTurnToNext");
+        turnController.release();
+        LOGGER.info("ServerGame called giveRandomCard");
+        calculatePoints();
     }
 
     /**
      * Second of the three possibilities when it is a client's turn: Jump this turn.
      */
     public void jumpThisTurn() {
-        timer.cancel();
+        // timer.cancel();
         calculatePoints();
-        giveTurnToNext();
+
         turnController.release();
     }
 
@@ -158,15 +155,21 @@ public class ServerGame implements Runnable {
      * Third of the three possibilities when it is a client's turn: throw away a card.
      */
     public void throwCard(String clientName, String cardName) {
-        timer.cancel();
+        //timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
             LOGGER.error("The client " + clientName + "cannot throw away the card "
                     + cardName + " because he does not have such a card.");
         }
-        turnController.release();
+        LOGGER.info(
+            "number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         calculatePoints();
-        giveTurnToNext();
+        LOGGER.info(
+            "number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+        //Subtract an coin from player
+        //TODO add trowCost instead of a 1
+        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - 1);
+        turnController.release();
     }
 
     public void giveTurnToNext() {
@@ -180,6 +183,7 @@ public class ServerGame implements Runnable {
             }
             //Give the turn to the client whose number was set before
             if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
+                numOfDroppedOut++;
                 giveTurnToNext();
             } else {
                 lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
@@ -187,13 +191,13 @@ public class ServerGame implements Runnable {
             }
         } else {
             System.out.println("All players dropped out of the game");
+            endMatch("NoBody");
         }
     }
 
 
     void endMatch(String winnerName) {
         //Give coins to all clients
-        matchEnd = true;
         calculateCoins();
         // Tell all clients that XY won and that they receive now their coins
         for (int i = 0; i < clientsAsArray.length; i++) {
@@ -237,6 +241,7 @@ public class ServerGame implements Runnable {
                 winner = players[i].name;
             } else if (sum > 180) {
                 players[i].tooMuchPoints = true;
+                players[i].setNumOfPoints(0);
             }
         }
         if (winner != null) {
@@ -259,37 +264,43 @@ public class ServerGame implements Runnable {
         }
     }
 
-    public void startTimer() {
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                giveTurnToNext();
-            }
-        };
-    }
-
     /**
      * During its lifetime, this thread communicates to the clients whose turn it is
      */
     public void run() {
         try {
             distributeCards();
-            giveTurnToNext();
             while (matchEnd == false) {
                 turnController.acquire();
-                timer = new Timer();
-                timer.schedule(new TimerTask() {
+                giveTurnToNext();
+                //timer = new Timer();
+                /*timer.schedule(new TimerTask() {
                     public void run() {
-                        giveTurnToNext();
                         turnController.release();
                     }
                 }, 10000);
+                */
+                checkIfPlayersIn();
             }
             if (matchEnd == true) {
                 //TODO
+                calculatePoints();
+                endMatch("Nobody");
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void checkIfPlayersIn() {
+        int playersOut = 0;
+        for (Player p : players) {
+            if (p.tooMuchPoints) {
+                playersOut++;
+            }
+        }
+        if (playersOut == players.length) {
+            matchEnd = true;
         }
     }
 

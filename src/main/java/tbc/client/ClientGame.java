@@ -1,16 +1,17 @@
 package tbc.client;
 
-import tbc.game.Card;
-import tbc.game.Player;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.game.Card;
+import tbc.game.Player;
 
 public class ClientGame {
 
+    private static final Logger LOGGER = LogManager.getLogger();
     private String myName;
     private ClientHandler clientHandler;
     private int points;
@@ -22,8 +23,8 @@ public class ClientGame {
 
     public ClientGame(ClientHandler ch, String[] namePlayers, BufferedReader input) {
         this.clientHandler = ch;
-        this.input = input; //TODO: diesen input wieder aus dieser klasse rausnehmen
         myName = clientHandler.getMyName();
+        this.input = input;
         players = new Player[namePlayers.length];
         for (int i = 0; i < namePlayers.length; i++) {
             players[i] = new Player(namePlayers[i]);
@@ -37,6 +38,8 @@ public class ClientGame {
 
     public void giveTurn() {
         System.out.println("It's your turn. Seconds left:");
+        //TODO Implement the Timer to the game when gui ready
+        /*
         timer = new Timer();
         timer.schedule(new TimerTask() {
             int countdown = 10;
@@ -54,10 +57,17 @@ public class ClientGame {
         }, 0, 1000);
         //TODO: What to do when the user takes an action before the 10 secs are left
         //TODO: Use this countdown in the GUI
+        */
         selectWithoutGUI();
     }
 
     void selectWithoutGUI() {
+        String s = "";
+        for (Card c : cards) {
+            s = s + c.toString() + " ";
+        }
+        System.out.println("Your Cards are: " + s);
+        System.out.println("Number of your coins" + nametoPlayer(myName).getNumOfCoins());
         System.out.println("Please select your turn: \n" +
                 "Type 1 to take a card,\n" +
                 "Type 2 to throw a card\n" +
@@ -65,32 +75,38 @@ public class ClientGame {
         );
         try {
             String answer = input.readLine();
-            System.out.println("Your input was: " + answer);
+            LOGGER.info("The input was: " + answer);
             if (answer == null) {
                 jumpThisTurn();
             } else if (answer.contains("1")) {
                 takeCard();
                 System.out.println("takeCard() was invoked in ClientCame");
             } else if (answer.contains("2")) {
-                //throwCard();
+                System.out.println("Your Cards are: " + s);
+                System.out.println("Please tipe in the Crad you want to Throw away: ");
+                answer = input.readLine();
+                throwCard(answer);
             } else if (answer.contains("3")) {
                 jumpThisTurn();
             } else {
-                System.out.println("User input could not be parsed to one of the three actions");
+                LOGGER.info("User input could not be parsed to one of the three actions");
+                System.out.println("please tip one of the following options: ");
+                selectWithoutGUI();
             }
         } catch (IOException e) {
-            System.out.println("IO Error while reading user input to select a turn.");
+            LOGGER.error("IO Error while reading user input to select a turn.");
             e.printStackTrace();
         }
     }
 
     void takeCard() {
-        timer.cancel();
+        //timer.cancel();
         clientHandler.askForCard();
         calculatePoints();
     }
 
     void throwCard(String cardName) {
+        //timer.cancel();
         int coins = -1;
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(myName)) {
@@ -102,12 +118,14 @@ public class ClientGame {
             cards.remove(Card.valueOf(cardName));
             clientHandler.throwCard(cardName);
             coins -= THROWCOST;
-
+            nametoPlayer(myName).setNumOfCoins(coins);
             calculatePoints();
+            System.out.println("The Card " + cardName + " was thrown away");
         }
     }
 
     void jumpThisTurn() {
+        //timer.cancel();
         clientHandler.jumpThisTurn();
         calculatePoints();
     }
@@ -122,8 +140,11 @@ public class ClientGame {
 
     public void endMatch(String winnerName) {
         System.out.println("The match has ended, the winner is " + winnerName +
-                "Your received " + points + "coins"); //TODO: calculate the coins received (!= points)
-        System.out.println("Would you like to start a new match?");
+            " You scored " + points + " points");
+        System.out.println("You new Number of Coins is: " + nametoPlayer(myName).getNumOfCoins());
+        //TODO the reset has to wörk properly
+        //reset();
+        Client.askToStartAGame();
     }
 
     public void receiveCoins(String allCoins) {
@@ -152,5 +173,14 @@ public class ClientGame {
         }
         System.err.println("no Player with that name ");
         return new Player("Badplayer");
+    }
+
+    private void reset() {
+        for (Player p : players) {
+            p.setNumOfPoints(0);
+            p.clearCards();
+
+            LOGGER.info(p.getName() + " Has bin resetted");
+        }
     }
 }

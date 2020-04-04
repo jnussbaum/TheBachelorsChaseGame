@@ -49,7 +49,6 @@ public class Client {
         String[] players = player.split("::");
         game = new ClientGame(clientHandler, players, input);
         System.out.println("Client's startGame() was invoked");
-        //TODO: oben input wieder rausnehmen
     }
 
     public static void main(String[] args) {
