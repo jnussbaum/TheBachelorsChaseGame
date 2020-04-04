@@ -21,12 +21,12 @@ import tbc.client.Client;
 
 public class LobbyController {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(LobbyController.class);
 
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
     public static GameWindowController gameWindowController;
-    public static DiversController diversController;
+    public static DiversWindowController diversWindowController;
     private Stage secondStage;
 
     public void startGame(MouseEvent mouseEvent) {
@@ -37,7 +37,7 @@ public class LobbyController {
             Parent root = loader.load();
 
             gameWindow.setTitle("The Bachelor's Chase");
-            gameWindow.setScene(new Scene(root, 1000, 600));
+            gameWindow.setScene(new Scene(root, 1000, 650));
             gameWindow.show();
 
             gameWindowController = loader.getController();
@@ -79,7 +79,7 @@ public class LobbyController {
     public void showGoal() {
         LOGGER.info("Show goal.");
         window.setVisible(true);
-        textArea.setText("Ziel: \nZiel des Spiels ist es 180  Kreditpunkte zu erzielen. "
+        textArea.setText("Ziel: \nZiel des Spiels ist es 180 Kreditpunkte zu erzielen. "
             + "In jeder Runde darf der Spieler entscheiden ob er eine Karte ziehen, "
             + "eine Karte wegschmeissen oder diese Runde aussetzen möchte. "
             + "Hat ein Spieler über 180 Kreditpunkte erzielt, "
@@ -90,7 +90,7 @@ public class LobbyController {
         LOGGER.info("Show divers.");
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("DiversFXML.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DiversWindowFXML.fxml"));
             BorderPane divers = loader.load();
 
             Stage diversWindow = new Stage();
@@ -101,7 +101,7 @@ public class LobbyController {
             diversWindow.setScene(diversScene);
             diversWindow.show();
 
-            diversController = loader.getController();
+            diversWindowController = loader.getController();
 
         } catch (Exception e) {
             LOGGER.error("Couldn't find DiversFXML file.");

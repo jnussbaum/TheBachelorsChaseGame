@@ -81,6 +81,7 @@ public class Client {
             clientHandlerThread.start();
             clientHandler.registerChatClient(chatClient);
             clientHandler.changeName(userName);
+            Application.launch(Login.class, args);
         } catch (Exception e) {
             LOGGER.error("Could not set the username.");
         }
@@ -135,8 +136,6 @@ public class Client {
             logger.error("There was an IOException when setting the username.");
         }
          */
-
-        Application.launch(Login.class, args);
 
         joinALobby();
     }

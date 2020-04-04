@@ -28,6 +28,8 @@ public class ChatClient {
     public void processInput(String s) {
         // the client wants to logout
         if (s.startsWith("LOGOUT")) {
+            s = "hat das Spiel verlassen.";
+            clientHandler.sendMessage("ALL", "false", s);
             clientHandler.logOut();
             LOGGER.info("You have logged out.");
             return;

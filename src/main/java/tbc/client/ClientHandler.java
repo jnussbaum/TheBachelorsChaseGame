@@ -87,6 +87,16 @@ public class ClientHandler implements Runnable {
                 Client.nameChangeFeedback(true, newName);
 
                 /*
+                if (myName.equals(newName) == false) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            chatClient.test(newName);
+                        }
+                    });
+                }*/
+
+                /*
                 Exception in thread "Thread-0" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-0
 
                 warum geht das chatClient.chatArrived(), aber das untere nicht?
@@ -94,8 +104,8 @@ public class ClientHandler implements Runnable {
                  */
                 /*if (myName.equals(newName) == false)
                     chatClient.test("new Name: " + newName);
-                    //if (LobbyController.diversController != null)
-                        //LobbyController.diversController.setStatus("new Name: " + newName);*/
+                    //if (LobbyController.diversWindowController != null)
+                        //LobbyController.diversWindowController.setStatus("new Name: " + newName);*/
 
                 myName = newName;
                 break;
@@ -129,8 +139,10 @@ public class ClientHandler implements Runnable {
             case "SENDCOINS":
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
+            case "LOGOUT":
+                System.exit(0);
             default:
-                LOGGER.error("ClientHandler " + myName + "received an invalid message.");
+                LOGGER.error("ClientHandler " + myName + " received an invalid message.");
         }
     }
 

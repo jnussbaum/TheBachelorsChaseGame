@@ -158,6 +158,9 @@ public class ServerHandler implements Runnable {
      */
     public void closeConnection() {
         try {
+            clientOutputStream.println("LOGOUT");
+            clientOutputStream.flush();
+
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
