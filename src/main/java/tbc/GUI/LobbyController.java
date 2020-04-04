@@ -27,6 +27,7 @@ public class LobbyController {
     @FXML private TextArea textArea;
     public static GameWindowController gameWindowController;
     public static DiversWindowController diversWindowController;
+    public static CardWindowController cardWindowController;
     private Stage secondStage;
 
     public void startGame(MouseEvent mouseEvent) {
@@ -53,6 +54,25 @@ public class LobbyController {
     public void showCards() {
         // TODO show the cards if clicked on it
         LOGGER.info("Show cards.");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CardWindowFXML.fxml"));
+            BorderPane card = loader.load();
+
+            Stage cardWindow = new Stage();
+            cardWindow.setTitle("The Bachelor's Chase - Karten");
+            cardWindow.initModality(Modality.APPLICATION_MODAL);
+            cardWindow.initOwner(secondStage);
+            Scene cardScene = new Scene(card);
+            cardWindow.setScene(cardScene);
+            cardWindow.show();
+
+            cardWindowController = loader.getController();
+
+        } catch (Exception e) {
+            LOGGER.error("Couldn't find CardFXML file.");
+            e.printStackTrace();
+        }
     }
 
     public void showRules() {
