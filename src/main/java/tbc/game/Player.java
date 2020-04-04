@@ -1,8 +1,7 @@
 package tbc.game;
 
-import tbc.server.ServerHandler;
-
 import java.util.ArrayList;
+import tbc.server.ServerHandler;
 
 public class Player {
     boolean tooMuchPoints = false;
@@ -65,6 +64,10 @@ public class Player {
         }
         setNumOfPoints(sum);
         return sum;
+    }
+
+    public void clearCards() {
+        cards.removeAll(cards);
     }
 
 }

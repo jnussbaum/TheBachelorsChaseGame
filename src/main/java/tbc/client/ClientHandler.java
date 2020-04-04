@@ -127,7 +127,8 @@ public class ClientHandler implements Runnable {
                 LOGGER.info("ClientHandler received card " + cardName);
                 break;
             case "GAMESTARTED":
-                Client.startGame(commands[1]);
+                String players = commands[1];
+                Client.startGame(players);
                 break;
             case "GIVETURN":
                 Client.getGame().giveTurn();
@@ -193,11 +194,6 @@ public class ClientHandler implements Runnable {
 
     void joinLobby(String lobbyName) {
         clientOutputStream.println("JOINLOBBY" + "#" + lobbyName);
-        clientOutputStream.flush();
-    }
-
-    void startGame() {
-        clientOutputStream.println("STARTGAME");
         clientOutputStream.flush();
     }
 
