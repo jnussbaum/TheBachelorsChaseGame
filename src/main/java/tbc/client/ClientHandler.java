@@ -165,7 +165,7 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    void askForLobbyList() {
+    public void askForLobbyList() {
         clientOutputStream.println("GETLOBBYLIST");
         clientOutputStream.flush();
     }
@@ -174,7 +174,7 @@ public class ClientHandler implements Runnable {
         clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
     }
 
-    void receiveLobbyList(String[] commands) {
+    public void receiveLobbyList(String[] commands) {
         if (commands.length > 1) {
             String[] lobbies = new String[commands.length - 1];
             for (int i = 1; i < commands.length; i++) {

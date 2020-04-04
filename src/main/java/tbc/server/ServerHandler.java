@@ -77,9 +77,6 @@ public class ServerHandler implements Runnable {
                 String userName = commands[1];
                 Server.changeName(myName, userName);
                 break;
-            case "LOGOUT":
-                closeConnection();
-                break;
             case "CHAT":
                 String sender = commands[1];
                 String receiver = commands[2];
@@ -117,6 +114,9 @@ public class ServerHandler implements Runnable {
                 break;
             case "JUMPTHISTURN":
                 lobby.serverGame.jumpThisTurn();
+                break;
+            case "LOGOUT":
+                closeConnection();
                 break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");
@@ -157,10 +157,10 @@ public class ServerHandler implements Runnable {
      * This method closes all the streams and the socket of the client who requested the LOGOUT.
      */
     public void closeConnection() {
-        try {
-            clientOutputStream.println("LOGOUT");
-            clientOutputStream.flush();
+        clientOutputStream.println("LOGOUT");
+        clientOutputStream.flush();
 
+        try {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();

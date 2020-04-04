@@ -26,7 +26,7 @@ public class GameInfoWindow {
         textArea.setPrefSize(700, 500);
         textArea.setEditable(false);
         textArea.setFocusTraversable(false);
-        textArea.wrapTextProperty();
+        textArea.setWrapText(true);
         textArea.setText("Spielbeschreibung:"
             + "\nJeder Spieler erhält am Anfang des Spieles eine zufällige Karte."
             + "In jeder Runde muss der Spieler innerhalb von 10 Sekunden entscheiden,"

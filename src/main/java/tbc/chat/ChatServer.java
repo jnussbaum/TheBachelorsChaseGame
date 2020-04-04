@@ -17,23 +17,26 @@ public class ChatServer {
      */
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
-            //send message to all, except the sender
+            // send message to all, except the sender
             for (ServerHandler sh : Server.getServerHandlers()) {
                 sh.sendChatMessage(sender, "false", msg);
-                LOGGER.info("ChatServer sent message to the ServerHandler of "
-                    + sh.getName());
+                LOGGER.info("ChatServer sent message to the ServerHandler of " + sh.getName());
             }
         } else {
-            //if receiver does not exist
+            // if receiver does not exist send a private message to the sender
             if (!checkUser(receiver)) {
                 LOGGER.info("User not found.");
+                for (ServerHandler sh : Server.getServerHandlers()) {
+                    if (sh.getName().equals(sender)) {
+                        sh.sendChatMessage("Server", "true", "User nicht gefunden");
+                    }
+                }
             } else {
-                //send message to specific receiver
+                // send message to specific receiver
                 for (ServerHandler sh : Server.getServerHandlers()) {
                     if (sh.getName().equals(receiver)) {
                         sh.sendChatMessage(sender, "true", msg);
-                        LOGGER.info("ChatServer sent message to the ServerHandler of "
-                            + sh.getName());
+                        LOGGER.info("ChatServer sent message to the ServerHandler of " + sh.getName());
                     }
                 }
             }

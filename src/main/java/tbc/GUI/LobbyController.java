@@ -1,5 +1,8 @@
 package tbc.GUI;
 
+import static tbc.client.Client.clientHandler;
+
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -41,8 +44,14 @@ public class LobbyController {
             gameWindow.show();
 
             gameWindowController = loader.getController();
-            // TODO show in other lobbies
-            gameWindowController.appendMsg(Client.userName + " has entered the chat.\n");
+
+            clientHandler.sendMessage("ALL", "false", "Willkommen, " + Client.userName);
+
+            gameWindowController.btnSend.disableProperty().bind(
+                Bindings.isEmpty(gameWindowController.msgField.textProperty())
+                    .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
+                    .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
+            );
 
         } catch (Exception e) {
             LOGGER.error("Couldn't find GameWindowFXML file.");
@@ -103,6 +112,11 @@ public class LobbyController {
 
             diversWindowController = loader.getController();
 
+            diversWindowController.btnEnter.disableProperty().bind(
+                Bindings.isEmpty(diversWindowController.newUsername.textProperty())
+                    .and(Bindings.isEmpty(diversWindowController.newUsername.textProperty()))
+                    .and(Bindings.isEmpty(diversWindowController.newUsername.textProperty()))
+            );
         } catch (Exception e) {
             LOGGER.error("Couldn't find DiversFXML file.");
             e.printStackTrace();

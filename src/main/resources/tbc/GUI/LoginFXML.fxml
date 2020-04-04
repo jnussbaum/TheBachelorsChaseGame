@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -52,58 +52,66 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Pane prefHeight="421.0" prefWidth="378.0">
+            <HBox prefHeight="220.0" prefWidth="379.0">
                <children>
-                  <HBox prefHeight="220.0" prefWidth="379.0">
+                  <StackPane prefWidth="150.0">
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
                      <children>
-                        <Rectangle fx:id="logoGirly" arcHeight="5.0" arcWidth="5.0" fill="#f86d97" height="150.0" onMouseClicked="#girly" stroke="BLACK" strokeType="INSIDE" width="150.0">
-                           <HBox.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </HBox.margin>
-                        </Rectangle>
-                        <Rectangle fx:id="logoNerd" arcHeight="5.0" arcWidth="5.0" fill="#1fff3d" height="150.0" onMouseClicked="#nerd" stroke="BLACK" strokeType="INSIDE" width="150.0">
-                           <HBox.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </HBox.margin>
-                        </Rectangle>
+                        <Rectangle fx:id="logoGirly" arcHeight="5.0" arcWidth="5.0" fill="#f86d97" height="150.0" onMouseClicked="#girly" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                        <Label fx:id="labelGirly" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mouseTransparent="true" prefHeight="149.0" prefWidth="151.0" style="-fx-text-fill: #000000#000000;" text="Girly" textAlignment="CENTER">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
                      </children>
-                  </HBox>
-                  <HBox layoutY="208.0" prefHeight="210.0" prefWidth="379.0">
+                  </StackPane>
+                  <StackPane>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
                      <children>
-                        <Rectangle fx:id="logoHippy" arcHeight="5.0" arcWidth="5.0" fill="#eeff1f" height="150.0" onMouseClicked="#hippy" stroke="BLACK" strokeType="INSIDE" width="150.0">
-                           <HBox.margin>
-                              <Insets left="20.0" right="20.0" top="15.0" />
-                           </HBox.margin>
-                        </Rectangle>
-                        <Rectangle fx:id="logoEmo" arcHeight="5.0" arcWidth="5.0" fill="#5f0e75" height="150.0" onMouseClicked="#emo" stroke="BLACK" strokeType="INSIDE" width="150.0">
-                           <HBox.margin>
-                              <Insets left="20.0" right="20.0" top="15.0" />
-                           </HBox.margin>
-                        </Rectangle>
+                        <Rectangle fx:id="logoNerd" arcHeight="5.0" arcWidth="5.0" fill="#1fff3d" height="150.0" onMouseClicked="#nerd" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                        <Label fx:id="labelNerd" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mouseTransparent="true" prefHeight="151.0" prefWidth="152.0" style="-fx-text-fill: #000000#000000;" text="Nerd" textAlignment="CENTER">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
                      </children>
-                  </HBox>
-                  <Label fx:id="labelGirly" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="20.0" mouseTransparent="true" prefHeight="149.0" prefWidth="151.0" style="-fx-text-fill: #000000#000000;" text="Girly" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelNerd" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="209.0" layoutY="-1.0" mouseTransparent="true" prefHeight="151.0" prefWidth="152.0" style="-fx-text-fill: #000000#000000;" text="Nerd" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelHippy" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="21.0" layoutY="224.0" mouseTransparent="true" prefHeight="148.0" prefWidth="150.0" style="-fx-text-fill: #000000#000000;" text="Hippy" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="labelEmo" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="209.0" layoutY="224.0" mouseTransparent="true" prefHeight="149.0" prefWidth="152.0" style="-fx-text-fill: #000000#000000;" text="Emo" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
+                  </StackPane>
                </children>
-            </Pane>
+            </HBox>
+            <HBox prefHeight="210.0" prefWidth="379.0">
+               <children>
+                  <StackPane>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" top="15.0" />
+                     </HBox.margin>
+                     <children>
+                        <Rectangle fx:id="logoHippy" arcHeight="5.0" arcWidth="5.0" fill="#eeff1f" height="150.0" onMouseClicked="#hippy" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                        <Label fx:id="labelHippy" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mouseTransparent="true" prefHeight="148.0" prefWidth="150.0" style="-fx-text-fill: #000000#000000;" text="Hippy" textAlignment="CENTER">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <StackPane>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" top="15.0" />
+                     </HBox.margin>
+                     <children>
+                        <Rectangle fx:id="logoEmo" arcHeight="5.0" arcWidth="5.0" fill="#5f0e75" height="150.0" onMouseClicked="#emo" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                        <Label fx:id="labelEmo" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mouseTransparent="true" prefHeight="149.0" prefWidth="152.0" style="-fx-text-fill: #000000#000000;" text="Emo" textAlignment="CENTER">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </center>

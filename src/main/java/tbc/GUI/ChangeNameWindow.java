@@ -2,6 +2,7 @@ package tbc.GUI;
 
 import static tbc.client.Client.clientHandler;
 
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -36,22 +37,23 @@ public class ChangeNameWindow {
         Label labelStatus = new Label();
 
         Button enter = new Button("Enter");
+        enter.disableProperty().bind(
+            Bindings.isEmpty(newUsername.textProperty())
+                .and(Bindings.isEmpty(newUsername.textProperty()))
+                .and(Bindings.isEmpty(newUsername.textProperty()))
+        );
         enter.setOnAction(e -> {
-            if (newUsername.getText().isEmpty()) {
-                //labelStatus.setText("Gib einen neuen Username ein.");
-                // do nothing until we find a solution
-            } else {
-                String clientName = newUsername.getText();
+            String clientName = newUsername.getText();
                 newUsername.clear();
                 clientHandler.changeName(clientName);
-            }
         });
 
         Button close = new Button("Schliessen");
         close.setOnAction(e -> {
-          Stage stage = (Stage) close.getScene().getWindow();
-          stage.close();
-          LOGGER.info("Closed chat info window.");
+            Stage stage = (Stage) close.getScene().getWindow();
+            stage.close();
+            LobbyController.gameWindowController.appendMsg("Dein Name ist " + clientHandler.getMyName());
+            LOGGER.info("Closed chat info window.");
         });
 
         VBox layout = new VBox(10);
@@ -59,7 +61,7 @@ public class ChangeNameWindow {
         layout.getChildren().addAll(label, newUsername, labelStatus, enter, close);
         layout.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(layout, 300, 150);
+        Scene scene = new Scene(layout, 300, 180);
         window.setScene(scene);
         window.showAndWait();
     }

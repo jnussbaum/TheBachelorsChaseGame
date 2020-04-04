@@ -31,7 +31,7 @@
                </VBox.margin>
             </Separator>
             <Button fx:id="btnPlayerList" mnemonicParsing="false" onAction="#showPlayerList" text="Playerliste anzeigen" />
-            <Button fx:id="btnLobbyList" disable="true" mnemonicParsing="false" onAction="#showLobbyList" text="Lobbyliste anzeigen">
+            <Button fx:id="btnLobbyList" mnemonicParsing="false" onAction="#showLobbyList" text="Lobbyliste anzeigen">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

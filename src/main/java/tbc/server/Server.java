@@ -103,7 +103,7 @@ public class Server {
         LOGGER.info("Port: " + portNumber);
         ServerSocket serverSocket;
 
-        //This is the Headquarter of the Chat application.
+        // This is the Headquarter of the Chat application.
         ChatServer chatServer = new ChatServer();
 
 				try {

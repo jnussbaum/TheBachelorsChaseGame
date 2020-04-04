@@ -1,12 +1,11 @@
 package tbc.GUI;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
@@ -20,11 +19,12 @@ public class GameWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(GameWindowController.class);
 
-    @FXML private TableView highscore;
-    @FXML private TableColumn highscoreName, highscoreCoins;
-    @FXML private TextField msgField;
+    @FXML public TableView highscoreTable;
+    @FXML public TableColumn highscoreName;
+    @FXML public TableColumn highscoreCoins;
+    @FXML public TextField msgField;
     @FXML private TextArea txtAChat;
-    private Stage secondStage;
+    @FXML public Button btnSend;
 
     public void sendMsg() {
         Client.chatClient.processInput(msgField.getText());
@@ -35,7 +35,7 @@ public class GameWindowController {
         txtAChat.appendText(msg + "\n");
     }
 
-    public void changeUsername(ActionEvent actionEvent) {
+    public void changeUsername() {
         LOGGER.info("Show change name window.");
         ChangeNameWindow.display();
     }
@@ -54,4 +54,5 @@ public class GameWindowController {
         LOGGER.info("Show chat info.");
         ChatInfoWindow.display();
     }
+
 }
