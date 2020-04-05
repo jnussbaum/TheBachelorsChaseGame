@@ -136,6 +136,7 @@ public class ClientGame {
             sum += c.getValue();
         }
         points = sum;
+        LOGGER.info("Points have bin Calculated and they are: " + points);
     }
 
     public void endMatch(String winnerName) {
@@ -144,7 +145,7 @@ public class ClientGame {
         System.out.println("You new Number of Coins is: " + nametoPlayer(myName).getNumOfCoins());
         //TODO the reset has to wörk properly
         //reset();
-        Client.askToStartAGame();
+        Client.askToStartNewMatch();
     }
 
     public void receiveCoins(String allCoins) {

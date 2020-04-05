@@ -99,7 +99,8 @@ public class ServerHandler implements Runnable {
                 Server.joinLobby(name, this);
                 break;
             case "READYFORGAME":
-                System.out.println("ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
+                LOGGER.info(
+                    "ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
                         "this lobby: " + lobby);
                 System.out.println(myName);
                 lobby.readyForGame(myName);
@@ -117,6 +118,9 @@ public class ServerHandler implements Runnable {
                 break;
             case "LOGOUT":
                 closeConnection();
+                break;
+            case "READYFORMATCH":
+                lobby.readyForMatch(myName);
                 break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");
@@ -226,11 +230,13 @@ public class ServerHandler implements Runnable {
     public void endMatch(String winnerName) {
         clientOutputStream.println("ENDMATCH" + "#" + winnerName);
         clientOutputStream.flush();
+        LOGGER.info("endmatch has been sent");
     }
 
     public void sendCoins(String allCoins) {
         clientOutputStream.println("SENDCOINS" + "#" + allCoins);
         clientOutputStream.flush();
+        LOGGER.info("Coins have been sent");
     }
 
     public void setLobby(Lobby lobby) {

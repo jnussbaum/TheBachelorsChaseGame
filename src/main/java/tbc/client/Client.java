@@ -151,16 +151,29 @@ public class Client {
         }
     }
 
-    static void askToStartAGame() {
-        try {
-            System.out.println("Would you like to start a game? Type yes or no.");
-            String answer = input.readLine();
-            System.out.println(answer);
-            if (answer.contains("yes")) {
-                clientHandler.readyForGame();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+  static void askToStartAGame() {
+    try {
+      System.out.println("Would you like to start a game? Type yes or no.");
+      String answer = input.readLine();
+      System.out.println(answer);
+      if (answer.contains("yes")) {
+        clientHandler.readyForGame();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+  }
+
+  static void askToStartNewMatch() {
+    try {
+      System.out.println("Would you like to start a new metch? Type yes or no.");
+      String answer = input.readLine();
+      System.out.println(answer);
+      if (answer.contains("yes")) {
+        clientHandler.askForNewMatch();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

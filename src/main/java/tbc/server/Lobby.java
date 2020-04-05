@@ -1,12 +1,11 @@
 package tbc.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.game.ServerGame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.game.ServerGame;
 
 /**
  * Server-side lobby, created by the Server.
@@ -28,7 +27,8 @@ public class Lobby {
     /**
      * Controls all clients if they are ready to start a game or not.
      */
-    private ArrayList<String> readyClients = new ArrayList<>();
+    private ArrayList<String> readyGameClients = new ArrayList<>();
+    private ArrayList<String> readyMatchClients = new ArrayList<>();
 
     /**
      * The game belonging to this lobby is stored in this variable.
@@ -69,9 +69,16 @@ public class Lobby {
     }
 
     void readyForGame(String myName) {
-        readyClients.add(myName);
-        if (readyClients.size() == clients.size() && readyClients.size() > 1) {
+        readyGameClients.add(myName);
+        if (readyGameClients.size() == clients.size() && readyGameClients.size() > 1) {
             startGame();
+        }
+    }
+
+    void readyForMatch(String myName) {
+        readyMatchClients.add(myName);
+        if (readyMatchClients.size() == clients.size() && readyMatchClients.size() > 1) {
+            serverGame.startMatchagain();
         }
     }
 

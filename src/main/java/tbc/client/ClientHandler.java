@@ -216,4 +216,9 @@ public class ClientHandler implements Runnable {
         clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }
+
+    public void askForNewMatch() {
+        clientOutputStream.println("READYFORMATCH");
+        clientOutputStream.flush();
+    }
 }

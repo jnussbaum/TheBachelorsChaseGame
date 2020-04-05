@@ -18,6 +18,8 @@ public class ServerGame implements Runnable {
     private String[] clientsAsArray = new String[4];
 
     boolean matchEnd = false;
+    boolean matchActive = true;
+    boolean winner = false;
 
     private Timer timer;
     private Semaphore turnController = new Semaphore(1);
@@ -74,6 +76,7 @@ public class ServerGame implements Runnable {
 
     void startMatch() {
         Thread matchThread = new Thread(new ServerMatch(this));
+        matchActive = true;
         matchThread.start();
     }
 
@@ -174,29 +177,35 @@ public class ServerGame implements Runnable {
 
     public void giveTurnToNext() {
         LOGGER.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
-        if (numOfDroppedOut < clientsAsArray.length) {
-            //Find out the number of the next client
-            if (activeClient == players.length - 1) {
-                activeClient = 0;
+        if (winner == false) {
+            if (numOfDroppedOut < clientsAsArray.length) {
+                //Find out the number of the next client
+                if (activeClient == players.length - 1) {
+                    activeClient = 0;
+                } else {
+                    activeClient++;
+                }
+                //Give the turn to the client whose number was set before
+                if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
+                    numOfDroppedOut++;
+                    giveTurnToNext();
+                } else {
+                    lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
+                    System.out.println("ServerGame's method giveTurnToNext() gave turn to "
+                        + clientsAsArray[activeClient]);
+                }
             } else {
-                activeClient++;
+                System.out.println("All players dropped out of the game");
+                endMatch("NoBody");
             }
-            //Give the turn to the client whose number was set before
-            if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
-                numOfDroppedOut++;
-                giveTurnToNext();
-            } else {
-                lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
-                System.out.println("ServerGame's method giveTurnToNext() gave turn to " + clientsAsArray[activeClient]);
-            }
-        } else {
-            System.out.println("All players dropped out of the game");
-            endMatch("NoBody");
         }
     }
 
 
     void endMatch(String winnerName) {
+        LOGGER.info("endMatch has bin started");
+        matchEnd = true;
+        winner = true;
         //Give coins to all clients
         calculateCoins();
         // Tell all clients that XY won and that they receive now their coins
@@ -204,6 +213,7 @@ public class ServerGame implements Runnable {
             String clientName = clientsAsArray[i];
             lobby.getServerHandler(clientName).sendCoins(allCoinsToString());
             lobby.getServerHandler(clientName).endMatch(winnerName);
+            LOGGER.info("endMatch has tooled " + winnerName + " to client");
         }
 
         //terminate match:
@@ -245,6 +255,7 @@ public class ServerGame implements Runnable {
             }
         }
         if (winner != null) {
+            LOGGER.info("calculatePoints has determint a winner");
             endMatch(winner);
         }
     }
@@ -253,6 +264,7 @@ public class ServerGame implements Runnable {
      * Calculates the Coins of all Players and resets the Points to 0
      */
     void calculateCoins() {
+        LOGGER.info("Coins will be calculated");
         for (int i = 0; i < players.length; i++) {
             Player a = players[i];
             if (a.getNumOfPoints() == 180) {
@@ -264,45 +276,36 @@ public class ServerGame implements Runnable {
         }
     }
 
+    public void startMatchagain() {
+        matchActive = true;
+        winner = false;
+    }
+
     /**
      * During its lifetime, this thread communicates to the clients whose turn it is
      */
     public void run() {
         try {
-            distributeCards();
-            while (matchEnd == false) {
-                turnController.acquire();
-                giveTurnToNext();
-                //timer = new Timer();
+            while (true) {
+                if (matchActive) {
+                    distributeCards();
+                    while (matchEnd == false) {
+                        turnController.acquire();
+                        giveTurnToNext();
+                        //timer = new Timer();
                 /*timer.schedule(new TimerTask() {
                     public void run() {
                         turnController.release();
                     }
                 }, 10000);
                 */
-                checkIfPlayersIn();
-            }
-            if (matchEnd == true) {
-                //TODO
-                calculatePoints();
-                endMatch("Nobody");
+                    }
+                    matchActive = false;
+                }
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
-    private void checkIfPlayersIn() {
-        int playersOut = 0;
-        for (Player p : players) {
-            if (p.tooMuchPoints) {
-                playersOut++;
-            }
-        }
-        if (playersOut == players.length) {
-            matchEnd = true;
-        }
-    }
-
 
 }
