@@ -115,11 +115,11 @@ public class ServerHandler implements Runnable {
             case "JUMPTHISTURN":
                 lobby.serverGame.jumpThisTurn();
                 break;
-            case "LOGOUT":
-                closeConnection();
-                break;
             case "READYFORMATCH":
                 lobby.readyForMatch(myName);
+                break;
+            case "LOGOUT":
+                closeConnection();
                 break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");

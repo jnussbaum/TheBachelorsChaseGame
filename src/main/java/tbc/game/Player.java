@@ -1,9 +1,11 @@
 package tbc.game;
 
-import java.util.ArrayList;
 import tbc.server.ServerHandler;
 
+import java.util.ArrayList;
+
 public class Player {
+
     boolean tooMuchPoints = false;
     String name;
     int numOfPoints;
