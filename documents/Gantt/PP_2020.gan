@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-03-18" view-index="0" gantt-divider-location="366" resource-divider-location="300" version="2.8.10" locale="de_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Programmierprojekt 2020" company="Universität Basel" webLink="http://p9.cs.unibas.ch/cs108/2020/" view-date="2020-04-03" view-index="0" gantt-divider-location="605" resource-divider-location="300" version="2.8.10" locale="de">
     <description><![CDATA[Unser ultimativer Zeitplan für das Kartenspiel. Unsere Gruppe bestehend aus Meipei Nghiem, Johannes Nussbaum, Adrian Prokopczyk und Anna Diack.
 
 Projektname: Bachelor's Chase
@@ -7,10 +7,10 @@ Gruppenname: The Chasers
 
 ]]></description>
     <view zooming-state="default:3" id="gantt-chart">
-        <field id="tpd3" name="Vorgang" width="163" order="0"/>
-        <field id="tpd4" name="Anfang" width="91" order="1"/>
-        <field id="tpd5" name="Ende" width="91" order="2"/>
-        <option id="color.recent"><![CDATA[#000000 #666600 #00cc00 #cccccc #0066ff #006666 #ff6600 #666666 #339900 #ffff33]]></option>
+        <field id="tpd3" name="Vorgang" width="242" order="0"/>
+        <field id="tpd4" name="Anfang" width="171" order="1"/>
+        <field id="tpd5" name="Ende" width="171" order="2"/>
+        <option id="color.recent"><![CDATA[#ffff33 #006666 #3333ff #000000 #666600 #00cc00 #cccccc #0066ff #ff6600 #666666]]></option>
     </view>
     <view id="resource-table">
         <field id="0" name="Ressource" width="209" order="0"/>
@@ -109,6 +109,7 @@ Erwartete Inhalte:
 ]]></notes>
             <depend id="19" type="2" difference="0" hardness="Rubber"/>
         </task>
+        <task id="142" name="Vorgang_142" meeting="false" start="2020-03-18" duration="1" complete="0" expand="true"/>
         <task id="112" name="Server Testen" color="#00cc00" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-04-03" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="35" name="3. Meilenstein - Client" color="#666600" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
             <depend id="19" type="2" difference="0" hardness="Rubber"/>
@@ -126,29 +127,121 @@ Sound]]></notes>
         <task id="125" name="Software/tbc.GUI Testen" color="#006666" meeting="false" start="2020-04-10" duration="5" complete="0" thirdDate="2020-04-03" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="23" name="Präsentation im Plenum" color="#000000" meeting="false" start="2020-04-16" duration="2" complete="0" thirdDate="2019-04-11" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="36" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-08" duration="0" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="27" name="4. Meilenstein - Server" color="#00cc00" meeting="false" start="2020-04-08" duration="10" complete="0" thirdDate="2019-04-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+        <task id="27" name="4. Meilenstein Product" color="#00cc00" meeting="false" start="2020-04-08" duration="14" complete="8" thirdDate="2019-04-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="false">
             <notes><![CDATA[Regel implementieren]]></notes>
-        </task>
-        <task id="136" name="Server Test" color="#00cc00" meeting="false" start="2020-04-21" duration="5" complete="50" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="37" name="4. Meilenstein - Client" color="#666600" meeting="false" start="2020-04-08" duration="10" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2Fe" expand="true">
-            <notes><![CDATA[Komplette Spielregeln
+            <task id="145" name="Spiel GUI" color="#8cb6ce" meeting="false" start="2020-04-16" duration="6" complete="0" thirdDate="2020-04-06" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[The Bachelor's Chase wird Graphisch repräsentiert.]]></notes>
+            </task>
+            <task id="136" name="Spiel GUI lvl 3" color="#00cc00" meeting="false" start="2020-04-21" duration="5" complete="50" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+                <notes><![CDATA[Das komplette Spiel ist über der UI spielbar.]]></notes>
+            </task>
+            <task id="37" name="Working Rules" color="#666600" meeting="false" start="2020-04-08" duration="10" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2Fe" expand="true">
+                <notes><![CDATA[Komplette Spielregeln
 
 Grafische Darstellung des Spiels (Kartenmodelle, evtl Animation)]]></notes>
+            </task>
+            <task id="139" name="Gewinner determiniert" color="#666600" meeting="false" start="2020-04-21" duration="5" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+            <task id="150" name="Unit Test lvl 1" color="#8cb6ce" meeting="false" start="2020-04-20" duration="1" complete="0" thirdDate="2020-04-06" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[Unit Test exisitiert und funktioniert.]]></notes>
+            </task>
+            <task id="157" name="Unit Test lvl 2" color="#8cb6ce" meeting="false" start="2020-04-22" duration="1" complete="0" thirdDate="2020-04-06" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[Unit Test ist genügend.]]></notes>
+            </task>
+            <task id="164" name="Unit Test lvl 3" color="#8cb6ce" meeting="false" start="2020-04-23" duration="1" complete="0" thirdDate="2020-04-06" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[Unit Test wird durch build script ausgeführt.]]></notes>
+            </task>
         </task>
-        <task id="139" name="Client Test" color="#666600" meeting="false" start="2020-04-21" duration="5" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="38" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-29" duration="0" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="171" name="Präsentation vorbereitung" color="#8cb6ce" meeting="false" start="2020-04-30" duration="5" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+            <notes><![CDATA[Wir setzten uns zusammen, um nochmal alle Punkte zu reflektieren und geben der Präsentation den letzten Schliff.]]></notes>
+        </task>
+        <task id="170" name="Play Game" color="#8cb6ce" meeting="false" start="2020-05-04" duration="5" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true"/>
         <task id="141" name="HandIn Meilenstein 4" color="#000000" meeting="true" start="2020-04-27" duration="0" complete="0" thirdDate="2020-04-13" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="38" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-29" duration="0" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="178" name="source code" color="#8cb6ce" meeting="false" start="2020-04-23" duration="10" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+            <task id="180" name="Product" color="#000000" meeting="false" start="2020-04-23" duration="7" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="false">
+                <task id="181" name="Architektur dokumentiert" color="#8cb6ce" meeting="false" start="2020-04-23" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                    <notes><![CDATA[Dokumentation über die Struktur der gesamten Programmarchitekutr.]]></notes>
+                </task>
+                <task id="183" name="Build Script funktioniert" color="#8cb6ce" meeting="false" start="2020-04-30" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true"/>
+                <task id="185" name="command Line Parameter" color="#8cb6ce" meeting="false" start="2020-04-23" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                    <notes><![CDATA[Das Dokument ist up to date.]]></notes>
+                </task>
+                <task id="188" name="Handbuch lvl 2" color="#8cb6ce" meeting="false" start="2020-04-23" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                    <notes><![CDATA[Das Handbuch ist aktualisiert und beschreibt genau wie das Spiel gespielt werden muss.]]></notes>
+                </task>
+                <task id="192" name="ScreenShots" color="#8cb6ce" meeting="false" start="2020-04-30" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                    <notes><![CDATA[Das Spiel ist durch ScreenShots schon vor dem Spielen ersichtlich.]]></notes>
+                </task>
+                <task id="196" name="Bonus Punkte" color="#8cb6ce" meeting="false" start="2020-04-30" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true"/>
+                <task id="194" name="Play Game" color="#8cb6ce" meeting="false" start="2020-05-01" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="233" name="Meilenstein kontrolle" color="#8cb6ce" meeting="false" start="2020-05-01" duration="4" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[wir gehen alle Punkte durch, die erwähnt werden müssen und führen noch letzte korrekturen durch.]]></notes>
+            </task>
+        </task>
         <task id="39" name="5. Meilenstein - Tests" color="#cccccc" meeting="false" start="2020-04-29" duration="11" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
             <notes><![CDATA[Beta Testing, Debugging]]></notes>
         </task>
-        <task id="40" name="Dokumentation" color="#006666" meeting="false" start="2020-03-02" duration="53" complete="0" thirdDate="2019-05-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
-            <notes><![CDATA[Dokumentation: Handbuch, Tagebuch fertig stellen]]></notes>
+        <task id="217" name="Präsentation vorbereitung" color="#8cb6ce" meeting="false" start="2020-05-01" duration="13" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+            <task id="220" name="Spiel Entwurf" color="#3333ff" meeting="false" start="2020-05-01" duration="6" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true"/>
+            <task id="222" name="Handbuch lvl 3" color="#3333ff" meeting="false" start="2020-05-05" duration="5" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[Übersicht der Dokumentation und des Handbuches.]]></notes>
+            </task>
+            <task id="224" name="Logo" color="#3333ff" meeting="false" start="2020-05-11" duration="5" complete="0" thirdDate="2020-05-11" thirdDate-constraint="0" expand="true"/>
+            <task id="226" name="QA lvl 3" color="#006666" meeting="false" start="2020-05-04" duration="3" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true">
+                <notes><![CDATA[Resultate der QA uns lessons learned.]]></notes>
+            </task>
+            <task id="41" name="Dokumente" color="#000000" meeting="false" start="2020-05-13" duration="5" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+                <notes><![CDATA[Tagebuch, Diary, Netwerkprotokoll, Handbuch, QA]]></notes>
+            </task>
+            <task id="229" name="Spiel spielen" color="#ffff33" meeting="false" start="2020-05-18" duration="1" complete="0" thirdDate="2020-04-23" thirdDate-constraint="0" expand="true"/>
         </task>
-        <task id="41" name="Abschlusspräsentation" color="#000000" meeting="false" start="2020-05-14" duration="2" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="42" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-05-20" duration="0" complete="0" thirdDate="2019-05-29" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="231" name="Update Blog" meeting="false" start="2020-05-20" duration="1" complete="0" expand="true"/>
     </tasks>
-    <resources/>
-    <allocations/>
+    <resources>
+        <resource id="0" name="Meipei Nghiem" function="Default:0" contacts="meipei.nghiem@stud.unibas.ch" phone=""/>
+        <resource id="1" name="Adrian Prokopczyk" function="Default:0" contacts="adrian.prokopczyk@stud.unibas.ch" phone=""/>
+        <resource id="2" name="Johannes Nussbaum" function="Default:0" contacts="johannes.nussbaum@unibas.ch" phone=""/>
+        <resource id="3" name="Anna Diack" function="Default:0" contacts="anna.diack@unibas.ch" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="145" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="136" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="171" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="170" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="178" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="192" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="180" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="220" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="229" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="150" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="139" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="164" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="171" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="178" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="183" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="196" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="180" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="229" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="37" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="157" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="171" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="178" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="185" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="180" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="226" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="229" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="145" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="171" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="170" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="178" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="181" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="188" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="180" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="222" resource-id="3" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="229" resource-id="3" function="Default:0" responsible="false" load="100.0"/>
+    </allocations>
     <vacations/>
     <previous/>
     <roles roleset-name="Default"/>
