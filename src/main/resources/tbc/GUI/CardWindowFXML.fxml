@@ -22,7 +22,7 @@
             </ImageView>
          </center>
          <top>
-            <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Punkte Karte" translateY="50.0" wrappingWidth="79.14892578125" BorderPane.alignment="CENTER" />
+            <Text fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Normal card" translateY="50.0" wrappingWidth="79.14892578125" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
    </left>
@@ -39,7 +39,7 @@
             </ImageView>
          </center>
          <top>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Abzug Karte" translateY="50.0" BorderPane.alignment="CENTER" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Minus card" translateY="50.0" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
    </center>
@@ -56,7 +56,7 @@
             </ImageView>
          </center>
          <top>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Zufällige Karte" translateY="50.0" BorderPane.alignment="CENTER">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Random card" translateY="50.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
                   <Insets />
                </BorderPane.margin>
@@ -73,7 +73,7 @@
             <Insets />
          </BorderPane.margin>
          <items>
-          <Button fx:id="btnZurueck" mnemonicParsing="false" onAction="#closeCardWindow" text="Schliessen" translateX="250.0" />
+          <Button fx:id="btnBack" mnemonicParsing="false" onAction="#closeCardWindow" text="Close" translateX="250.0" />
          </items>
       </ToolBar>
    </bottom>

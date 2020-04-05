@@ -1,7 +1,5 @@
 package tbc.GUI;
 
-import static tbc.client.Client.clientHandler;
-
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,24 +13,28 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static tbc.client.Client.clientHandler;
+
+/**
+ * In this window you can change your username. You can't press the "Enter" button as long you didn't type in a name.
+ */
 public class ChangeNameWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatInfoWindow.class);
 
     public static void display() {
-
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Username ändern");
+        window.setTitle("The Bachelor's Chase - Change username");
         window.setMinWidth(300);
 
-        Label label = new Label("Neuer Username: ");
+        Label label = new Label("New username: ");
         label.setPrefSize(300, 25);
 
         TextField newUsername = new TextField();
         newUsername.setFocusTraversable(false);
-        newUsername.setPromptText("Gib deinen Username ein.");
+        newUsername.setPromptText("Please enter your new name");
 
         Label labelStatus = new Label();
 
@@ -48,11 +50,11 @@ public class ChangeNameWindow {
                 clientHandler.changeName(clientName);
         });
 
-        Button close = new Button("Schliessen");
+        Button close = new Button("Close");
         close.setOnAction(e -> {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.close();
-            LobbyController.gameWindowController.appendMsg("Dein Name ist " + clientHandler.getMyName());
+            LobbyController.gameWindowController.appendMsg("Your name is " + clientHandler.getMyName());
             LOGGER.info("Closed chat info window.");
         });
 
@@ -65,6 +67,5 @@ public class ChangeNameWindow {
         window.setScene(scene);
         window.showAndWait();
     }
-
 
 }

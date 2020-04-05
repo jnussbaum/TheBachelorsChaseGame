@@ -1,28 +1,29 @@
 package tbc.GUI;
 
-import static tbc.client.Client.clientHandler;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.client.Client;
 
-public class DiversWindowController {
+import static tbc.client.Client.clientHandler;
 
-    private static final Logger LOGGER = LogManager.getLogger(DiversWindowController.class);
+/**
+ * If the circle "Various" in the Lobby window is pressed,
+ * it will open a new window "The Bachelor's Chase - Various".
+ * In this window you can change your username, get the player and lobby list.
+ */
+public class VariousWindowController {
+
+    private static final Logger LOGGER = LogManager.getLogger(VariousWindowController.class);
 
     @FXML public TextField newUsername;
-    @FXML private static Label usernameStatus;
+    //@FXML private static Label usernameStatus;
     @FXML private Button btnClose;
     @FXML public Button btnEnter;
 
     public void checkNewUsername() {
-        LOGGER.info("DiversController.checkNewUsername: alt " + Client.userName);
-
         String clientName = newUsername.getText();
         newUsername.clear();
 
@@ -35,7 +36,8 @@ public class DiversWindowController {
                 System.out.println("DiversWindowController.checkNewUsername     clientname = " + clientName);
                 usernameStatus.setText("new Name: " + clientName);
             }
-        });*/
+        });
+        */
     }
 
     /*
@@ -64,9 +66,9 @@ public class DiversWindowController {
         LobbyList.display();
     }
 
-    public void closeDiversWindow() {
+    public void closeVariousWindow() {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();
-        LOGGER.info("Closed divers window.");
+        LOGGER.info("Closed various window.");
     }
 }

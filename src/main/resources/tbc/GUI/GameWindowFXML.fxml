@@ -21,12 +21,12 @@
         <menus>
           <Menu mnemonicParsing="false" text="The Bachelor's Chase">
             <items>
-                  <MenuItem fx:id="menuChangeUsername" mnemonicParsing="false" onAction="#changeUsername" text="Username ändern" />
+                  <MenuItem fx:id="menuChangeUsername" mnemonicParsing="false" onAction="#changeUsername" text="Change username" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem fx:id="menuLogOut" mnemonicParsing="false" onAction="#logOut" text="Logout" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Hilfe">
+          <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem fx:id="menuInfo" mnemonicParsing="false" onAction="#giveInfo" text="Info" />
                   <MenuItem fx:id="menuChatInfo" mnemonicParsing="false" onAction="#giveChatInfo" text="Chat Info" />
@@ -36,7 +36,7 @@
       </MenuBar>
    </top>
    <center>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="611.0" prefWidth="726.0" style="-fx-text-fill: #000000#000000;" text="Hier kommt das Spielfeld..." BorderPane.alignment="CENTER">
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="611.0" prefWidth="726.0" style="-fx-text-fill: #000000#000000;" text="The Game is still on work..." BorderPane.alignment="CENTER">
          <font>
             <Font size="24.0" />
          </font>
@@ -45,7 +45,7 @@
    <right>
       <VBox prefHeight="601.0" prefWidth="280.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField editable="false" focusTraversable="false" text="Momentaner Stand der Konten: ">
+            <TextField editable="false" focusTraversable="false" text="Current coins of the player: ">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
@@ -75,7 +75,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="btnSend" alignment="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#sendMsg" prefHeight="27.0" prefWidth="272.0" text="Sende">
+            <Button fx:id="btnSend" alignment="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#sendMsg" prefHeight="27.0" prefWidth="272.0" text="Send">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>

@@ -28,8 +28,7 @@ public class ChatClient {
     public void processInput(String s) {
         // the client wants to logout
         if (s.startsWith("LOGOUT")) {
-            s = " hat das Spiel verlassen.";
-            clientHandler.sendMessage("ALL", "false", s);
+            clientHandler.sendMessage("ALL", "false", " has left the game.");
             clientHandler.logOut();
             LOGGER.info("You have logged out.");
             return;
@@ -42,7 +41,6 @@ public class ChatClient {
             if (s.contains(" ") && msg.length() != 0) {
                 clientHandler.sendMessage(receiver, "true", msg);
             } else {
-                //LOGGER.error(clientHandler.getMyName() + " tried to send an empty message.");
                 LobbyController.gameWindowController.appendMsg("Usage: @<Username vom anderen Spieler> <Nachricht>");
             }
         // send public message
@@ -52,20 +50,22 @@ public class ChatClient {
     }
 
     /**
-     * When a chat message arrives, the clientHandler invokes this method. The message will then
-     * be printed out.
+     * When a chat message arrives, the clientHandler invokes this method. The message will then be printed out.
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
             LOGGER.info("[PRIVATE] " + sender + ": " + msg);
             LobbyController.gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
-            if (msg.equals(" hat das Spiel verlassen.")) {
-                LOGGER.info(sender + msg);
-                LobbyController.gameWindowController.appendMsg(sender + msg);
-            } else if (msg.startsWith("Willkommen")) {
+            if (msg.startsWith("Welcome")) {
                 LOGGER.info("Let us welcome " + sender + "!");
                 LobbyController.gameWindowController.appendMsg(msg);
+                return;
+            }
+
+            if (msg.equals(" has left the game.")) {
+                LOGGER.info(sender + msg);
+                LobbyController.gameWindowController.appendMsg(sender + msg);
             } else {
                 LOGGER.info(sender + ": " + msg);
                 LobbyController.gameWindowController.appendMsg(sender + ": " + msg);

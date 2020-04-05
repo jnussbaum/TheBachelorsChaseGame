@@ -8,13 +8,13 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import tbc.client.Client;
 
 /**
- * Processes a client's request to start the Game. Here it will be shown all the graphical
+ * Processes a client's request to start the Game. Here it will show all the graphical
  * components of the game logic, which makes it possible for the clients to play the game.
  */
-
 public class GameWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(GameWindowController.class);

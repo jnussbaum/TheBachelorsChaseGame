@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This window shows the information about the chat.
+ */
 public class ChatInfoWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatInfoWindow.class);
@@ -20,7 +23,7 @@ public class ChatInfoWindow {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Chat Info");
+        window.setTitle("The Bachelor's Chase - Chat Info");
         window.setMinWidth(300);
 
         TextArea textArea = new TextArea();
@@ -28,14 +31,15 @@ public class ChatInfoWindow {
         textArea.setEditable(false);
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
-        textArea.setText("Nachricht an alle senden:\n"
-            + "<Nachricht>\n"
-            + "\nPrivate Nachrichten senden:\n"
-            + "@<Username vom anderen Spieler> <Nachricht>\n"
-            + "\nZum ausloggen:\n"
-            + "LOGOUT im Chat schreiben oder Logout im Menu unter The Bachelor's Chase > Logout");
+        textArea.setText("Send message to everyone:\n"
+            + "<message>\n"
+            + "\nSend private message:\n"
+            + "@<username of another player> <message>\n"
+            + "\nTo logout:\n"
+            + "Write LOGOUT in the chat or use Logout in the menu The Bachelor's Chase > Logout\n"
+            + "Do NOT use the character '#' in the chat nor for your name.");
 
-        Button close = new Button("Schliessen");
+        Button close = new Button("Close");
         close.setOnAction(e -> {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.close();

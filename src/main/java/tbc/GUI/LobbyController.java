@@ -1,7 +1,5 @@
 package tbc.GUI;
 
-import static tbc.client.Client.clientHandler;
-
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,13 +13,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import tbc.client.Client;
+import static tbc.client.Client.clientHandler;
 
 /**
  * Processes a client's request to get the informations of the pushed Button.
  * It opens a window for almost every Button and shows the details about the Game.
  */
-
 public class LobbyController {
 
     private static final Logger LOGGER = LogManager.getLogger(LobbyController.class);
@@ -29,10 +28,13 @@ public class LobbyController {
     @FXML private BorderPane window;
     @FXML private TextArea textArea;
     public static GameWindowController gameWindowController;
-    public static DiversWindowController diversWindowController;
+    public static VariousWindowController variousWindowController;
     public static CardWindowController cardWindowController;
-    private Stage secondStage;
+    private Stage secondStage = null;
 
+    /**
+     * If the circle "Start" is pressed a new window, the game window, will open.
+     */
     public void startGame(MouseEvent mouseEvent) {
         LOGGER.info("Show game window.");
         try {
@@ -46,8 +48,11 @@ public class LobbyController {
 
             gameWindowController = loader.getController();
 
-            clientHandler.sendMessage("ALL", "false", "Willkommen, " + Client.userName);
+            // Welcomes the client in all the chat windows
+            clientHandler.sendMessage("ALL", "false", "Welcome, " + Client.userName
+                + "\nDo NOT use the character '#' in the chat nor for your name.");
 
+            // The send button is disabled as long as there is no input in the chat field
             gameWindowController.btnSend.disableProperty().bind(
                 Bindings.isEmpty(gameWindowController.msgField.textProperty())
                     .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
@@ -60,16 +65,17 @@ public class LobbyController {
         }
     }
 
+    /**
+     * If the circle "Cards" is pressed a new window will open. It shows the three cards that we use in our game.
+     */
     public void showCards() {
-        // TODO show the cards if clicked on it
         LOGGER.info("Show cards.");
-
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CardWindowFXML.fxml"));
             BorderPane card = loader.load();
 
             Stage cardWindow = new Stage();
-            cardWindow.setTitle("The Bachelor's Chase - Karten");
+            cardWindow.setTitle("The Bachelor's Chase - Cards");
             cardWindow.initModality(Modality.APPLICATION_MODAL);
             cardWindow.initOwner(secondStage);
             Scene cardScene = new Scene(card);
@@ -79,66 +85,76 @@ public class LobbyController {
             cardWindowController = loader.getController();
 
         } catch (Exception e) {
-            LOGGER.error("Couldn't find CardFXML file.");
+            LOGGER.error("Couldn't find CardWindowFXML file.");
             e.printStackTrace();
         }
     }
 
+    /**
+     * If the circle "Rules" is pressed it will show you on the right side a field with the description of the rules.
+     */
     public void showRules() {
         LOGGER.info("Show rules.");
         window.setVisible(true);
-        textArea.setText("Spielbeschreibung: "
-            + "\nJeder Spieler erhält am Anfang des Spieles eine zufällige Karte. "
-            + "In jeder Runde muss der Spieler innerhalb von 10 Sekunden entscheiden, "
-            + "ob er eine Karte ziehen, eine Karte wegschmeissen (nur gegen Coins möglich) "
-            + "oder diese eine Runde aussetzen möchte bzw. keine Karte ziehen."
-            + "\n\nRegeln: "
-            + "\nCoinsystem: \nJeder Spieler hat ein Konto, "
-            + "das zur Beginn der ersten Runde noch leer ist. "
-            + "Nachdem ein Spieler 180 KP erzielt hat, werden die Coins folgendermasse verteilt: "
-            + "\nDer Spieler mit 180 KP erhält 360 Coins. "
-            + "\nDiejenigen Spieler mit über 180 KP erhalten 0 coins. "
-            + "\nAlle anderen Spieler erhalten soviele Coins wie ihre Summe der Kartenaugenzahl."
-            + "\nDiese Coins werden nach Beendigung einer Spielrunde, "
-            + "das heisst nachdem ein Spieler 180 KP erreicht hat, "
-            + "aufsummiert und kann somit bei der nächsten Spielrunde verwendet werden "
-            + "(z.B. um eine Karte wegzuschmeissen)");
+        textArea.setText("Game description:"
+                + "\nEach player receives a random card at the beginning of the game."
+                + "In each round the player has to decide within 10 seconds, "
+                + "whether he wants to draw a card, throw away a card (only possible against coins)"
+                + "or wants to take a turn respectively not draw a card."
+                + "\n \nRules:"
+                + "\nCoinsystem: \nEach player has an account, "
+                + "that is still empty at the beginning of the first round."
+                + "After a player has reached 180 KP, the coins are distributed as follows:"
+                + "\nThe player with 180 KP receives 360 coins."
+                + "\nThose with more than 180 HP receive 0 coins."
+                + "\nAll other players receive as many coins as their sum of the number of cards."
+                + "\nThese coins will be awarded after a game round has ended, "
+                + "that means if one of the player has reached 180 KP, "
+                + "the coins will be sum up and can therefore be used in the next game round "
+                + "(e.g. to throw away a card).");
     }
 
+    /**
+     * If the circle "Goal" is pressed it will show you on the right side a field with the description of the goal.
+     */
     public void showGoal() {
         LOGGER.info("Show goal.");
         window.setVisible(true);
-        textArea.setText("Ziel: \nZiel des Spiels ist es 180 Kreditpunkte zu erzielen. "
-            + "In jeder Runde darf der Spieler entscheiden ob er eine Karte ziehen, "
-            + "eine Karte wegschmeissen oder diese Runde aussetzen möchte. "
-            + "Hat ein Spieler über 180 Kreditpunkte erzielt, "
-            + "hat er verloren und bekommt 0 Coins.");
+        textArea.setText("Goal: \nGoal of the game is to be the first who gets 180 credits."
+                + "In each round the player can decide whether to draw a card, "
+                + "throw away a card or miss this turn."
+                + "If a player has over 180 credit points, "
+                + "he lost and gets 0 coins.");
     }
 
-    public void showDivers() {
+    /**
+     * If the circle "Various" is pressed it will open a new window, where you can change your username,
+     * get the player and lobby list.
+     */
+    public void showVarious() {
         LOGGER.info("Show divers.");
-
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("DiversWindowFXML.fxml"));
-            BorderPane divers = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VariousWindowFXML.fxml"));
+            BorderPane various = loader.load();
 
-            Stage diversWindow = new Stage();
-            diversWindow.setTitle("The Bachelor's Chase - Divers");
-            diversWindow.initModality(Modality.APPLICATION_MODAL);
-            diversWindow.initOwner(secondStage);
-            Scene diversScene = new Scene(divers);
-            diversWindow.setScene(diversScene);
-            diversWindow.show();
+            Stage variousWindow = new Stage();
+            variousWindow.setTitle("The Bachelor's Chase - Various");
+            variousWindow.initModality(Modality.APPLICATION_MODAL);
+            variousWindow.initOwner(secondStage);
+            Scene diversScene = new Scene(various);
+            variousWindow.setScene(diversScene);
+            variousWindow.show();
 
-            diversWindowController = loader.getController();
+            variousWindowController = loader.getController();
 
-            diversWindowController.btnEnter.disableProperty().bind(
-                Bindings.isEmpty(diversWindowController.newUsername.textProperty())
-                    .and(Bindings.isEmpty(diversWindowController.newUsername.textProperty()))
-                    .and(Bindings.isEmpty(diversWindowController.newUsername.textProperty()))
+            // You can't press the enter button if you didn't type in an username.
+            variousWindowController.btnEnter.disableProperty().bind(
+                Bindings.isEmpty(variousWindowController.newUsername.textProperty())
+                    .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
+                    .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
             );
         } catch (Exception e) {
-            LOGGER.error("Couldn't find DiversFXML file.");
+            LOGGER.error("Couldn't find VariousWindowFXML file.");
             e.printStackTrace();
         }
     }

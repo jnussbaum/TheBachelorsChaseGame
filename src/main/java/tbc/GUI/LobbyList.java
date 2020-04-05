@@ -1,6 +1,5 @@
 package tbc.GUI;
 
-import java.util.Arrays;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +11,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.server.Server;
 
+import static java.lang.Thread.sleep;
+import static tbc.client.Client.clientHandler;
+
+/**
+ * If the button "Show Lobbylist" in the Various window is pressed,
+ * it will open a new window "The Bachelor's Chase - Lobbylist".
+ * Here you can see a list of the lobbies.
+ */
 public class LobbyList {
 
     private static final Logger LOGGER = LogManager.getLogger(LobbyList.class);
@@ -22,12 +28,12 @@ public class LobbyList {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Lobbyliste");
+        window.setTitle("The Bachelor's Chase - Lobbylist");
         window.setMinWidth(300);
         window.setMinHeight(400);
 
         Label label = new Label();
-        label.setText("Die aktuelle Lobbyliste: ");
+        label.setText("The current lobby list: ");
 
         TextArea textArea = new TextArea();
         textArea.setMinSize(300, 400);
@@ -35,21 +41,15 @@ public class LobbyList {
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
 
-        // TODO output the lobby list to the window
+        clientHandler.askForLobbyList();
+        try {
+            sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        textArea.setText(clientHandler.getLobbiesGui());
 
-        //System.out.println("LobbyList.display     getLobbies() " + Arrays.toString(Server.getLobbies()));
-        //sout: []
-
-        String lobbylist = Arrays.toString(Server.getLobbies());
-
-        textArea.setText(lobbylist);
-
-        //System.out.println("LobbyList.display     receiveLobbyList " + clientHandler.receiveLobbyList());
-
-        //clientHandler.askForLobbyList();
-        //sout: These are the available lobbies: There are no lobbies
-
-        Button close = new Button("Schliessen");
+        Button close = new Button("Close");
         close.setOnAction(e -> {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.close();

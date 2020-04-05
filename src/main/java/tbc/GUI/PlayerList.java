@@ -12,6 +12,14 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static java.lang.Thread.sleep;
+import static tbc.client.Client.clientHandler;
+
+/**
+ * If the button "Show Playerlist" in the Various window is pressed,
+ * it will open a this window "The Bachelor's Chase - Playerlist".
+ * Here you can see a list of the current players.
+ */
 public class PlayerList {
 
     private static final Logger LOGGER = LogManager.getLogger(PlayerList.class);
@@ -20,12 +28,12 @@ public class PlayerList {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Playerliste");
+        window.setTitle("The Bachelor's Chase - Playerlist");
         window.setMinWidth(300);
         window.setMinHeight(400);
 
         Label label = new Label();
-        label.setText("Die aktuelle Playerliste: ");
+        label.setText("The Playerlist: ");
 
         TextArea textArea = new TextArea();
         textArea.setMinSize(300, 400);
@@ -33,15 +41,16 @@ public class PlayerList {
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
 
-        // TODO output the player list to the window
-        /*for (ServerHandler sh : Server.getServerHandlers()) {
-            System.out.println(sh);
-        }*/
+        //Get the player list if button is pressed
+        clientHandler.askForPlayerList();
+        try {
+            sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        textArea.setText(clientHandler.getPlayerListGui());
 
-        //String playerList = ;
-        //textArea.setText(playerList);
-
-        Button close = new Button("Schliessen");
+        Button close = new Button("Close");
         close.setOnAction(e -> {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.close();
