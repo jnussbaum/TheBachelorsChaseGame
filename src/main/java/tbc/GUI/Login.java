@@ -10,9 +10,10 @@ import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
 
 /**
- * The GUI for Clients to enter they username
+ * The first GUI window, the login window. After a client is set, this window will open and
+ * the username has been set. You can't change your username here, but later on in the lobby
+ * or in the game window.
  */
-
 public class Login extends Application {
 
     private static final Logger LOGGER = LogManager.getLogger(Login.class);

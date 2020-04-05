@@ -1,16 +1,13 @@
 package tbc.client;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
+
+import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -25,6 +22,8 @@ public class ClientHandler implements Runnable {
     private ChatClient chatClient;
     private BufferedReader clientInputStream;
     private PrintWriter clientOutputStream;
+    private String lobbiesGui;
+    private String playersGui;
 
     /**
      * The constructor of ClientHandler tries to connect to the server.
@@ -52,7 +51,6 @@ public class ClientHandler implements Runnable {
      * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming information
      * on the clientInputStream, and pass this information to decode().
      */
-
     public void run() {
         while (true) {
             String s = null;
@@ -62,7 +60,7 @@ public class ClientHandler implements Runnable {
                 LOGGER.error("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) System.err.println("ClientHandler " + myName + " received an empty message.");
+            if (s == null) LOGGER.error("ClientHandler " + myName + " received an empty message.");
             decode(s);
         }
     }
@@ -85,7 +83,6 @@ public class ClientHandler implements Runnable {
             case "CHANGEOK":
                 String newName = commands[1];
                 Client.nameChangeFeedback(true, newName);
-
                 /*
                 if (myName.equals(newName) == false) {
                     Platform.runLater(new Runnable() {
@@ -105,13 +102,16 @@ public class ClientHandler implements Runnable {
                 /*if (myName.equals(newName) == false)
                     chatClient.test("new Name: " + newName);
                     //if (LobbyController.diversWindowController != null)
-                        //LobbyController.diversWindowController.setStatus("new Name: " + newName);*/
-
+                        //LobbyController.diversWindowController.setStatus("new Name: " + newName);
+                 */
                 myName = newName;
                 break;
             case "CHANGENO":
                 String name = commands[1];
                 Client.nameChangeFeedback(false, name);
+                break;
+            case "SENDPLAYERLIST":
+                receivePlayerList(commands);
                 break;
             case "SENDLOBBYLIST":
                 receiveLobbyList(commands);
@@ -147,6 +147,10 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    public void registerChatClient(ChatClient chatClient) {
+        this.chatClient = chatClient;
+    }
+
     public void changeName(String userName) {
         clientOutputStream.println("CHANGENAME" + "#" + userName);
         clientOutputStream.flush();
@@ -157,16 +161,12 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    public void registerChatClient(ChatClient chatClient) {
-        this.chatClient = chatClient;
-    }
-
     public void logOut() {
         clientOutputStream.println("LOGOUT");
         clientOutputStream.flush();
     }
 
-    void askForLobbyList() {
+    public void askForLobbyList() {
         clientOutputStream.println("GETLOBBYLIST");
         clientOutputStream.flush();
     }
@@ -175,21 +175,57 @@ public class ClientHandler implements Runnable {
         clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
     }
 
-    void receiveLobbyList(String[] commands) {
+    public void receiveLobbyList(String[] commands) {
         if (commands.length > 1) {
             String[] lobbies = new String[commands.length - 1];
             for (int i = 1; i < commands.length; i++) {
                 lobbies[i - 1] = commands[i];
             }
-            //TODO: Further processing of available lobbies --> GUI
+
             LOGGER.info("These are the available lobbies: ");
+            StringBuffer lobby = new StringBuffer();
             for (String s : lobbies) {
+                lobby.append(s).append("\n");
                 LOGGER.info(s);
             }
+            lobbiesGui = lobby.toString();
         } else {
             //There are no lobbies
             LOGGER.info("There are no lobbies");
         }
+    }
+
+    public String getLobbiesGui() {
+        return lobbiesGui;
+    }
+
+    public void askForPlayerList() {
+        clientOutputStream.println("GETPLAYERLIST");
+        clientOutputStream.flush();
+    }
+
+    public void receivePlayerList(String[] commands) {
+        if (commands.length > 1) {
+            String[] players = new String[commands.length - 1];
+            for (int i = 1; i < commands.length; i++) {
+                players[i - 1] = commands[i];
+            }
+
+            LOGGER.info("These are the current players: ");
+            StringBuffer player = new StringBuffer();
+            for (String s : players) {
+                player.append(s).append("\n");
+            }
+            playersGui = player.toString();
+            LOGGER.info(playersGui);
+        } else {
+            //There are no players
+            LOGGER.info("There are no players");
+        }
+    }
+
+    public String getPlayerListGui() {
+        return playersGui;
     }
 
     void joinLobby(String lobbyName) {
@@ -214,6 +250,11 @@ public class ClientHandler implements Runnable {
 
     public void readyForGame() {
         clientOutputStream.println("READYFORGAME");
+        clientOutputStream.flush();
+    }
+
+    public void askForNewMatch() {
+        clientOutputStream.println("READYFORMATCH");
         clientOutputStream.flush();
     }
 }

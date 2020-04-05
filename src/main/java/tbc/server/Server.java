@@ -18,7 +18,7 @@ import java.util.HashMap;
  */
 public class Server {
 
-		private static final Logger LOGGER = LogManager.getLogger(Server.class);
+    private static final Logger LOGGER = LogManager.getLogger(Server.class);
 
     /**
      * This HashMap administrates all clients by their name and ServerHandler.
@@ -34,8 +34,8 @@ public class Server {
 
     /**
      * Processes a client's request to change his name. If newUserName is occupied, it sends a negative
-     * answer back. If newUserName is available, it changes requester's name to newUserName and sends a
-     * positive answer back.
+     * answer back and puts a number behind the newUserName. If newUserName is available,
+     * it changes requester's name to newUserName and sends a positive answer back.
      */
     public static void changeName(String requester, String newUserName) {
         if (clients.containsKey(newUserName)) {
@@ -52,13 +52,19 @@ public class Server {
 
     /**
      * This method removes the client from the list.
-     *
      * @param logoutUser The client who requested the LOGOUT.
      */
     public static void removeUser(String logoutUser) {
         clients.remove(logoutUser);
-        //TODO: Inform other clients that this client logged out.
         LOGGER.info(logoutUser + " removed from the Server");
+    }
+
+    /**
+     * This method returns a copy of a string array with all the players name in it.
+     */
+    public static String[] getPlayers() {
+        Object[] objArray = clients.keySet().toArray();
+        return Arrays.copyOf(objArray, objArray.length, String[].class);
     }
 
     public static void createLobby(String lobbyName, ServerHandler sh) {
@@ -103,30 +109,29 @@ public class Server {
         LOGGER.info("Port: " + portNumber);
         ServerSocket serverSocket;
 
-        //This is the Headquarter of the Chat application.
+        // This is the Headquarter of the Chat application.
         ChatServer chatServer = new ChatServer();
 
-				try {
-						serverSocket = new ServerSocket(portNumber);
-						LOGGER.info("Type this address in the client after starting the client: "
-								+ InetAddress.getLocalHost().getHostAddress());
-						Socket socket;
-						int i = 0;
-						while (true) {
-								socket = serverSocket.accept();
-								String name = socket.getInetAddress().getHostName() + i;
-								i++;
-								ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
-								Thread shThread = new Thread(serverHandler);
-								shThread.start();
-								clients.put(name, serverHandler);
-								chatServer.register(name, serverHandler);
-						}
-				} catch (IOException e) {
-						LOGGER.error("IOException while creating serverSocket or while listening " +
-								"to new incoming connections");
-						e.printStackTrace();
-				}
+            try {
+                serverSocket = new ServerSocket(portNumber);
+                LOGGER.info("Type this address in the client after starting the client: "
+                        + InetAddress.getLocalHost().getHostAddress());
+                Socket socket;
+                int i = 0;
+                while (true) {
+                    socket = serverSocket.accept();
+                    String name = socket.getInetAddress().getHostName() + i;
+                    i++;
+                    ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
+                    Thread shThread = new Thread(serverHandler);
+                    shThread.start();
+                    clients.put(name, serverHandler);
+                    chatServer.register(name, serverHandler);
+                }
+            } catch (IOException e) {
+                LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
+                e.printStackTrace();
+            }
 		}
 
 }

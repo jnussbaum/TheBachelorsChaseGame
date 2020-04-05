@@ -1,15 +1,11 @@
 package tbc.server;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
+import java.io.*;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -80,15 +76,15 @@ public class ServerHandler implements Runnable {
                 String userName = commands[1];
                 Server.changeName(myName, userName);
                 break;
-            case "LOGOUT":
-                closeConnection();
-                break;
             case "CHAT":
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[4];
                 LOGGER.info("ServerHandler " + myName + " sent message to ChatServer");
                 chatServer.receiveMessage(sender, receiver, msg);
+                break;
+            case "GETPLAYERLIST":
+                sendPlayerList();
                 break;
             case "CREATELOBBY":
                 String lobbyName = commands[1];
@@ -102,7 +98,8 @@ public class ServerHandler implements Runnable {
                 Server.joinLobby(name, this);
                 break;
             case "READYFORGAME":
-                System.out.println("ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
+                LOGGER.info(
+                    "ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
                         "this lobby: " + lobby);
                 System.out.println(myName);
                 lobby.readyForGame(myName);
@@ -117,6 +114,12 @@ public class ServerHandler implements Runnable {
                 break;
             case "JUMPTHISTURN":
                 lobby.serverGame.jumpThisTurn();
+                break;
+            case "LOGOUT":
+                closeConnection();
+                break;
+            case "READYFORMATCH":
+                lobby.readyForMatch(myName);
                 break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");
@@ -145,22 +148,15 @@ public class ServerHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    public String getName() {
-        return myName;
-    }
-
-    public void setName(String name) {
-        myName = name;
-    }
-
     /**
      * This method closes all the streams and the socket of the client who requested the LOGOUT.
+     * Before closing the streams and the socket it should give a message to the clientOutputStream.
      */
     public void closeConnection() {
-        try {
-            clientOutputStream.println("LOGOUT");
-            clientOutputStream.flush();
+        clientOutputStream.println("LOGOUT");
+        clientOutputStream.flush();
 
+        try {
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
@@ -170,6 +166,26 @@ public class ServerHandler implements Runnable {
         } catch (IOException e) {
             LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
         }
+    }
+
+    /**
+     * Send a list of the current players to the client.
+     */
+    public void sendPlayerList() {
+        String[] players = Server.getPlayers();
+        //Create the string which will be sent to the clientOutputStream
+        StringBuilder stringBuilder = new StringBuilder("SENDPLAYERLIST");
+        if (players.length != 0) {
+            //append the players to the string
+            for (int i = 0; i < players.length; i++) {
+                stringBuilder.append("#").append(players[i]);
+            }
+        } else {
+            stringBuilder.append("#").append("No Players");
+        }
+        String s = stringBuilder.toString();
+        clientOutputStream.println(s);
+        clientOutputStream.flush();
     }
 
     /**
@@ -226,14 +242,24 @@ public class ServerHandler implements Runnable {
     public void endMatch(String winnerName) {
         clientOutputStream.println("ENDMATCH" + "#" + winnerName);
         clientOutputStream.flush();
+        LOGGER.info("endmatch has been sent");
     }
 
     public void sendCoins(String allCoins) {
         clientOutputStream.println("SENDCOINS" + "#" + allCoins);
         clientOutputStream.flush();
+        LOGGER.info("Coins have been sent");
     }
 
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
+    }
+
+    public String getName() {
+        return myName;
+    }
+
+    public void setName(String name) {
+        myName = name;
     }
 }

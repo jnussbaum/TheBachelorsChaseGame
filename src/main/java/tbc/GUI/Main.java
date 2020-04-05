@@ -7,8 +7,8 @@ import tbc.server.Server;
 
 /**
  * The main class to run the game.
+ * It parses the arguments given from the user.
  */
-
 public class Main {
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);

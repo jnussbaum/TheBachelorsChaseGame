@@ -1,11 +1,8 @@
 package tbc.GUI;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,11 +15,10 @@ import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
 
 /**
- * Processes a client's request to login with a username. First the system-name will be requested
- * and than the process to find a legit username will begin.
+ * Get the username from the text field in the login window.
+ * Before the Lobby window opens it will check if a logo is chosen.
  */
-
-public class LoginController implements Initializable {
+public class LoginController {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -32,12 +28,11 @@ public class LoginController implements Initializable {
 
     public void setUserName(String name) {
         userName.setText(name);
-        System.out.println(userName.getText());
     }
 
-    public void checkName(ActionEvent event) {
+    public void checkLogo(ActionEvent event) {
         if (logoChosen() == false) {
-            labelStatus.setText("Bitte wähle einen Logo aus.");
+            labelStatus.setText("Please choose a logo.");
         } else {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyFXML.fxml"));
@@ -100,8 +95,4 @@ public class LoginController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 }
