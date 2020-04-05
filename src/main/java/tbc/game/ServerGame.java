@@ -1,12 +1,13 @@
 package tbc.game;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
+
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.Semaphore;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
 
 public class ServerGame implements Runnable {
 
@@ -64,7 +65,7 @@ public class ServerGame implements Runnable {
             int x = 0;
             players[i] = new Player(clientNames[i]);
         }
-        //Fill the carddeck with the specified number of cards per card type
+        // Fill the carddeck with the specified number of cards per card type
         cardDeck.put(Card.Plagiarism, 5);
         cardDeck.put(Card.Party, 5);
         cardDeck.put(Card.Coffee, 10);
@@ -161,14 +162,12 @@ public class ServerGame implements Runnable {
         //timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
-            LOGGER.error("The client " + clientName + "cannot throw away the card "
-                    + cardName + " because he does not have such a card.");
+            LOGGER.error("The client " + clientName + "cannot throw away the card " + cardName
+                    + " because he does not have such a card.");
         }
-        LOGGER.info(
-            "number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+        LOGGER.info("number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         calculatePoints();
-        LOGGER.info(
-            "number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+        LOGGER.info("number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         //Subtract an coin from player
         //TODO add trowCost instead of a 1
         nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - 1);
