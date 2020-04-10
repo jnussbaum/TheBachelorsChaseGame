@@ -65,7 +65,6 @@ public class ClientHandler implements Runnable {
             } else {
                 decode(s);
             }
-            LOGGER.info("ClientHandler's run() ran through its while loop.");
         }
     }
 
@@ -129,7 +128,6 @@ public class ClientHandler implements Runnable {
             case "GIVECARD":
                 String cardName = commands[1];
                 Client.getGame().addCard(cardName);
-                LOGGER.info("ClientHandler received card " + cardName);
                 break;
             case "GAMESTARTED":
                 String players = commands[1];

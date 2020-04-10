@@ -242,7 +242,7 @@ public class ServerHandler implements Runnable {
     public void endMatch(String winnerName) {
         clientOutputStream.println("ENDMATCH" + "#" + winnerName);
         clientOutputStream.flush();
-        LOGGER.info("endmatch has been sent");
+        LOGGER.info("endmatch has been sent to ClientHandler of " + myName);
     }
 
     public void sendCoins(String allCoins) {
