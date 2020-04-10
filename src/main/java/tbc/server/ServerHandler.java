@@ -112,8 +112,8 @@ public class ServerHandler implements Runnable {
                 String cardName = commands[1];
                 lobby.serverGame.throwCard(myName, cardName);
                 break;
-            case "JUMPTHISTURN":
-                lobby.serverGame.jumpThisTurn();
+            case "QUITTHISMATCH":
+                lobby.serverGame.quitThisMatch(myName);
                 break;
             case "READYFORMATCH":
                 lobby.readyForMatch(myName);

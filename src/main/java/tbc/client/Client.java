@@ -82,12 +82,17 @@ public class Client {
             clientHandler.registerChatClient(chatClient);
             // Check if username is already being used
             clientHandler.changeName(userName);
-            Application.launch(Login.class, args);
+            //Application.launch(Login.class, args);
         } catch (Exception e) {
             LOGGER.error("Could not set the username.");
         }
 
         joinALobby();
+        LOGGER.info("Client.main came to its end and will enter while loop now.");
+        while(true) {
+            //do nothing
+            //TODO: Remove this.
+        }
     }
 
     static void joinALobby() {
@@ -115,16 +120,4 @@ public class Client {
         }
     }
 
-    static void askToStartNewMatch() {
-        try {
-            System.out.println("Would you like to start a new match? Type yes or no.");
-            String answer = input.readLine();
-            System.out.println(answer);
-            if (answer.equalsIgnoreCase("yes")) {
-                clientHandler.askForNewMatch();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

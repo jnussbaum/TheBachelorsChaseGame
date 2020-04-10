@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Player {
 
-    boolean tooMuchPoints = false;
+    boolean quitMatch = false;
     String name;
     int numOfPoints;
     int numOfCoins = 10;
@@ -72,4 +72,7 @@ public class Player {
         cards.removeAll(cards);
     }
 
+    public void setQuitMatch(boolean quitMatch) {
+        this.quitMatch = quitMatch;
+    }
 }

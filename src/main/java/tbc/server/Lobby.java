@@ -78,7 +78,7 @@ public class Lobby {
     void readyForMatch(String myName) {
         readyMatchClients.add(myName);
         if (readyMatchClients.size() == clients.size() && readyMatchClients.size() > 1) {
-            serverGame.startMatchagain();
+            serverGame.startMatchAgain();
         }
     }
 

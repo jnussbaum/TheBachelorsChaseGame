@@ -21,7 +21,7 @@ public class ServerGame implements Runnable {
     boolean matchEnd = false;
     boolean matchActive = true;
     boolean winner = false;
-
+    private final int THROWCOST = 10; //number of coins you pay to throw away a card
     private Timer timer;
     private Semaphore turnController = new Semaphore(1);
 
@@ -146,12 +146,12 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Second of the three possibilities when it is a client's turn: Jump this turn.
+     * Second of the three possibilities when it is a client's turn: Quit this match.
      */
-    public void jumpThisTurn() {
+    public void quitThisMatch(String clientName) {
         // timer.cancel();
         calculatePoints();
-
+        nametoPlayer(clientName).setQuitMatch(true);
         turnController.release();
     }
 
@@ -168,13 +168,21 @@ public class ServerGame implements Runnable {
         LOGGER.info("number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         calculatePoints();
         LOGGER.info("number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
-        //Subtract an coin from player
-        //TODO add trowCost instead of a 1
-        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - 1);
+        //Subtract coins from player
+        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - THROWCOST);
         turnController.release();
     }
 
+    void updateDroppedOut() {
+        int i = 0;
+        for (Player p : players) {
+            if (p.quitMatch) i++;
+        }
+        numOfDroppedOut = i;
+    }
+
     public void giveTurnToNext() {
+        updateDroppedOut();
         LOGGER.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
         if (winner == false) {
             if (numOfDroppedOut < clientsAsArray.length) {
@@ -185,8 +193,7 @@ public class ServerGame implements Runnable {
                     activeClient++;
                 }
                 //Give the turn to the client whose number was set before
-                if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
-                    numOfDroppedOut++;
+                if (nametoPlayer(clientsAsArray[activeClient]).quitMatch == true) {
                     giveTurnToNext();
                 } else {
                     lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
@@ -202,7 +209,7 @@ public class ServerGame implements Runnable {
 
 
     void endMatch(String winnerName) {
-        LOGGER.info("endMatch has bin started");
+        LOGGER.info("endMatch has been called");
         matchEnd = true;
         winner = true;
         //Give coins to all clients
@@ -212,14 +219,14 @@ public class ServerGame implements Runnable {
             String clientName = clientsAsArray[i];
             lobby.getServerHandler(clientName).sendCoins(allCoinsToString());
             lobby.getServerHandler(clientName).endMatch(winnerName);
-            LOGGER.info("endMatch has tooled " + winnerName + " to client");
+            LOGGER.info("coins and winnername have been sent to " + clientName);
         }
-
+        LOGGER.info("endMatch has sent the coins and the winnername " + winnerName + " to all clients");
         //terminate match:
     }
 
     String allCoinsToString() {
-        String s = null;
+        String s = "";
         for (int i = 0; i < clientsAsArray.length; i++) {
             String clientName = clientsAsArray[i];
             s = s + clientName + "::";
@@ -239,9 +246,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Checks all Players if the Win or Lose-Conditions are met
+     * Checks all Players if the Win or Lose-Conditions are met. This method is always called after every turn.
      */
-    // wird nach jedem zug aufgerufen
     void calculatePoints() {
         String winner = null;
         for (int i = 0; i < players.length; i++) {
@@ -249,12 +255,12 @@ public class ServerGame implements Runnable {
             if (sum == 180) {
                 winner = players[i].name;
             } else if (sum > 180) {
-                players[i].tooMuchPoints = true;
+                players[i].quitMatch = true;
                 players[i].setNumOfPoints(0);
             }
         }
         if (winner != null) {
-            LOGGER.info("calculatePoints has determint a winner");
+            LOGGER.info("calculatePoints has determined a winner");
             endMatch(winner);
         }
     }
@@ -275,7 +281,7 @@ public class ServerGame implements Runnable {
         }
     }
 
-    public void startMatchagain() {
+    public void startMatchAgain() {
         matchActive = true;
         winner = false;
     }
@@ -300,6 +306,7 @@ public class ServerGame implements Runnable {
                 */
                     }
                     matchActive = false;
+                    LOGGER.info("matchEnd-while-loop terminated. matchActive set to false");
                 }
             }
         } catch (InterruptedException e) {

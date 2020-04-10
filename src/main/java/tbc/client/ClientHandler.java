@@ -60,8 +60,12 @@ public class ClientHandler implements Runnable {
                 LOGGER.error("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) LOGGER.error("ClientHandler " + myName + " received an empty message.");
-            decode(s);
+            if (s == null) {
+                LOGGER.error("ClientHandler " + myName + " received an empty message.");
+            } else {
+                decode(s);
+            }
+            LOGGER.info("ClientHandler's run() ran through its while loop.");
         }
     }
 
@@ -72,6 +76,7 @@ public class ClientHandler implements Runnable {
      * are the parameters of the Network Protocol command.
      */
     void decode(String s) {
+        LOGGER.info("ClientHandler received message: " + s);
         String[] commands = s.split("#");
         switch (commands[0]) {
             case "CHAT":
@@ -136,6 +141,7 @@ public class ClientHandler implements Runnable {
             case "ENDMATCH":
                 String winnerName = commands[1];
                 Client.getGame().endMatch(winnerName);
+                LOGGER.info("endmatch of ClientGame " + Client.getGame() + "was called with winnername " + winnerName);
                 break;
             case "SENDCOINS":
                 String allCoins = commands[1];
@@ -243,8 +249,8 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    public void jumpThisTurn() {
-        clientOutputStream.println("JUMPTHISTURN");
+    public void quitThisMatch() {
+        clientOutputStream.println("QUITTHISMATCH");
         clientOutputStream.flush();
     }
 
