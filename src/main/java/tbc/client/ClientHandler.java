@@ -1,13 +1,16 @@
 package tbc.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.chat.ChatClient;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatClient;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -138,14 +141,18 @@ public class ClientHandler implements Runnable {
                 break;
             case "ENDMATCH":
                 String winnerName = commands[1];
-                Client.getGame().endMatch(winnerName);
-                LOGGER.info("endmatch of ClientGame " + Client.getGame() + "was called with winnername " + winnerName);
+              LOGGER.info(
+                  "endmatch of ClientGame " + Client.getGame() + "was called with winnername "
+                      + winnerName);
+              Client.getGame().endMatch(winnerName);
                 break;
             case "SENDCOINS":
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
+              break;
             case "LOGOUT":
                 System.exit(0);
+              break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");
         }
@@ -253,6 +260,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void readyForGame() {
+      LOGGER.info("readyforgame was send");
         clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }

@@ -1,13 +1,12 @@
 package tbc.game;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
-
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.Semaphore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
 
 public class ServerGame implements Runnable {
 
@@ -18,12 +17,11 @@ public class ServerGame implements Runnable {
      */
     private String[] clientsAsArray = new String[4];
 
-    boolean matchEnd = false;
-    boolean matchActive = true;
+    volatile boolean matchEnd = false;
     boolean winner = false;
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
     private Timer timer;
-    private Semaphore turnController = new Semaphore(1);
+    private Semaphore turnController;
 
     /**
      * The lobby from which this game was started.
@@ -73,12 +71,6 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.WLAN, 10);
         cardDeck.put(Card.Study, 5);
         cardDeck.put(Card.GoodLecturer, 2);
-    }
-
-    void startMatch() {
-        Thread matchThread = new Thread(new ServerMatch(this));
-        matchActive = true;
-        matchThread.start();
     }
 
     int getDeckSize() {
@@ -282,8 +274,25 @@ public class ServerGame implements Runnable {
     }
 
     public void startMatchAgain() {
-        matchActive = true;
+        turnController = new Semaphore(1);
+        reset();
+        LOGGER.info("Match has bin started again");
         winner = false;
+        matchEnd = false;
+    }
+
+    private void reset() {
+        for (Player p : players) {
+            p.setNumOfPoints(0);
+            p.clearCards();
+            p.setQuitMatch(false);
+            LOGGER.info(p.getName() + " Has been resetted");
+            LOGGER.info(p.numOfPoints + " is the number of his points");
+        }
+    }
+
+    public void setMatchEnd(boolean b) {
+        matchEnd = b;
     }
 
     /**
@@ -291,9 +300,11 @@ public class ServerGame implements Runnable {
      */
     public void run() {
         try {
+            turnController = new Semaphore(1);
             while (true) {
-                if (matchActive) {
+                while (!matchEnd) {
                     distributeCards();
+                    LOGGER.info("matchEnd status: " + matchEnd);
                     while (matchEnd == false) {
                         turnController.acquire();
                         giveTurnToNext();
@@ -305,8 +316,7 @@ public class ServerGame implements Runnable {
                 }, 10000);
                 */
                     }
-                    matchActive = false;
-                    LOGGER.info("matchEnd-while-loop terminated. matchActive set to false");
+                    LOGGER.info("matchEnd-while-loop terminated.");
                 }
             }
         } catch (InterruptedException e) {
