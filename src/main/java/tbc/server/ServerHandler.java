@@ -112,8 +112,8 @@ public class ServerHandler implements Runnable {
                 String cardName = commands[1];
                 lobby.serverGame.throwCard(myName, cardName);
                 break;
-            case "JUMPTHISTURN":
-                lobby.serverGame.jumpThisTurn();
+            case "QUITTHISMATCH":
+                lobby.serverGame.quitThisMatch(myName);
                 break;
             case "READYFORMATCH":
                 lobby.readyForMatch(myName);
@@ -242,7 +242,7 @@ public class ServerHandler implements Runnable {
     public void endMatch(String winnerName) {
         clientOutputStream.println("ENDMATCH" + "#" + winnerName);
         clientOutputStream.flush();
-        LOGGER.info("endmatch has been sent");
+        LOGGER.info("endmatch has been sent to ClientHandler of " + myName);
     }
 
     public void sendCoins(String allCoins) {

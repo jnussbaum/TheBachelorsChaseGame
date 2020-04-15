@@ -33,11 +33,11 @@ public class ClientGame {
 
     public void addCard(String cardName) {
         cards.add(Card.valueOf(cardName));
-        System.out.println("You received the card " + cardName);
+        LOGGER.info("You received the card " + cardName);
     }
 
     public void giveTurn() {
-        System.out.println("It's your turn. Seconds left:");
+        //LOGGER.info("It's your turn. Seconds left:");
         //TODO Implement the Timer to the game when gui ready
         /*
         timer = new Timer();
@@ -66,31 +66,30 @@ public class ClientGame {
         for (Card c : cards) {
             s = s + c.toString() + " ";
         }
-        System.out.println("Your Cards are: " + s);
-        System.out.println("Number of your coins" + nametoPlayer(myName).getNumOfCoins());
-        System.out.println("Please select your turn: \n" +
+        LOGGER.info("Your Cards are: " + s);
+        LOGGER.info("Number of your coins: " + nameToPlayer(myName).getNumOfCoins());
+        LOGGER.info("Please select your turn: \n" +
                 "Type 1 to take a card,\n" +
                 "Type 2 to throw a card\n" +
-                "Type 3 to jump this turn."
+                "Type 3 to quit this match."
         );
         try {
             String answer = input.readLine();
             LOGGER.info("The input was: " + answer);
             if (answer == null) {
-                jumpThisTurn();
+                quitThisMatch();
             } else if (answer.contains("1")) {
                 takeCard();
-                System.out.println("takeCard() was invoked in ClientCame");
             } else if (answer.contains("2")) {
-                System.out.println("Your Cards are: " + s);
-                System.out.println("Please tipe in the Crad you want to Throw away: ");
+                LOGGER.info("Your Cards are: " + s);
+                LOGGER.info("Please type in the card you want to throw away: ");
                 answer = input.readLine();
                 throwCard(answer);
             } else if (answer.contains("3")) {
-                jumpThisTurn();
+                quitThisMatch();
             } else {
                 LOGGER.info("User input could not be parsed to one of the three actions");
-                System.out.println("please tip one of the following options: ");
+                LOGGER.info("please tip one of the following options: ");
                 selectWithoutGUI();
             }
         } catch (IOException e) {
@@ -107,27 +106,35 @@ public class ClientGame {
 
     void throwCard(String cardName) {
         //timer.cancel();
-        int coins = -1;
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].getName().equals(myName)) {
-                coins = players[i].getNumOfCoins();
-            }
+        ArrayList<String> cardsAsStrings = new ArrayList<>();
+        for (Card c : cards) {
+            cardsAsStrings.add(c.toString());
         }
-        if (coins == -1) System.err.println("ClientGame of " + myName + "could not find number of coins");
-        if (coins >= THROWCOST) {
-            cards.remove(Card.valueOf(cardName));
-            clientHandler.throwCard(cardName);
-            coins -= THROWCOST;
-            nametoPlayer(myName).setNumOfCoins(coins);
-            calculatePoints();
-            System.out.println("The Card " + cardName + " was thrown away");
+        if (cardsAsStrings.contains(cardName) == false) {
+            LOGGER.info("You don't possess such a card. Please select another.");
+            selectWithoutGUI();
+        } else {
+            int coins = nameToPlayer(myName).getNumOfCoins();
+            if (coins >= THROWCOST) {
+                cards.remove(Card.valueOf(cardName));
+                clientHandler.throwCard(cardName);
+                coins -= THROWCOST;
+                nameToPlayer(myName).setNumOfCoins(coins);
+                calculatePoints();
+                LOGGER.info("The Card " + cardName + " was thrown away");
+            } else {
+                LOGGER.info("You don't have enough coins to throw away a card. Please select another option.");
+                selectWithoutGUI();
+            }
         }
     }
 
-    void jumpThisTurn() {
+    void quitThisMatch() {
         //timer.cancel();
-        clientHandler.jumpThisTurn();
+        nameToPlayer(myName).setQuitMatch(true);
+        clientHandler.quitThisMatch();
         calculatePoints();
+        LOGGER.info("quitThisMatch has been executed");
     }
 
     void calculatePoints() {
@@ -136,37 +143,33 @@ public class ClientGame {
             sum += c.getValue();
         }
         points = sum;
-        LOGGER.info("Points have bin Calculated and they are: " + points);
+        LOGGER.info("Points have been calculated and they are: " + points);
     }
 
     public void endMatch(String winnerName) {
-        System.out.println("The match has ended, the winner is " + winnerName +
+        LOGGER.info("The match has ended, the winner is " + winnerName +
             " You scored " + points + " points");
-        System.out.println("You new Number of Coins is: " + nametoPlayer(myName).getNumOfCoins());
-        //TODO the reset has to wörk properly
-        //reset();
-        Client.askToStartNewMatch();
+        LOGGER.info("You new Number of Coins is: " + nameToPlayer(myName).getNumOfCoins());
+        //TODO the reset has to work properly
+        reset();
+        askToStartNewMatch();
     }
 
     public void receiveCoins(String allCoins) {
         //split String into substrings, then write information into Player-Array
         String[] s = allCoins.split("::");
         String name;
-        for (int i = 0; i < s.length / 2; i++) {
+        for (int i = 0; i < s.length - 1; i++) {
             if (i % 2 == 0) {
                 //A name is at this position
                 name = s[i];
-                //look up the name in the Player-Array and write the coins (next position in s) into it
-                for (int j = 0; j < players.length; j++) {
-                    if (players[j].getName().equals(name)) {
-                        players[j].setNumOfCoins(Integer.parseInt(s[i + 1]));
-                    }
-                }
+                nameToPlayer(name).setNumOfCoins(Integer.parseInt(s[i + 1]));
+                LOGGER.info("Player " + name + " received his coins");
             }
         }
     }
 
-    private Player nametoPlayer(String clientName) {
+    private Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(clientName)) {
                 return players[i];
@@ -180,8 +183,22 @@ public class ClientGame {
         for (Player p : players) {
             p.setNumOfPoints(0);
             p.clearCards();
+          p.setQuitMatch(false);
+            LOGGER.info(p.getName() + " Has been resetted");
+        }
+      cards.clear();
+    }
 
-            LOGGER.info(p.getName() + " Has bin resetted");
+    void askToStartNewMatch() {
+        try {
+            LOGGER.info("Would you like to start a new match? Type yes or no.");
+            String answer = input.readLine();
+            LOGGER.info(answer);
+            if (answer.equalsIgnoreCase("yes")) {
+                clientHandler.askForNewMatch();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,12 +1,11 @@
 package tbc.game;
 
-import tbc.server.ServerHandler;
-
 import java.util.ArrayList;
+import tbc.server.ServerHandler;
 
 public class Player {
 
-    boolean tooMuchPoints = false;
+    boolean quitMatch = false;
     String name;
     int numOfPoints;
     int numOfCoins = 10;
@@ -69,7 +68,10 @@ public class Player {
     }
 
     public void clearCards() {
-        cards.removeAll(cards);
+        cards.clear();
     }
 
+    public void setQuitMatch(boolean quitMatch) {
+        this.quitMatch = quitMatch;
+    }
 }

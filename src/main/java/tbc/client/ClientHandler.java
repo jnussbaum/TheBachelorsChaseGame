@@ -1,13 +1,16 @@
 package tbc.client;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.chat.ChatClient;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatClient;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -60,8 +63,11 @@ public class ClientHandler implements Runnable {
                 LOGGER.error("Reading from ClientInputStream failed: ");
                 e.printStackTrace();
             }
-            if (s == null) LOGGER.error("ClientHandler " + myName + " received an empty message.");
-            decode(s);
+            if (s == null) {
+                LOGGER.error("ClientHandler " + myName + " received an empty message.");
+            } else {
+                decode(s);
+            }
         }
     }
 
@@ -72,6 +78,7 @@ public class ClientHandler implements Runnable {
      * are the parameters of the Network Protocol command.
      */
     void decode(String s) {
+        LOGGER.info("ClientHandler received message: " + s);
         String[] commands = s.split("#");
         switch (commands[0]) {
             case "CHAT":
@@ -124,7 +131,6 @@ public class ClientHandler implements Runnable {
             case "GIVECARD":
                 String cardName = commands[1];
                 Client.getGame().addCard(cardName);
-                LOGGER.info("ClientHandler received card " + cardName);
                 break;
             case "GAMESTARTED":
                 String players = commands[1];
@@ -135,13 +141,18 @@ public class ClientHandler implements Runnable {
                 break;
             case "ENDMATCH":
                 String winnerName = commands[1];
-                Client.getGame().endMatch(winnerName);
+              LOGGER.info(
+                  "endmatch of ClientGame " + Client.getGame() + "was called with winnername "
+                      + winnerName);
+              Client.getGame().endMatch(winnerName);
                 break;
             case "SENDCOINS":
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
+              break;
             case "LOGOUT":
                 System.exit(0);
+              break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");
         }
@@ -243,12 +254,13 @@ public class ClientHandler implements Runnable {
         clientOutputStream.flush();
     }
 
-    public void jumpThisTurn() {
-        clientOutputStream.println("JUMPTHISTURN");
+    public void quitThisMatch() {
+        clientOutputStream.println("QUITTHISMATCH");
         clientOutputStream.flush();
     }
 
     public void readyForGame() {
+      LOGGER.info("readyforgame was send");
         clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }

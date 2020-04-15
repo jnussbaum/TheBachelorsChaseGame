@@ -1,13 +1,12 @@
 package tbc.game;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
-
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.Semaphore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
 
 public class ServerGame implements Runnable {
 
@@ -18,12 +17,11 @@ public class ServerGame implements Runnable {
      */
     private String[] clientsAsArray = new String[4];
 
-    boolean matchEnd = false;
-    boolean matchActive = true;
+    volatile boolean matchEnd = false;
     boolean winner = false;
-
+    private final int THROWCOST = 10; //number of coins you pay to throw away a card
     private Timer timer;
-    private Semaphore turnController = new Semaphore(1);
+    private Semaphore turnController;
 
     /**
      * The lobby from which this game was started.
@@ -73,12 +71,6 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.WLAN, 10);
         cardDeck.put(Card.Study, 5);
         cardDeck.put(Card.GoodLecturer, 2);
-    }
-
-    void startMatch() {
-        Thread matchThread = new Thread(new ServerMatch(this));
-        matchActive = true;
-        matchThread.start();
     }
 
     int getDeckSize() {
@@ -146,12 +138,12 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Second of the three possibilities when it is a client's turn: Jump this turn.
+     * Second of the three possibilities when it is a client's turn: Quit this match.
      */
-    public void jumpThisTurn() {
+    public void quitThisMatch(String clientName) {
         // timer.cancel();
         calculatePoints();
-
+        nametoPlayer(clientName).setQuitMatch(true);
         turnController.release();
     }
 
@@ -168,13 +160,21 @@ public class ServerGame implements Runnable {
         LOGGER.info("number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         calculatePoints();
         LOGGER.info("number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
-        //Subtract an coin from player
-        //TODO add trowCost instead of a 1
-        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - 1);
+        //Subtract coins from player
+        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - THROWCOST);
         turnController.release();
     }
 
+    void updateDroppedOut() {
+        int i = 0;
+        for (Player p : players) {
+            if (p.quitMatch) i++;
+        }
+        numOfDroppedOut = i;
+    }
+
     public void giveTurnToNext() {
+        updateDroppedOut();
         LOGGER.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
         if (winner == false) {
             if (numOfDroppedOut < clientsAsArray.length) {
@@ -185,8 +185,7 @@ public class ServerGame implements Runnable {
                     activeClient++;
                 }
                 //Give the turn to the client whose number was set before
-                if (nametoPlayer(clientsAsArray[activeClient]).tooMuchPoints == true) {
-                    numOfDroppedOut++;
+                if (nametoPlayer(clientsAsArray[activeClient]).quitMatch == true) {
                     giveTurnToNext();
                 } else {
                     lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
@@ -202,7 +201,7 @@ public class ServerGame implements Runnable {
 
 
     void endMatch(String winnerName) {
-        LOGGER.info("endMatch has bin started");
+        LOGGER.info("endMatch has been called");
         matchEnd = true;
         winner = true;
         //Give coins to all clients
@@ -212,14 +211,14 @@ public class ServerGame implements Runnable {
             String clientName = clientsAsArray[i];
             lobby.getServerHandler(clientName).sendCoins(allCoinsToString());
             lobby.getServerHandler(clientName).endMatch(winnerName);
-            LOGGER.info("endMatch has tooled " + winnerName + " to client");
+            LOGGER.info("coins and winnername have been sent to " + clientName);
         }
-
+        LOGGER.info("endMatch has sent the coins and the winnername " + winnerName + " to all clients");
         //terminate match:
     }
 
     String allCoinsToString() {
-        String s = null;
+        String s = "";
         for (int i = 0; i < clientsAsArray.length; i++) {
             String clientName = clientsAsArray[i];
             s = s + clientName + "::";
@@ -239,9 +238,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Checks all Players if the Win or Lose-Conditions are met
+     * Checks all Players if the Win or Lose-Conditions are met. This method is always called after every turn.
      */
-    // wird nach jedem zug aufgerufen
     void calculatePoints() {
         String winner = null;
         for (int i = 0; i < players.length; i++) {
@@ -249,12 +247,12 @@ public class ServerGame implements Runnable {
             if (sum == 180) {
                 winner = players[i].name;
             } else if (sum > 180) {
-                players[i].tooMuchPoints = true;
+                players[i].quitMatch = true;
                 players[i].setNumOfPoints(0);
             }
         }
         if (winner != null) {
-            LOGGER.info("calculatePoints has determint a winner");
+            LOGGER.info("calculatePoints has determined a winner");
             endMatch(winner);
         }
     }
@@ -275,9 +273,26 @@ public class ServerGame implements Runnable {
         }
     }
 
-    public void startMatchagain() {
-        matchActive = true;
+    public void startMatchAgain() {
+        turnController = new Semaphore(1);
+        reset();
+        LOGGER.info("Match has bin started again");
         winner = false;
+        matchEnd = false;
+    }
+
+    private void reset() {
+        for (Player p : players) {
+            p.setNumOfPoints(0);
+            p.clearCards();
+            p.setQuitMatch(false);
+            LOGGER.info(p.getName() + " Has been resetted");
+            LOGGER.info(p.numOfPoints + " is the number of his points");
+        }
+    }
+
+    public void setMatchEnd(boolean b) {
+        matchEnd = b;
     }
 
     /**
@@ -285,9 +300,11 @@ public class ServerGame implements Runnable {
      */
     public void run() {
         try {
+            turnController = new Semaphore(1);
             while (true) {
-                if (matchActive) {
+                while (!matchEnd) {
                     distributeCards();
+                    LOGGER.info("matchEnd status: " + matchEnd);
                     while (matchEnd == false) {
                         turnController.acquire();
                         giveTurnToNext();
@@ -299,7 +316,7 @@ public class ServerGame implements Runnable {
                 }, 10000);
                 */
                     }
-                    matchActive = false;
+                    LOGGER.info("matchEnd-while-loop terminated.");
                 }
             }
         } catch (InterruptedException e) {
