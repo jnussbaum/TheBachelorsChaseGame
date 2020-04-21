@@ -1,13 +1,14 @@
 package tbc.client;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Timer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.Card;
 import tbc.game.Player;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Timer;
 
 public class ClientGame {
 
@@ -183,7 +184,7 @@ public class ClientGame {
         for (Player p : players) {
             p.setNumOfPoints(0);
             p.clearCards();
-          p.setQuitMatch(false);
+            p.setQuitMatch(false);
             LOGGER.info(p.getName() + " Has been resetted");
         }
       cards.clear();

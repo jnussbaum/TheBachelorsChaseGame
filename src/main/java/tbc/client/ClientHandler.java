@@ -1,16 +1,13 @@
 package tbc.client;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
+
+import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -90,27 +87,6 @@ public class ClientHandler implements Runnable {
             case "CHANGEOK":
                 String newName = commands[1];
                 Client.nameChangeFeedback(true, newName);
-                /*
-                if (myName.equals(newName) == false) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            chatClient.test(newName);
-                        }
-                    });
-                }*/
-
-                /*
-                Exception in thread "Thread-0" java.lang.IllegalStateException: Not on FX application thread; currentThread = Thread-0
-
-                warum geht das chatClient.chatArrived(), aber das untere nicht?
-                transition vom ClientHandler thread (also hier) hin zum FX application thread, gibt es eine transition?
-                 */
-                /*if (myName.equals(newName) == false)
-                    chatClient.test("new Name: " + newName);
-                    //if (LobbyController.diversWindowController != null)
-                        //LobbyController.diversWindowController.setStatus("new Name: " + newName);
-                 */
                 myName = newName;
                 break;
             case "CHANGENO":
