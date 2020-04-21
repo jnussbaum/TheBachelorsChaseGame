@@ -1,12 +1,14 @@
 package tbc.client;
 
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.GUI.LobbyController;
+import tbc.GUI.SelectOptions;
 import tbc.game.Card;
 import tbc.game.Player;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 
@@ -32,9 +34,17 @@ public class ClientGame {
         }
     }
 
+    /**
+     * Appends the new card to the ArrayList 'cards'.
+     * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
+     */
     public void addCard(String cardName) {
         cards.add(Card.valueOf(cardName));
-        LOGGER.info("You received the card " + cardName);
+        Platform.runLater(
+                () -> {
+                    LobbyController.gameWindowController.appendGameMsg("You received the card " + cardName);
+                }
+        );
     }
 
     public void giveTurn() {
@@ -59,61 +69,46 @@ public class ClientGame {
         //TODO: What to do when the user takes an action before the 10 secs are left
         //TODO: Use this countdown in the GUI
         */
-        selectWithoutGUI();
+        selectOptions();
     }
 
-    void selectWithoutGUI() {
-        String s = "";
-        for (Card c : cards) {
-            s = s + c.toString() + " ";
-        }
-        LOGGER.info("Your Cards are: " + s);
-        LOGGER.info("Number of your coins: " + nameToPlayer(myName).getNumOfCoins());
-        LOGGER.info("Please select your turn: \n" +
-                "Type 1 to take a card,\n" +
-                "Type 2 to throw a card\n" +
-                "Type 3 to quit this match."
+    /**
+     * Calls the method display() from the class SelectOptions, so the user can select one of the options.
+     */
+    void selectOptions() {
+        LOGGER.info("Show the three options");
+        Platform.runLater(
+                () -> {
+                    String s = "";
+                    for (Card c : cards) {
+                        s = s + c.toString() + " ";
+                    }
+                    LobbyController.gameWindowController.appendGameMsg("Your cards: " + s);
+                    SelectOptions.display();
+                }
         );
-        try {
-            String answer = input.readLine();
-            LOGGER.info("The input was: " + answer);
-            if (answer == null) {
-                quitThisMatch();
-            } else if (answer.contains("1")) {
-                takeCard();
-            } else if (answer.contains("2")) {
-                LOGGER.info("Your Cards are: " + s);
-                LOGGER.info("Please type in the card you want to throw away: ");
-                answer = input.readLine();
-                throwCard(answer);
-            } else if (answer.contains("3")) {
-                quitThisMatch();
-            } else {
-                LOGGER.info("User input could not be parsed to one of the three actions");
-                LOGGER.info("please tip one of the following options: ");
-                selectWithoutGUI();
-            }
-        } catch (IOException e) {
-            LOGGER.error("IO Error while reading user input to select a turn.");
-            e.printStackTrace();
-        }
     }
 
-    void takeCard() {
+    public void takeCard() {
         //timer.cancel();
         clientHandler.askForCard();
         calculatePoints();
     }
 
-    void throwCard(String cardName) {
+    public void throwCard(String cardName) {
         //timer.cancel();
         ArrayList<String> cardsAsStrings = new ArrayList<>();
         for (Card c : cards) {
             cardsAsStrings.add(c.toString());
         }
         if (cardsAsStrings.contains(cardName) == false) {
-            LOGGER.info("You don't possess such a card. Please select another.");
-            selectWithoutGUI();
+            Platform.runLater(
+                    () -> {
+                        LobbyController.gameWindowController.appendGameMsg(
+                                "You don't possess such a card. Please select another.");
+                    }
+            );
+            SelectOptions.display();
         } else {
             int coins = nameToPlayer(myName).getNumOfCoins();
             if (coins >= THROWCOST) {
@@ -122,15 +117,25 @@ public class ClientGame {
                 coins -= THROWCOST;
                 nameToPlayer(myName).setNumOfCoins(coins);
                 calculatePoints();
-                LOGGER.info("The Card " + cardName + " was thrown away");
+                Platform.runLater(
+                        () -> {
+                            LobbyController.gameWindowController.appendGameMsg(
+                                    "The Card " + cardName + " was thrown away");
+                        }
+                );
             } else {
-                LOGGER.info("You don't have enough coins to throw away a card. Please select another option.");
-                selectWithoutGUI();
+                Platform.runLater(
+                        () -> {
+                            LobbyController.gameWindowController.appendGameMsg(
+                                    "You don't have enough coins to throw away a card. Please select another option.");
+                        }
+                );
+                SelectOptions.display();
             }
         }
     }
 
-    void quitThisMatch() {
+    public void quitThisMatch() {
         //timer.cancel();
         nameToPlayer(myName).setQuitMatch(true);
         clientHandler.quitThisMatch();
@@ -144,13 +149,25 @@ public class ClientGame {
             sum += c.getValue();
         }
         points = sum;
-        LOGGER.info("Points have been calculated and they are: " + points);
+        Platform.runLater(
+                () -> LobbyController.gameWindowController.appendGameMsg("Points have been calculated and they are: "
+                        + points)
+        );
+        //LOGGER.info("Points have been calculated and they are: " + points);
     }
 
     public void endMatch(String winnerName) {
-        LOGGER.info("The match has ended, the winner is " + winnerName +
-            " You scored " + points + " points");
-        LOGGER.info("You new Number of Coins is: " + nameToPlayer(myName).getNumOfCoins());
+        Platform.runLater(
+                () -> {
+                    LobbyController.gameWindowController.appendGameMsg("The match has ended, the winner is "
+                            + winnerName + ". You scored " + points + " points!");
+                    LobbyController.gameWindowController.appendGameMsg("Your new number of coins is: "
+                            + nameToPlayer(myName).getNumOfCoins());
+                }
+        );
+        //LOGGER.info("The match has ended, the winner is " + winnerName +
+        //    " You scored " + points + " points");
+        //LOGGER.info("You new Number of Coins is: " + nameToPlayer(myName).getNumOfCoins());
         //TODO the reset has to work properly
         reset();
         askToStartNewMatch();
@@ -191,15 +208,12 @@ public class ClientGame {
     }
 
     void askToStartNewMatch() {
-        try {
-            LOGGER.info("Would you like to start a new match? Type yes or no.");
-            String answer = input.readLine();
-            LOGGER.info(answer);
-            if (answer.equalsIgnoreCase("yes")) {
-                clientHandler.askForNewMatch();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Platform.runLater(
+                () -> {
+                    LobbyController.gameWindowController.appendGameMsg(
+                            "Press the button 'New match' if you want to start a new match");
+                    LobbyController.gameWindowController.btnNewMatch.setDisable(false);
+                }
+        );
     }
 }

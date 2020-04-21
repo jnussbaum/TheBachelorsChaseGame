@@ -102,7 +102,7 @@ public class ClientHandler implements Runnable {
             case "LOBBYJOINED":
                 String lobbyName = commands[1];
                 LOGGER.info("You joined the lobby " + lobbyName);
-                Client.askToStartAGame();
+                //Client.askToStartAGame();
                 break;
             case "GIVECARD":
                 String cardName = commands[1];
@@ -118,7 +118,7 @@ public class ClientHandler implements Runnable {
             case "ENDMATCH":
                 String winnerName = commands[1];
               LOGGER.info(
-                  "endmatch of ClientGame " + Client.getGame() + "was called with winnername "
+                  "endmatch of ClientGame " + Client.getGame() + " was called with winnername "
                       + winnerName);
               Client.getGame().endMatch(winnerName);
                 break;

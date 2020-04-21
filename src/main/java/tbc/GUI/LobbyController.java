@@ -33,35 +33,43 @@ public class LobbyController {
     private Stage secondStage = null;
 
     /**
-     * If the circle "Start" is pressed a new window, the game window, will open.
+     * If the circle "Start" is pressed a new window will open, where the user has to chose or create a lobby.
+     * If no lobby is chosen, the game window won't show up.
      */
     public void startGame(MouseEvent mouseEvent) {
-        LOGGER.info("Show game window.");
-        try {
-            Stage gameWindow = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindowFXML.fxml"));
-            Parent root = loader.load();
+        LOGGER.info("Join or create a lobby");
+        SelectLobby.display();
 
-            gameWindow.setTitle("The Bachelor's Chase");
-            gameWindow.setScene(new Scene(root, 1000, 650));
-            gameWindow.show();
+        if (SelectLobby.lobbyChosen == true) {
+            LOGGER.info("Show game window.");
+            try {
+                Stage gameWindow = (Stage) ((Node)mouseEvent.getSource()).getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindowFXML.fxml"));
+                Parent root = loader.load();
 
-            gameWindowController = loader.getController();
+                gameWindow.setTitle("The Bachelor's Chase");
+                gameWindow.setScene(new Scene(root, 1000, 650));
+                gameWindow.show();
 
-            // Welcomes the client in all the chat windows
-            clientHandler.sendMessage("ALL", "false", "Welcome, " + Client.userName
-                + "\nDo NOT use the character '#' in the chat nor for your name.");
+                gameWindowController = loader.getController();
 
-            // The send button is disabled as long as there is no input in the chat field
-            gameWindowController.btnSend.disableProperty().bind(
-                Bindings.isEmpty(gameWindowController.msgField.textProperty())
-                    .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
-                    .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
-            );
+                // Welcomes the client in all the chat windows
+                clientHandler.sendMessage("ALL", "false", "Welcome, " + Client.userName);
 
-        } catch (Exception e) {
-            LOGGER.error("Couldn't find GameWindowFXML file.");
-            e.printStackTrace();
+                // Tells the user to press the 'Ready' buton
+                gameWindowController.appendGameMsg("Press the button 'Ready' if you are ready for the game");
+
+                // The send button from the chat is disabled as long as there is no input in the chat field
+                gameWindowController.btnSend.disableProperty().bind(
+                        Bindings.isEmpty(gameWindowController.msgField.textProperty())
+                                .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
+                                .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
+                );
+
+            } catch (Exception e) {
+                LOGGER.error("Couldn't find GameWindowFXML file.");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -132,7 +140,7 @@ public class LobbyController {
      * get the player and lobby list.
      */
     public void showVarious() {
-        LOGGER.info("Show divers.");
+        LOGGER.info("Show various.");
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("VariousWindowFXML.fxml"));
             BorderPane various = loader.load();
