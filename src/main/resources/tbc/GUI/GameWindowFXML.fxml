@@ -10,7 +10,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -107,6 +109,30 @@
                <BorderPane.margin>
                   <Insets bottom="10.0" left="10.0" top="10.0" />
                </BorderPane.margin>
+               <center>
+                  <BorderPane prefHeight="228.0" prefWidth="592.0" BorderPane.alignment="CENTER">
+                     <top>
+                        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <ImageView fx:id="imageView1" fitHeight="193.0" fitWidth="126.0" layoutX="8.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageView2" fitHeight="193.0" fitWidth="126.0" layoutX="146.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageView3" fitHeight="193.0" fitWidth="126.0" layoutX="307.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageView4" fitHeight="193.0" fitWidth="126.0" layoutX="458.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </top>
+                     <bottom>
+                        <Pane prefHeight="208.0" prefWidth="592.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <ImageView fx:id="imageView5" fitHeight="202.0" fitWidth="141.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageView6" fitHeight="202.0" fitWidth="141.0" layoutX="166.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageView7" fitHeight="202.0" fitWidth="141.0" layoutX="296.0" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="imageView8" fitHeight="202.0" fitWidth="141.0" layoutX="451.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </Pane>
+                     </bottom>
+                  </BorderPane>
+               </center>
             </BorderPane>
          </center>
       </BorderPane>
