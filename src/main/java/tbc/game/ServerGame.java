@@ -81,6 +81,16 @@ public class ServerGame implements Runnable {
         return n;
     }
 
+  void restackDeck() {
+    cardDeck.put(Card.Plagiarism, 5);
+    cardDeck.put(Card.Party, 5);
+    cardDeck.put(Card.Coffee, 10);
+    cardDeck.put(Card.RedBull, 10);
+    cardDeck.put(Card.WLAN, 10);
+    cardDeck.put(Card.Study, 5);
+    cardDeck.put(Card.GoodLecturer, 2);
+  }
+
     /**
      * Get the deck as String-array which contains every single card, one per array position.
      * The cards are not mixed, but grouped together by their type.
@@ -279,6 +289,7 @@ public class ServerGame implements Runnable {
         LOGGER.info("Match has bin started again");
         winner = false;
         matchEnd = false;
+      restackDeck();
     }
 
     private void reset() {
