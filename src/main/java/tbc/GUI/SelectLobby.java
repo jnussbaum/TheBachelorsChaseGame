@@ -78,6 +78,8 @@ public class SelectLobby {
         Scene scene = new Scene(layout, 300, 180);
         window.setScene(scene);
         window.showAndWait();
+
+        window.setOnCloseRequest(e -> display());
     }
 
 }

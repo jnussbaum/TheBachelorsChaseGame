@@ -2,6 +2,7 @@ package tbc.chat;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
 import tbc.server.Server;
 import tbc.server.ServerHandler;
 
@@ -19,8 +20,13 @@ public class ChatServer {
         if (receiver.equals("ALL")) {
             // send message to all
             for (ServerHandler sh : Server.getServerHandlers()) {
-                sh.sendChatMessage(sender, "false", msg);
-                LOGGER.info("ChatServer sent message to the ServerHandler of " + sh.getName());
+                if (sh.getName().equals(sender)) {
+                    Lobby playerLobby = sh.getLobby();
+                    for (ServerHandler serverHandler : playerLobby.getClients().values()) {
+                        serverHandler.sendChatMessage(sender, "false", msg);
+                        LOGGER.info("ChatServer sent message to the ServerHandler of " + sh.getName());
+                    }
+                }
             }
         } else {
             // if receiver does not exist send a private message back to the sender

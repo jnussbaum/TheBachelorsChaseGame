@@ -110,7 +110,12 @@ public class Lobby {
         return isGameActive;
     }
 
-    public static String getLobbyName() {
+    public String getLobbyName() {
         return lobbyName;
     }
+
+    public HashMap<String, ServerHandler> getClients() {
+        return clients;
+    }
+
 }
