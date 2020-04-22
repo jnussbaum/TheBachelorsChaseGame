@@ -26,6 +26,10 @@ public class LoginController {
     @FXML private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
     public static String chosenLogo;
 
+    public static String getChosenLogo() {
+        return chosenLogo;
+    }
+
     public void setUserName(String name) {
         userName.setText(name);
     }

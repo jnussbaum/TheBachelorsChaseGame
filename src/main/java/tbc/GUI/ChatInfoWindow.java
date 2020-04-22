@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This window shows the information about the chat.
+ * This window shows the information about the chat, for example how to send a private message.
  */
 public class ChatInfoWindow {
 
