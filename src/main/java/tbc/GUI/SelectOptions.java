@@ -55,10 +55,11 @@ public class SelectOptions {
 
         TextField timer = new TextField();
         timer.setEditable(false);
-        timer.setPrefWidth(20.0);
-        Label timerLabel = new Label(" secoonds left");
+        timer.setPrefWidth(30.0);
+        Label timerLabel = new Label(" seconds left");
         HBox hBox = new HBox(10);
         hBox.getChildren().addAll(timer, timerLabel);
+        hBox.setAlignment(Pos.CENTER);
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(10, 10, 10, 10));

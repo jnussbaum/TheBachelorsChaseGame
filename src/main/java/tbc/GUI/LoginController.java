@@ -50,12 +50,14 @@ public class LoginController {
 
                 LOGGER.info(Client.userName + " has logged in.");
                 LOGGER.info(Client.userName + " has chosen the logo: " + chosenLogo);
-
+                lobbyWindow.setOnCloseRequest(e -> Client.clientHandler.logOut());
             } catch (Exception e) {
                 LOGGER.error("Couldn't find LobbyFXML file.");
                 e.printStackTrace();
             }
+
         }
+
     }
 
     public void girly() {

@@ -13,8 +13,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import tbc.client.Client;
+
 import static tbc.client.Client.clientHandler;
 
 /**
@@ -65,7 +65,7 @@ public class LobbyController {
                                 .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                                 .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                 );
-
+                gameWindow.setOnCloseRequest(e -> Client.clientHandler.logOut());
             } catch (Exception e) {
                 LOGGER.error("Couldn't find GameWindowFXML file.");
                 e.printStackTrace();
@@ -167,6 +167,9 @@ public class LobbyController {
         }
     }
 
+    /**
+     * The button 'Close', which closes the 'Rules' or 'Goal' window if open.
+     */
     public void close() {
         LOGGER.info("Close current window.");
         textArea.clear();

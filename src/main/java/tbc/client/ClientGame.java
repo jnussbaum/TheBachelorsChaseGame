@@ -45,6 +45,7 @@ public class ClientGame {
                     LobbyController.gameWindowController.appendGameMsg("You received the card " + cardName);
                 }
         );
+        calculatePoints();
     }
 
     public void giveTurn() {
@@ -153,7 +154,6 @@ public class ClientGame {
                 () -> LobbyController.gameWindowController.appendGameMsg("Points have been calculated and they are: "
                         + points)
         );
-        //LOGGER.info("Points have been calculated and they are: " + points);
     }
 
     public void endMatch(String winnerName) {
@@ -165,9 +165,6 @@ public class ClientGame {
                             + nameToPlayer(myName).getNumOfCoins());
                 }
         );
-        //LOGGER.info("The match has ended, the winner is " + winnerName +
-        //    " You scored " + points + " points");
-        //LOGGER.info("You new Number of Coins is: " + nameToPlayer(myName).getNumOfCoins());
         //TODO the reset has to work properly
         reset();
         askToStartNewMatch();

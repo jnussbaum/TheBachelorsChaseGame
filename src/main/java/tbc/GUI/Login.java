@@ -30,11 +30,11 @@ public class Login extends Application {
 
             LoginController loginController = loader.getController();
             loginController.setUserName(Client.userName);
-
         } catch (Exception e) {
             LOGGER.error("Couldn't find LoginFXML file.");
             e.printStackTrace();
         }
+        primaryStage.setOnCloseRequest(e -> Client.clientHandler.logOut());
     }
 
     public static void main(String[] args) {
