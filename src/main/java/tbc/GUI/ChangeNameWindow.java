@@ -1,5 +1,6 @@
 package tbc.GUI;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tbc.client.Client;
 
 import static tbc.client.Client.clientHandler;
 
@@ -46,8 +48,26 @@ public class ChangeNameWindow {
         );
         enter.setOnAction(e -> {
             String clientName = newUsername.getText();
-                newUsername.clear();
-                clientHandler.changeName(clientName);
+            newUsername.clear();
+            clientHandler.changeName(clientName);
+
+            Thread thread = new Thread(() -> {
+                Runnable updater = () -> labelStatus.setText("New Name: " + Client.clientHandler.getMyName());
+
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                    }
+
+                    // UI update is run on the Application thread
+                    Platform.runLater(updater);
+                }
+            });
+            // don't let thread prevent JVM shutdown
+            thread.setDaemon(true);
+            thread.start();
+
         });
 
         Button close = new Button("Close");

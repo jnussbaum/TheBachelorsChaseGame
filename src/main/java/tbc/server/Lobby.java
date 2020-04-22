@@ -1,11 +1,12 @@
 package tbc.server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.ServerGame;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Server-side lobby, created by the Server.
@@ -17,7 +18,7 @@ public class Lobby {
     /**
      * Name of this lobby as string.
      */
-    private String lobbyName;
+    public static String lobbyName;
 
     /**
      * Administration of all clients by their name and serverHandler
@@ -77,7 +78,7 @@ public class Lobby {
 
     void readyForMatch(String myName) {
         readyMatchClients.add(myName);
-      LOGGER.info("readyForMatch has been called");
+        LOGGER.info("readyForMatch has been called");
         if (readyMatchClients.size() == clients.size() && readyMatchClients.size() > 1) {
           serverGame.startMatchAgain();
           LOGGER.info("everyone is ready and the next match is staring");
@@ -94,8 +95,8 @@ public class Lobby {
             for (ServerHandler sh : clients.values()) {
                 sh.gameStarted(players);
             }
-            Thread gamethread = new Thread(serverGame);
-            gamethread.start();
+            Thread gameThread = new Thread(serverGame);
+            gameThread.start();
             isGameActive = true;
             LOGGER.info("Lobby's startGame() method terminated successfully");
         }
@@ -107,5 +108,9 @@ public class Lobby {
 
     public boolean isGameActive() {
         return isGameActive;
+    }
+
+    public static String getLobbyName() {
+        return lobbyName;
     }
 }

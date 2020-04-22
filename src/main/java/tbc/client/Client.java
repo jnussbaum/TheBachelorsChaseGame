@@ -7,7 +7,6 @@ import tbc.GUI.Login;
 import tbc.chat.ChatClient;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
@@ -25,7 +24,7 @@ public class Client {
     public static ClientHandler clientHandler;
     private static Thread clientHandlerThread;
     public static ChatClient chatClient;
-    private static ClientGame game;
+    public static ClientGame game;
 
     public static ClientGame getGame() {
         return game;
@@ -60,7 +59,7 @@ public class Client {
         } else {
             // Run jar with username
             userName = args[2];
-            LOGGER.info("User has been set from the client: " + userName);
+            LOGGER.info("Username has been set from the client: " + userName);
         }
 
         String hostName = args[1].substring(0, args[1].indexOf(':'));
@@ -82,12 +81,11 @@ public class Client {
             clientHandler.registerChatClient(chatClient);
             // Check if username is already being used
             clientHandler.changeName(userName);
-            //Application.launch(Login.class, args);
+            Application.launch(Login.class, args);
         } catch (Exception e) {
             LOGGER.error("Could not set the username.");
         }
 
-        joinALobby();
         LOGGER.info("Client.main came to its end and will enter while loop now.");
         while(true) {
             //do nothing
@@ -95,29 +93,13 @@ public class Client {
         }
     }
 
-    static void joinALobby() {
-        try {
-            clientHandler.askForLobbyList();
-            System.out.println("Please type the name of an existing lobby or type a new lobby name");
-            String lobby = input.readLine();
-            System.out.println("A request will be sent to join the lobby " + lobby);
-            clientHandler.joinLobby(lobby);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void joinALobby(String lobby) {
+        LOGGER.info("A request will be sent to join the lobby " + lobby);
+        clientHandler.joinLobby(lobby);
     }
 
-    static void askToStartAGame() {
-        try {
-            System.out.println("Would you like to start a game? Type yes or no.");
-            String answer = input.readLine();
-            System.out.println(answer);
-            if (answer.equalsIgnoreCase("yes")) {
-                clientHandler.readyForGame();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void askToStartAGame() {
+        clientHandler.readyForGame();
     }
 
 }

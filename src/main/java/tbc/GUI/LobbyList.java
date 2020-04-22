@@ -29,7 +29,7 @@ public class LobbyList {
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("The Bachelor's Chase - Lobbylist");
-        window.setMinWidth(300);
+        window.setMinWidth(250);
         window.setMinHeight(400);
 
         Label label = new Label();
