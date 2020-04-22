@@ -60,20 +60,16 @@ public class ChatClient {
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
-            LOGGER.info("[PRIVATE] " + sender + ": " + msg);
             LobbyController.gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
             if (msg.startsWith("Welcome")) {
-                LOGGER.info("Let us welcome " + sender + "!");
                 LobbyController.gameWindowController.appendMsg(msg);
                 return;
             }
 
             if (msg.equals(" has left the game.")) {
-                LOGGER.info(sender + msg);
                 LobbyController.gameWindowController.appendMsg(sender + msg);
             } else {
-                LOGGER.info(sender + ": " + msg);
                 LobbyController.gameWindowController.appendMsg(sender + ": " + msg);
             }
         }
