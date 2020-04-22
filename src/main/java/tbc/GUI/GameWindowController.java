@@ -1,14 +1,9 @@
 package tbc.GUI;
 
-import java.awt.event.ActionEvent;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -17,12 +12,13 @@ import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
+import tbc.game.Player;
 
 /**
  * Processes a client's request to start the Game. Here it will show all the graphical
  * components of the game logic, which makes it possible for the clients to play the game.
  */
-public class GameWindowController implements Initializable {
+public class GameWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(GameWindowController.class);
 
@@ -35,7 +31,7 @@ public class GameWindowController implements Initializable {
     @FXML private Button btnRdy;
     @FXML private TextArea gameChatArea;
     @FXML public Button btnNewMatch;
-    @FXML public ImageView imageView1;
+    @FXML public ImageView imgView;
     private Window secondStage;
 
     /**
@@ -160,6 +156,20 @@ public class GameWindowController implements Initializable {
         appendGameMsg("Waiting for other players to be ready...");
         btnRdy.setDisable(true);
 
+        Player[] players = Client.game.getPlayers();
+        for (Player name : players) {
+            String playerName = name.getName();
+            LOGGER.info(playerName);
+        }
+
+        /*
+        try {
+            Image party = new Image("tbc/GUI/img/party.png");
+            imgView.setImage(party);
+        } catch (Exception e) {
+            LOGGER.error("Image not found");
+        }*/
+
     }
 
     /**
@@ -179,8 +189,4 @@ public class GameWindowController implements Initializable {
         btnNewMatch.setDisable(true);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
 }

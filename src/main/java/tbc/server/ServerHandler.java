@@ -100,7 +100,7 @@ public class ServerHandler implements Runnable {
             case "READYFORGAME":
                 LOGGER.info(
                     "ServerHandler received READYFORGAME and will execute lobby.readyForGame with " +
-                        "this lobby: " + Lobby.getLobbyName());
+                        "this lobby: " + lobby.getLobbyName());
                 System.out.println(myName);
                 lobby.readyForGame(myName);
                 break;
@@ -262,4 +262,6 @@ public class ServerHandler implements Runnable {
     public void setName(String name) {
         myName = name;
     }
+
+    public Lobby getLobby() { return lobby; }
 }

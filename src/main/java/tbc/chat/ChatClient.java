@@ -1,5 +1,6 @@
 package tbc.chat;
 
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.GUI.LobbyController;
@@ -40,6 +41,11 @@ public class ChatClient {
             String msg = s.substring(s.indexOf(" ") + 1);
             if (s.contains(" ") && msg.length() != 0) {
                 clientHandler.sendMessage(receiver, "true", msg);
+                Platform.runLater(
+                        () -> {
+                            LobbyController.gameWindowController.appendMsg("[PRIVATE] "
+                                    + clientHandler.getMyName() + ": " + msg);
+                        });
             } else {
                 LobbyController.gameWindowController.appendMsg("Usage: @<Username vom anderen Spieler> <Nachricht>");
             }

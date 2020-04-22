@@ -112,26 +112,26 @@ public class Server {
         // This is the Headquarter of the Chat application.
         ChatServer chatServer = new ChatServer();
 
-            try {
-                serverSocket = new ServerSocket(portNumber);
-                LOGGER.info("Type this address in the client after starting the client: "
-                        + InetAddress.getLocalHost().getHostAddress());
-                Socket socket;
-                int i = 0;
-                while (true) {
-                    socket = serverSocket.accept();
-                    String name = socket.getInetAddress().getHostName() + i;
-                    i++;
-                    ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
-                    Thread shThread = new Thread(serverHandler);
-                    shThread.start();
-                    clients.put(name, serverHandler);
-                    chatServer.register(name, serverHandler);
-                }
-            } catch (IOException e) {
-                LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
-                e.printStackTrace();
+        try {
+            serverSocket = new ServerSocket(portNumber);
+            LOGGER.info("Type this address in the client after starting the client: "
+                    + InetAddress.getLocalHost().getHostAddress());
+            Socket socket;
+            int i = 0;
+            while (true) {
+                socket = serverSocket.accept();
+                String name = socket.getInetAddress().getHostName() + i;
+                i++;
+                ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
+                Thread shThread = new Thread(serverHandler);
+                shThread.start();
+                clients.put(name, serverHandler);
+                chatServer.register(name, serverHandler);
             }
-		}
+        } catch (IOException e) {
+            LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
+            e.printStackTrace();
+        }
+    }
 
 }

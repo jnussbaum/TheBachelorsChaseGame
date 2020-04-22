@@ -65,7 +65,7 @@ public class LobbyController {
                                 .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                                 .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                 );
-                gameWindow.setOnCloseRequest(e -> Client.clientHandler.logOut());
+                gameWindow.setOnCloseRequest(e -> ConfirmBox.display());
             } catch (Exception e) {
                 LOGGER.error("Couldn't find GameWindowFXML file.");
                 e.printStackTrace();

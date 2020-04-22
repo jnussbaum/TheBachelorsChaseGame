@@ -45,7 +45,6 @@ public class ClientGame {
                     LobbyController.gameWindowController.appendGameMsg("You received the card " + cardName);
                 }
         );
-        calculatePoints();
     }
 
     public void giveTurn() {
@@ -93,6 +92,13 @@ public class ClientGame {
     public void takeCard() {
         //timer.cancel();
         clientHandler.askForCard();
+        /*Platform.runLater(
+                () -> {
+                    Image party = new Image("img/party.png");
+                    LobbyController.gameWindowController.imageView1.setImage(party);
+                    LOGGER.info("party bild angezeigt");
+                }
+        );*/
         calculatePoints();
     }
 
@@ -212,5 +218,9 @@ public class ClientGame {
                     LobbyController.gameWindowController.btnNewMatch.setDisable(false);
                 }
         );
+    }
+
+    public Player[] getPlayers() {
+        return players;
     }
 }
