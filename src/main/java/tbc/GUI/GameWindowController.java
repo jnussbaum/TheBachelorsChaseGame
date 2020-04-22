@@ -1,9 +1,15 @@
 package tbc.GUI;
 
+import java.awt.event.ActionEvent;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,7 +22,7 @@ import tbc.client.Client;
  * Processes a client's request to start the Game. Here it will show all the graphical
  * components of the game logic, which makes it possible for the clients to play the game.
  */
-public class GameWindowController {
+public class GameWindowController implements Initializable {
 
     private static final Logger LOGGER = LogManager.getLogger(GameWindowController.class);
 
@@ -29,6 +35,7 @@ public class GameWindowController {
     @FXML private Button btnRdy;
     @FXML private TextArea gameChatArea;
     @FXML public Button btnNewMatch;
+    @FXML public ImageView imageView1;
     private Window secondStage;
 
     /**
@@ -149,8 +156,10 @@ public class GameWindowController {
      */
     public void rdyForTheGame() {
         Client.askToStartAGame();
+
         appendGameMsg("Waiting for other players to be ready...");
         btnRdy.setDisable(true);
+
     }
 
     /**
@@ -168,5 +177,10 @@ public class GameWindowController {
     public void startNewMatch() {
         Client.clientHandler.askForNewMatch();
         btnNewMatch.setDisable(true);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }

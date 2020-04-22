@@ -1,12 +1,15 @@
 package tbc.GUI;
 
 import javafx.beans.binding.Bindings;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -28,6 +31,8 @@ public class SelectOptions {
         Button hit = new Button("Hit");
         hit.setOnAction(e -> {
             Client.game.takeCard();
+            Image party = new Image("img/party.png");
+            LobbyController.gameWindowController.imageView1.setImage(party);
             Stage stage = (Stage) hit.getScene().getWindow();
             stage.close();
         });
