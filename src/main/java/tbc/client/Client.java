@@ -3,7 +3,7 @@ package tbc.client;
 import javafx.application.Application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.GUI.Login;
+import tbc.gui.Login;
 import tbc.chat.ChatClient;
 
 import java.io.BufferedReader;
@@ -20,19 +20,19 @@ public class Client {
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
     public static String userName;
-    private static BufferedReader input;
     public static ClientHandler clientHandler;
-    private static Thread clientHandlerThread;
     public static ChatClient chatClient;
     public static ClientGame game;
+    private static BufferedReader input;
+    private static Thread clientHandlerThread;
 
     public static ClientGame getGame() {
         return game;
     }
 
     /**
-     * When a new Client connects to the server, he chooses his name and sends a request to the
-     * server to connect with this name. The Server answers by invoking this method.
+     * When a new Client connects to the server, he chooses his name and sends a request to the server
+     * to connect with this name. The Server answers by invoking this method.
      */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
@@ -40,7 +40,7 @@ public class Client {
             LOGGER.info("Hello " + userName + ", welcome to our chat!");
         } else {
             LOGGER.error("This name is not available any more. "
-                + "Your name has been set from the server.");
+                    + "Your name has been set from the server.");
             clientHandler.changeName(newName);
         }
     }
@@ -70,7 +70,8 @@ public class Client {
         input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 
         try {
-            clientHandlerThread = new Thread(clientHandler = new ClientHandler(userName, hostName, portNumber));
+            clientHandlerThread = new Thread(
+                    clientHandler = new ClientHandler(userName, hostName, portNumber));
             chatClient = new ChatClient(clientHandler);
         } catch (Exception e) {
             LOGGER.error("Couldn't get I/O for the connection to the hostname");
@@ -87,7 +88,7 @@ public class Client {
         }
 
         LOGGER.info("Client.main came to its end and will enter while loop now.");
-        while(true) {
+        while (true) {
             //do nothing
             //TODO: Remove this.
         }

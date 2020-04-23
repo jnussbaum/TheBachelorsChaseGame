@@ -69,10 +69,10 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * As soon as information comes in on the clientInputStream, this String is passed to decode(). This method
-     * looks at the first substring (commands[0], the Network Protocol command) and then invokes the appropriate
-     * methods in this object in order to process the information. The following substrings (from commands[1] on)
-     * are the parameters of the Network Protocol command.
+     * As soon as information comes in on the clientInputStream, this String is passed to decode().
+     * This method looks at the first substring (commands[0], the Network Protocol command) and then
+     * invokes the appropriate methods in this object in order to process the information. The
+     * following substrings (from commands[1] on) are the parameters of the Network Protocol command.
      */
     void decode(String s) {
         LOGGER.info("ClientHandler received message: " + s);
@@ -102,7 +102,6 @@ public class ClientHandler implements Runnable {
             case "LOBBYJOINED":
                 String lobbyName = commands[1];
                 LOGGER.info("You joined the lobby " + lobbyName);
-                //Client.askToStartAGame();
                 break;
             case "GIVECARD":
                 String cardName = commands[1];
@@ -117,18 +116,18 @@ public class ClientHandler implements Runnable {
                 break;
             case "ENDMATCH":
                 String winnerName = commands[1];
-              LOGGER.info(
-                  "endmatch of ClientGame " + Client.getGame() + " was called with winnername "
-                      + winnerName);
-              Client.getGame().endMatch(winnerName);
+                LOGGER.info(
+                        "endmatch of ClientGame " + Client.getGame() + " was called with winnername "
+                                + winnerName);
+                Client.getGame().endMatch(winnerName);
                 break;
             case "SENDCOINS":
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
-              break;
+                break;
             case "LOGOUT":
                 System.exit(0);
-              break;
+                break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");
         }
@@ -144,7 +143,8 @@ public class ClientHandler implements Runnable {
     }
 
     public void sendMessage(String receiver, String isPrivateMsg, String msg) {
-        clientOutputStream.println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
+        clientOutputStream
+                .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
     }
 
@@ -236,7 +236,7 @@ public class ClientHandler implements Runnable {
     }
 
     public void readyForGame() {
-      LOGGER.info("readyforgame was send");
+        LOGGER.info("readyforgame was send");
         clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }

@@ -3,8 +3,9 @@ package tbc.client;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.GUI.LobbyController;
-import tbc.GUI.SelectOptions;
+import tbc.gui.CardDeck;
+import tbc.gui.LobbyController;
+import tbc.gui.SelectOptions;
 import tbc.game.Card;
 import tbc.game.Player;
 
@@ -15,13 +16,13 @@ import java.util.Timer;
 public class ClientGame {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private String myName;
-    private ClientHandler clientHandler;
-    private int points;
-    private ArrayList<Card> cards = new ArrayList<>();
-    private Player[] players;
+    private final String myName;
+    private final ClientHandler clientHandler;
+    private final ArrayList<Card> cards = new ArrayList<>();
+    private final Player[] players;
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
-    private BufferedReader input;
+    private final BufferedReader input;
+    private int points;
     private Timer timer;
 
     public ClientGame(ClientHandler ch, String[] namePlayers, BufferedReader input) {
@@ -36,6 +37,7 @@ public class ClientGame {
 
     /**
      * Appends the new card to the ArrayList 'cards'.
+     *
      * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
      */
     public void addCard(String cardName) {
@@ -43,8 +45,11 @@ public class ClientGame {
         Platform.runLater(
                 () -> {
                     LobbyController.gameWindowController.appendGameMsg("You received the card " + cardName);
+                    LobbyController.gameWindowController.showCard(cardName);
                 }
         );
+        // Show the specific image on the gui
+
     }
 
     public void giveTurn() {
@@ -67,13 +72,14 @@ public class ClientGame {
             }
         }, 0, 1000);
         //TODO: What to do when the user takes an action before the 10 secs are left
-        //TODO: Use this countdown in the GUI
+        //TODO: Use this countdown in the gui
         */
         selectOptions();
     }
 
     /**
-     * Calls the method display() from the class SelectOptions, so the user can select one of the options.
+     * Calls the method display() from the class SelectOptions, so the user can select one of the
+     * options.
      */
     void selectOptions() {
         LOGGER.info("Show the three options");
@@ -92,13 +98,6 @@ public class ClientGame {
     public void takeCard() {
         //timer.cancel();
         clientHandler.askForCard();
-        /*Platform.runLater(
-                () -> {
-                    Image party = new Image("img/party.png");
-                    LobbyController.gameWindowController.imageView1.setImage(party);
-                    LOGGER.info("party bild angezeigt");
-                }
-        );*/
         calculatePoints();
     }
 
@@ -157,8 +156,9 @@ public class ClientGame {
         }
         points = sum;
         Platform.runLater(
-                () -> LobbyController.gameWindowController.appendGameMsg("Points have been calculated and they are: "
-                        + points)
+                () -> LobbyController.gameWindowController
+                        .appendGameMsg("Points have been calculated and they are: "
+                                + points)
         );
     }
 
@@ -207,7 +207,7 @@ public class ClientGame {
             p.setQuitMatch(false);
             LOGGER.info(p.getName() + " Has been resetted");
         }
-      cards.clear();
+        cards.clear();
     }
 
     void askToStartNewMatch() {
@@ -223,4 +223,5 @@ public class ClientGame {
     public Player[] getPlayers() {
         return players;
     }
+
 }

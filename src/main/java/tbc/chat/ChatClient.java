@@ -3,7 +3,7 @@ package tbc.chat;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.GUI.LobbyController;
+import tbc.gui.LobbyController;
 import tbc.client.ClientHandler;
 
 /**
@@ -17,7 +17,7 @@ public class ChatClient {
     /**
      * The clientHandler who is responsible for the communication with the server.
      */
-    private ClientHandler clientHandler;
+    private final ClientHandler clientHandler;
 
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -49,7 +49,7 @@ public class ChatClient {
             } else {
                 LobbyController.gameWindowController.appendMsg("Usage: @<Username vom anderen Spieler> <Nachricht>");
             }
-        // send public message
+            // send public message
         } else {
             clientHandler.sendMessage("ALL", "false", s);
         }

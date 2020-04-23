@@ -97,7 +97,7 @@ Implementierung eines Java Client/Server-Systems mit einfachen Socket-Verbindung
         <task id="13" name="3. Meilenstein - Server" color="#00cc00" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
             <notes><![CDATA[Präsentation in der Übungsstunde + eine Woche darauf im Plenum:
 
-Kernkomponenten des Spieles (Spiel-Management) sind implementiert, allerdings noch ohne Regelüberprüfung und ohne grafische Oberfläche, für die Lobby und den Chat ist einer tbc.GUI vorhanden.
+Kernkomponenten des Spieles (Spiel-Management) sind implementiert, allerdings noch ohne Regelüberprüfung und ohne grafische Oberfläche, für die Lobby und den Chat ist einer tbc.gui vorhanden.
 
 Erwartete Inhalte:
 – Kurze Diskussion: Welche Massnahmen zur Erhöhung der Softwarequalität haben Sie angewendet / werden Sie anwenden?
@@ -115,16 +115,16 @@ Erwartete Inhalte:
             <depend id="19" type="2" difference="0" hardness="Rubber"/>
         </task>
         <task id="114" name="Client Testen" color="#666600" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-03-20" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="17" name="3. Meilenstein - tbc.GUI" color="#ff6600" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
+        <task id="17" name="3. Meilenstein - tbc.gui" color="#ff6600" meeting="false" start="2020-03-25" duration="6" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true">
             <notes><![CDATA[Grafische Darstellung des Spiels (Kartenmodelle, evtl Animation)
 
 Sound]]></notes>
         </task>
-        <task id="117" name="tbc.GUI Testen" color="#ff6600" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-03-20" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="117" name="tbc.gui Testen" color="#ff6600" meeting="false" start="2020-04-01" duration="4" complete="0" thirdDate="2020-03-20" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="19" name="Implementierung Server/Client" color="#0066ff" meeting="false" start="2020-04-07" duration="4" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="123" name="Server/Client Testen" color="#cccccc" meeting="false" start="2020-04-10" duration="5" complete="0" thirdDate="2020-04-02" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="21" name="Implementierung Software/tbc.GUI" color="#666666" meeting="false" start="2020-04-07" duration="4" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
-        <task id="125" name="Software/tbc.GUI Testen" color="#006666" meeting="false" start="2020-04-10" duration="5" complete="0" thirdDate="2020-04-03" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="21" name="Implementierung Software/tbc.gui" color="#666666" meeting="false" start="2020-04-07" duration="4" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
+        <task id="125" name="Software/tbc.gui Testen" color="#006666" meeting="false" start="2020-04-10" duration="5" complete="0" thirdDate="2020-04-03" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="23" name="Präsentation im Plenum" color="#000000" meeting="false" start="2020-04-16" duration="2" complete="0" thirdDate="2019-04-11" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="36" name="Vorzeigen in der ÜStd" color="#000000" meeting="true" start="2020-04-08" duration="0" complete="0" thirdDate="2019-02-04" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="true"/>
         <task id="27" name="4. Meilenstein Product" color="#00cc00" meeting="false" start="2020-04-08" duration="14" complete="8" thirdDate="2019-04-16" thirdDate-constraint="0" webLink="http%3A%2F%2Fp9.cs.unibas.ch%2Fcs108%2F2020%2F" expand="false">

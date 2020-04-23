@@ -11,7 +11,7 @@ javafx {
 
 group 'tbc'
 version '0.0.1'
-mainClassName = 'tbc/GUI/Main'
+mainClassName = 'tbc/Main'
 
 //specifies source compatibility to Java 11
 sourceCompatibility = 1.11

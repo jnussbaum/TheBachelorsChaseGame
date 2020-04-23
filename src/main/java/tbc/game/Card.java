@@ -12,7 +12,7 @@ public enum Card {
     Study(60),
     GoodLecturer(80);
 
-    private int value;
+    private final int value;
 
     Card(int val) {
         value = val;

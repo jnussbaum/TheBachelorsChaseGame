@@ -1,47 +1,40 @@
 package tbc.game;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Timer;
-import java.util.concurrent.Semaphore;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.server.Lobby;
 
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Timer;
+import java.util.concurrent.Semaphore;
+
 public class ServerGame implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
+    private final int THROWCOST = 10; //number of coins you pay to throw away a card
+    /**
+     * The lobby from which this game was started.
+     */
+    private final Lobby lobby;
+    /**
+     * Administration of the clients in this game with their respective cardset. Administration of the
+     * coins of each client. Administration of the points of each client.
+     */
+    private final Player[] players;
+    /**
+     * Administration of all cards which are not yet distributed to a client. Card: Type of card
+     * Integer: number of cards of this type which are still available.
+     */
+    private final HashMap<Card, Integer> cardDeck = new HashMap<>();
+    volatile boolean matchEnd = false;
+    boolean winner = false;
     /**
      * Here, the clients are stored in a String-Array
      */
     private String[] clientsAsArray = new String[4];
-
-    volatile boolean matchEnd = false;
-    boolean winner = false;
-    private final int THROWCOST = 10; //number of coins you pay to throw away a card
     private Timer timer;
     private Semaphore turnController;
-
-    /**
-     * The lobby from which this game was started.
-     */
-    private Lobby lobby;
-
-    /**
-     * Administration of the clients in this game with their respective cardset.
-     * Administration of the coins of each client.
-     * Administration of the points of each client.
-     */
-    private Player[] players;
-
-    /**
-     * Administration of all cards which are not yet distributed to a client.
-     * Card: Type of card
-     * Integer: number of cards of this type which are still available.
-     */
-    private HashMap<Card, Integer> cardDeck = new HashMap<>();
-
     /**
      * Counts through the clients and represents which client's turn it is.
      */
@@ -81,19 +74,19 @@ public class ServerGame implements Runnable {
         return n;
     }
 
-  void restackDeck() {
-    cardDeck.put(Card.Plagiarism, 5);
-    cardDeck.put(Card.Party, 5);
-    cardDeck.put(Card.Coffee, 10);
-    cardDeck.put(Card.RedBull, 10);
-    cardDeck.put(Card.WLAN, 10);
-    cardDeck.put(Card.Study, 5);
-    cardDeck.put(Card.GoodLecturer, 2);
-  }
+    void restackDeck() {
+        cardDeck.put(Card.Plagiarism, 5);
+        cardDeck.put(Card.Party, 5);
+        cardDeck.put(Card.Coffee, 10);
+        cardDeck.put(Card.RedBull, 10);
+        cardDeck.put(Card.WLAN, 10);
+        cardDeck.put(Card.Study, 5);
+        cardDeck.put(Card.GoodLecturer, 2);
+    }
 
     /**
-     * Get the deck as String-array which contains every single card, one per array position.
-     * The cards are not mixed, but grouped together by their type.
+     * Get the deck as String-array which contains every single card, one per array position. The
+     * cards are not mixed, but grouped together by their type.
      */
     String[] getDeckAsArray() {
         String[] output = new String[getDeckSize()];
@@ -118,8 +111,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Helper method to give a random card to a client. This method is invoked by other methods who want to
-     * give out cards.
+     * Helper method to give a random card to a client. This method is invoked by other methods who
+     * want to give out cards.
      */
     public void giveRandomCard(String clientName) {
         //Choose a random card
@@ -167,9 +160,11 @@ public class ServerGame implements Runnable {
             LOGGER.error("The client " + clientName + "cannot throw away the card " + cardName
                     + " because he does not have such a card.");
         }
-        LOGGER.info("number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+        LOGGER
+                .info("number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         calculatePoints();
-        LOGGER.info("number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+        LOGGER.info(
+                "number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
         //Subtract coins from player
         nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - THROWCOST);
         turnController.release();
@@ -178,14 +173,17 @@ public class ServerGame implements Runnable {
     void updateDroppedOut() {
         int i = 0;
         for (Player p : players) {
-            if (p.quitMatch) i++;
+            if (p.quitMatch) {
+                i++;
+            }
         }
         numOfDroppedOut = i;
     }
 
     public void giveTurnToNext() {
         updateDroppedOut();
-        LOGGER.info("ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
+        LOGGER.info(
+                "ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
         if (winner == false) {
             if (numOfDroppedOut < clientsAsArray.length) {
                 //Find out the number of the next client
@@ -200,7 +198,7 @@ public class ServerGame implements Runnable {
                 } else {
                     lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
                     System.out.println("ServerGame's method giveTurnToNext() gave turn to "
-                        + clientsAsArray[activeClient]);
+                            + clientsAsArray[activeClient]);
                 }
             } else {
                 System.out.println("All players dropped out of the game");
@@ -248,7 +246,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Checks all Players if the Win or Lose-Conditions are met. This method is always called after every turn.
+     * Checks all Players if the Win or Lose-Conditions are met. This method is always called after
+     * every turn.
      */
     void calculatePoints() {
         String winner = null;
@@ -289,7 +288,7 @@ public class ServerGame implements Runnable {
         LOGGER.info("Match has bin started again");
         winner = false;
         matchEnd = false;
-      restackDeck();
+        restackDeck();
     }
 
     private void reset() {

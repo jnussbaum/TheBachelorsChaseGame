@@ -23,12 +23,12 @@ public class Server {
     /**
      * This HashMap administrates all clients by their name and ServerHandler.
      */
-    private static HashMap<String, ServerHandler> clients = new HashMap<>();
+    private static final HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
      * Administration of all lobbies.
      */
-    private static HashMap<String, Lobby> lobbies = new HashMap<>();
+    private static final HashMap<String, Lobby> lobbies = new HashMap<>();
 
     private static int clientNameCount = 0;
 
@@ -52,6 +52,7 @@ public class Server {
 
     /**
      * This method removes the client from the list.
+     *
      * @param logoutUser The client who requested the LOGOUT.
      */
     public static void removeUser(String logoutUser) {
