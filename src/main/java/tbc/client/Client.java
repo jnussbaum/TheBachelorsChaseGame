@@ -3,11 +3,10 @@ package tbc.client;
 import javafx.application.Application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.GUI.Login;
+import tbc.gui.Login;
 import tbc.chat.ChatClient;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
@@ -21,19 +20,19 @@ public class Client {
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
 
     public static String userName;
-    private static BufferedReader input;
     public static ClientHandler clientHandler;
-    private static Thread clientHandlerThread;
     public static ChatClient chatClient;
-    private static ClientGame game;
+    public static ClientGame game;
+    private static BufferedReader input;
+    private static Thread clientHandlerThread;
 
     public static ClientGame getGame() {
         return game;
     }
 
     /**
-     * When a new Client connects to the server, he chooses his name and sends a request to the
-     * server to connect with this name. The Server answers by invoking this method.
+     * When a new Client connects to the server, he chooses his name and sends a request to the server
+     * to connect with this name. The Server answers by invoking this method.
      */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
@@ -41,7 +40,7 @@ public class Client {
             LOGGER.info("Hello " + userName + ", welcome to our chat!");
         } else {
             LOGGER.error("This name is not available any more. "
-                + "Your name has been set from the server.");
+                    + "Your name has been set from the server.");
             clientHandler.changeName(newName);
         }
     }
@@ -60,7 +59,7 @@ public class Client {
         } else {
             // Run jar with username
             userName = args[2];
-            LOGGER.info("User has been set from the client: " + userName);
+            LOGGER.info("Username has been set from the client: " + userName);
         }
 
         String hostName = args[1].substring(0, args[1].indexOf(':'));
@@ -71,7 +70,8 @@ public class Client {
         input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 
         try {
-            clientHandlerThread = new Thread(clientHandler = new ClientHandler(userName, hostName, portNumber));
+            clientHandlerThread = new Thread(
+                    clientHandler = new ClientHandler(userName, hostName, portNumber));
             chatClient = new ChatClient(clientHandler);
         } catch (Exception e) {
             LOGGER.error("Couldn't get I/O for the connection to the hostname");
@@ -82,42 +82,25 @@ public class Client {
             clientHandler.registerChatClient(chatClient);
             // Check if username is already being used
             clientHandler.changeName(userName);
-            //Application.launch(Login.class, args);
+            Application.launch(Login.class, args);
         } catch (Exception e) {
             LOGGER.error("Could not set the username.");
         }
 
-        joinALobby();
         LOGGER.info("Client.main came to its end and will enter while loop now.");
-        while(true) {
+        while (true) {
             //do nothing
             //TODO: Remove this.
         }
     }
 
-    static void joinALobby() {
-        try {
-            clientHandler.askForLobbyList();
-            System.out.println("Please type the name of an existing lobby or type a new lobby name");
-            String lobby = input.readLine();
-            System.out.println("A request will be sent to join the lobby " + lobby);
-            clientHandler.joinLobby(lobby);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void joinALobby(String lobby) {
+        LOGGER.info("A request will be sent to join the lobby " + lobby);
+        clientHandler.joinLobby(lobby);
     }
 
-    static void askToStartAGame() {
-        try {
-            System.out.println("Would you like to start a game? Type yes or no.");
-            String answer = input.readLine();
-            System.out.println(answer);
-            if (answer.equalsIgnoreCase("yes")) {
-                clientHandler.readyForGame();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void askToStartAGame() {
+        clientHandler.readyForGame();
     }
 
 }

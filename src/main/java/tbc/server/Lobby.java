@@ -18,18 +18,18 @@ public class Lobby {
     /**
      * Name of this lobby as string.
      */
-    private String lobbyName;
+    public static String lobbyName;
 
     /**
      * Administration of all clients by their name and serverHandler
      */
-    private HashMap<String, ServerHandler> clients = new HashMap<>();
+    private final HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
      * Controls all clients if they are ready to start a game or not.
      */
-    private ArrayList<String> readyGameClients = new ArrayList<>();
-    private ArrayList<String> readyMatchClients = new ArrayList<>();
+    private final ArrayList<String> readyGameClients = new ArrayList<>();
+    private final ArrayList<String> readyMatchClients = new ArrayList<>();
 
     /**
      * The game belonging to this lobby is stored in this variable.
@@ -46,7 +46,7 @@ public class Lobby {
      * is added to the clients' administration.
      */
     public Lobby(String lobbyName, ServerHandler sh) {
-        this.lobbyName = lobbyName;
+        Lobby.lobbyName = lobbyName;
         clients.put(sh.getName(), sh);
         sh.lobbyJoined(lobbyName);
     }
@@ -78,11 +78,11 @@ public class Lobby {
 
     void readyForMatch(String myName) {
         readyMatchClients.add(myName);
-      LOGGER.info("readyForMatch has been called");
+        LOGGER.info("readyForMatch has been called");
         if (readyMatchClients.size() == clients.size() && readyMatchClients.size() > 1) {
-          serverGame.startMatchAgain();
-          LOGGER.info("everyone is ready and the next match is staring");
-          readyMatchClients.clear();
+            serverGame.startMatchAgain();
+            LOGGER.info("everyone is ready and the next match is staring");
+            readyMatchClients.clear();
         }
     }
 
@@ -95,8 +95,8 @@ public class Lobby {
             for (ServerHandler sh : clients.values()) {
                 sh.gameStarted(players);
             }
-            Thread gamethread = new Thread(serverGame);
-            gamethread.start();
+            Thread gameThread = new Thread(serverGame);
+            gameThread.start();
             isGameActive = true;
             LOGGER.info("Lobby's startGame() method terminated successfully");
         }
@@ -108,6 +108,10 @@ public class Lobby {
 
     public boolean isGameActive() {
         return isGameActive;
+    }
+
+    public String getLobbyName() {
+        return lobbyName;
     }
 
     public HashMap<String, ServerHandler> getClients() {

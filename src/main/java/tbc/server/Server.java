@@ -23,12 +23,12 @@ public class Server {
     /**
      * This HashMap administrates all clients by their name and ServerHandler.
      */
-    private static HashMap<String, ServerHandler> clients = new HashMap<>();
+    private static final HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
      * Administration of all lobbies.
      */
-    private static HashMap<String, Lobby> lobbies = new HashMap<>();
+    private static final HashMap<String, Lobby> lobbies = new HashMap<>();
 
     private static int clientNameCount = 0;
 
@@ -52,6 +52,7 @@ public class Server {
 
     /**
      * This method removes the client from the list.
+     *
      * @param logoutUser The client who requested the LOGOUT.
      */
     public static void removeUser(String logoutUser) {
@@ -112,26 +113,26 @@ public class Server {
         // This is the Headquarter of the Chat application.
         ChatServer chatServer = new ChatServer();
 
-            try {
-                serverSocket = new ServerSocket(portNumber);
-                LOGGER.info("Type this address in the client after starting the client: "
-                        + InetAddress.getLocalHost().getHostAddress());
-                Socket socket;
-                int i = 0;
-                while (true) {
-                    socket = serverSocket.accept();
-                    String name = socket.getInetAddress().getHostName() + i;
-                    i++;
-                    ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
-                    Thread shThread = new Thread(serverHandler);
-                    shThread.start();
-                    clients.put(name, serverHandler);
-                    chatServer.register(name, serverHandler);
-                }
-            } catch (IOException e) {
-                LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
-                e.printStackTrace();
+        try {
+            serverSocket = new ServerSocket(portNumber);
+            LOGGER.info("Type this address in the client after starting the client: "
+                    + InetAddress.getLocalHost().getHostAddress());
+            Socket socket;
+            int i = 0;
+            while (true) {
+                socket = serverSocket.accept();
+                String name = socket.getInetAddress().getHostName() + i;
+                i++;
+                ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
+                Thread shThread = new Thread(serverHandler);
+                shThread.start();
+                clients.put(name, serverHandler);
+                chatServer.register(name, serverHandler);
             }
+        } catch (IOException e) {
+            LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
+            e.printStackTrace();
+        }
     }
 
     public static HashMap<String, ServerHandler> getClients() {

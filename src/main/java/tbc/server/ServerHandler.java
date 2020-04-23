@@ -3,6 +3,7 @@ package tbc.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -14,10 +15,9 @@ import java.nio.charset.StandardCharsets;
 public class ServerHandler implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger(ServerHandler.class);
-
+    private final Socket clientSocket;
+    private final ChatServer chatServer;
     private String myName;
-    private Socket clientSocket;
-    private ChatServer chatServer;
     private BufferedReader clientInputStream;
     private PrintWriter clientOutputStream;
     private boolean exit = false;
@@ -99,8 +99,8 @@ public class ServerHandler implements Runnable {
                 break;
             case "READYFORGAME":
                 LOGGER.info(
-                    "ServerHandler received READYFORGAME and will execute lobby.readyForGame with" +
-                        "this lobby: " + lobby);
+                        "ServerHandler received READYFORGAME and will execute lobby.readyForGame with " +
+                                "this lobby: " + lobby.getLobbyName());
                 System.out.println(myName);
                 lobby.readyForGame(myName);
                 break;
@@ -251,15 +251,19 @@ public class ServerHandler implements Runnable {
         LOGGER.info("Coins have been sent");
     }
 
-    public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
-    }
-
     public String getName() {
         return myName;
     }
 
     public void setName(String name) {
         myName = name;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
     }
 }

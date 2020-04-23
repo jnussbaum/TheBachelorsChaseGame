@@ -1,7 +1,8 @@
 package tbc.game;
 
-import java.util.ArrayList;
 import tbc.server.ServerHandler;
+
+import java.util.ArrayList;
 
 public class Player {
 
@@ -17,36 +18,36 @@ public class Player {
         this.name = name;
     }
 
-    public void setServerHandler(ServerHandler serverHandler) {
-        this.serverHandler = serverHandler;
-    }
-
     public ServerHandler getServerHandler() {
         return serverHandler;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNumOfPoints(int numOfPoints) {
-        this.numOfPoints = numOfPoints;
-    }
-
-    public void setNumOfCoins(int numOfCoins) {
-        this.numOfCoins = numOfCoins;
+    public void setServerHandler(ServerHandler serverHandler) {
+        this.serverHandler = serverHandler;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getNumOfPoints() {
         return numOfPoints;
     }
 
+    public void setNumOfPoints(int numOfPoints) {
+        this.numOfPoints = numOfPoints;
+    }
+
     public int getNumOfCoins() {
         return numOfCoins;
+    }
+
+    public void setNumOfCoins(int numOfCoins) {
+        this.numOfCoins = numOfCoins;
     }
 
     public ArrayList<Card> getCards() {

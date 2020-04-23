@@ -1,8 +1,9 @@
 package tbc.chat;
 
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.GUI.LobbyController;
+import tbc.gui.LobbyController;
 import tbc.client.ClientHandler;
 
 /**
@@ -16,7 +17,7 @@ public class ChatClient {
     /**
      * The clientHandler who is responsible for the communication with the server.
      */
-    private ClientHandler clientHandler;
+    private final ClientHandler clientHandler;
 
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
@@ -27,7 +28,7 @@ public class ChatClient {
      */
     public void processInput(String s) {
         // the client wants to logout
-        if (s.startsWith("LOGOUT")) {
+        if (s.startsWith("UserWantsToLogout")) {
             clientHandler.sendMessage("ALL", "false", " has left the game.");
             clientHandler.logOut();
             LOGGER.info("You have logged out.");
@@ -40,10 +41,15 @@ public class ChatClient {
             String msg = s.substring(s.indexOf(" ") + 1);
             if (s.contains(" ") && msg.length() != 0) {
                 clientHandler.sendMessage(receiver, "true", msg);
+                Platform.runLater(
+                        () -> {
+                            LobbyController.gameWindowController.appendMsg("[PRIVATE] "
+                                    + clientHandler.getMyName() + ": " + msg);
+                        });
             } else {
                 LobbyController.gameWindowController.appendMsg("Usage: @<Username vom anderen Spieler> <Nachricht>");
             }
-        // send public message
+            // send public message
         } else {
             clientHandler.sendMessage("ALL", "false", s);
         }
@@ -54,20 +60,16 @@ public class ChatClient {
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
-            LOGGER.info("[PRIVATE] " + sender + ": " + msg);
             LobbyController.gameWindowController.appendMsg("[PRIVATE] " + sender + ": " + msg);
         } else {
             if (msg.startsWith("Welcome")) {
-                LOGGER.info("Let us welcome " + sender + "!");
                 LobbyController.gameWindowController.appendMsg(msg);
                 return;
             }
 
             if (msg.equals(" has left the game.")) {
-                LOGGER.info(sender + msg);
                 LobbyController.gameWindowController.appendMsg(sender + msg);
             } else {
-                LOGGER.info(sender + ": " + msg);
                 LobbyController.gameWindowController.appendMsg(sender + ": " + msg);
             }
         }

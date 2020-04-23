@@ -35,7 +35,7 @@ hs_err_pid*
 .gradle/5.1.1/executionHistory/executionHistory.lock
 **/build/
 
-# Ignore Gradle tbc.GUI config
+# Ignore Gradle tbc.gui config
 gradle-app.setting
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
