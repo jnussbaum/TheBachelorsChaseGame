@@ -35,68 +35,139 @@ public class GameWindowController {
     @FXML
     public Button btnNewMatch;
     @FXML
-    public ImageView imgView;
+    public ImageView coffeeCard;
     @FXML
-    public ImageView imageView1;
+    public ImageView redBullCard;
     @FXML
-    public ImageView imageView2;
+    public ImageView wLanCard;
     @FXML
-    public ImageView imageView3;
+    public ImageView studyCard;
     @FXML
-    public ImageView imageView4;
+    public ImageView profCard;
     @FXML
-    public ImageView imageView5;
+    public ImageView partyCard;
     @FXML
-    public ImageView imageView6;
-    @FXML
-    public ImageView imageView7;
-    @FXML
-    public ImageView imageView8;
+    public ImageView plagCard;
     @FXML
     private TextArea txtAChat;
+    @FXML
+    private Label coffeeCnt;
+    @FXML
+    private Label redBullCnt;
+    @FXML
+    private Label wLanCnt;
+    @FXML
+    private Label studyCnt;
+    @FXML
+    private Label profCnt;
+    @FXML
+    private Label partyCnt;
+    @FXML
+    private Label plagCnt;
     @FXML
     private Button btnRdy;
     @FXML
     private TextArea gameChatArea;
     private Window secondStage;
 
+    /**
+     * Switches the card name and loads the specific card image to the imageView place.
+     * @param card The name of the card that has been drawn.
+     */
     public void showCard(String card) {
-        LOGGER.info(card);
+        int cnt;
         switch (card) {
-
-            case ("Party"):
-                try {
-                    Image party = new Image("tbc/gui/img/party.png");
-                    imageView1.setImage(party);
-                }catch (Exception e){
-                    LOGGER.error("Image not found");
+            case ("Coffee"):
+                if (coffeeCnt.getText().isEmpty()) {
+                    Image coffee = new Image("tbc/gui/img/coffee.png");
+                    coffeeCard.setImage(coffee);
+                    cnt = 1;
+                    coffeeCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    coffeeCnt.setText(cnt + "x");
                 }
                 break;
-                /*
-            case ("Plagiarism"):
-                Image plagiarism = new Image("tbc/gui/img/plagiarism.png");
-                imageView2.setImage(plagiarism);
-                break;
-            case ("Coffee"):
-                Image coffee = new Image("tbc/gui/img/coffee.png");
-                imageView3.setImage(coffee);
-                break;
-            case ("Study"):
-                Image study = new Image("tbc/gui/img/study.png");
-                imageView4.setImage(study);
-                break;
-            case ("GoodLecturer"):
-                Image goodLecturer = new Image("tbc/gui/img/goodlecturer.png");
-                imageView5.setImage(goodLecturer);
-                break;
             case ("RedBull"):
-                Image redbull = new Image("tbc/gui/img/redbull.png");
-                imageView6.setImage(redbull);
+                if (redBullCnt.getText().isEmpty()) {
+                    Image redbull = new Image("tbc/gui/img/redbull.png");
+                    redBullCard.setImage(redbull);
+                    cnt = 1;
+                    redBullCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    redBullCnt.setText(cnt + "x");
+                }
                 break;
             case ("WLAN"):
-                Image wlan = new Image("tbc/gui/img/wlan.png");
-                imageView7.setImage(wlan);
-                break;*/
+                if (wLanCnt.getText().isEmpty()) {
+                    Image wlan = new Image("tbc/gui/img/wlan.png");
+                    wLanCard.setImage(wlan);
+                    cnt = 1;
+                    wLanCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    wLanCnt.setText(cnt + "x");
+                }
+                break;
+            case ("Study"):
+                if (studyCnt.getText().isEmpty()) {
+                    Image study = new Image("tbc/gui/img/study.png");
+                    studyCard.setImage(study);
+                    cnt = 1;
+                    studyCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    studyCnt.setText(cnt + "x");
+                }
+                break;
+            case ("GoodLecturer"):
+                if (profCnt.getText().isEmpty()) {
+                    Image goodLecturer = new Image("tbc/gui/img/goodlecturer.png");
+                    profCard.setImage(goodLecturer);
+                    cnt = 1;
+                    profCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    profCnt.setText(cnt + "x");
+                }
+                break;
+            case ("Party"):
+                if (partyCnt.getText().isEmpty()) {
+                    Image party = new Image("tbc/gui/img/party.png");
+                    partyCard.setImage(party);
+                    cnt = 1;
+                    partyCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    partyCnt.setText(cnt + "x");
+                }
+                break;
+            case ("Plagiarism"):
+                if (plagCnt.getText().isEmpty()) {
+                    Image plagiarism = new Image("tbc/gui/img/plagiarism.png");
+                    plagCard.setImage(plagiarism);
+                    cnt = 1;
+                    plagCnt.setText(cnt + "x");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt++;
+                    plagCnt.setText(cnt + "x");
+                }
+                break;
             default:
                 LOGGER.error(card + " does not exist.");
         }
@@ -119,14 +190,19 @@ public class GameWindowController {
      */
     public void appendMsg(String msg) {
         String logo = LoginController.getChosenLogo();
-        if (logo.equals("girly")) {
-            txtAChat.setStyle("-fx-text-fill: red");
-        } else if (logo.equals("nerd")) {
-            txtAChat.setStyle("-fx-text-fill: green");
-        } else if (logo.equals("hippy")) {
-            txtAChat.setStyle("-fx-text-fill: yellow");
-        } else if (logo.equals("emo")) {
-            txtAChat.setStyle("-fx-text-fill: purple");
+        switch (logo) {
+            case "girly":
+                txtAChat.setStyle("-fx-text-fill: red");
+                break;
+            case "nerd":
+                txtAChat.setStyle("-fx-text-fill: green");
+                break;
+            case "hippy":
+                txtAChat.setStyle("-fx-text-fill: yellow");
+                break;
+            case "emo":
+                txtAChat.setStyle("-fx-text-fill: purple");
+                break;
         }
         txtAChat.appendText(msg + "\n");
     }
@@ -247,11 +323,42 @@ public class GameWindowController {
 
     /**
      * If the user presses the button 'New match', this method will call the method askForNewMatch()
-     * from the class ClientHandler. It disables the button 'New match'.
+     * from the class ClientHandler. It disables the button 'New match' and sets all imageView to demo.png.
+     * Also deletes the label, which counts the cards number.
      */
     public void startNewMatch() {
         Client.clientHandler.askForNewMatch();
         btnNewMatch.setDisable(true);
+
+        // reset the card images to the demo image
+        Image demo = new Image("tbc/gui/img/demo.png");
+        coffeeCard.setImage(demo);
+        redBullCard.setImage(demo);
+        wLanCard.setImage(demo);
+        studyCard.setImage(demo);
+        profCard.setImage(demo);
+        partyCard.setImage(demo);
+        plagCard.setImage(demo);
+
+        // reset the label of the card counts
+        coffeeCnt.setText("");
+        redBullCnt.setText("");
+        wLanCnt.setText("");
+        studyCnt.setText("");
+        profCnt.setText("");
+        partyCnt.setText("");
+        plagCnt.setText("");
+    }
+
+    /**
+     * Method to check how many number of cards you have from a specific card.
+     * @param labelCnt A String from the label of the drawn cards.
+     * @return Number of already drawn cards.
+     */
+    public int getCnt(String labelCnt) {
+        String count = labelCnt.substring(0, labelCnt.indexOf("x"));
+        int cnt = Integer.parseInt(count);
+        return cnt;
     }
 
 }
