@@ -124,6 +124,7 @@ public class ClientGame {
                         () -> {
                             LobbyController.gameWindowController.appendGameMsg(
                                     "The Card " + cardName + " was thrown away");
+                            LobbyController.gameWindowController.throwTheCard(cardName);
                         }
                 );
             } else {

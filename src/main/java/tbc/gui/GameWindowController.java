@@ -72,6 +72,8 @@ public class GameWindowController {
 
     /**
      * Switches the card name and loads the specific card image to the imageView place.
+     * If there is none card it will load the specific card image and increments the number in the label.
+     * Else it checks the number of existing cards and increments its number in the label.
      * @param card The name of the card that has been drawn.
      */
     public void showCard(String card) {
@@ -92,12 +94,12 @@ public class GameWindowController {
                 break;
             case ("RedBull"):
                 if (redBullCnt.getText().isEmpty()) {
-                    Image redbull = new Image("tbc/gui/img/redbull.png");
-                    redBullCard.setImage(redbull);
+                    Image redBull = new Image("tbc/gui/img/redbull.png");
+                    redBullCard.setImage(redBull);
                     cnt = 1;
                     redBullCnt.setText(cnt + "x");
                 } else {
-                    String label = coffeeCnt.getText();
+                    String label = redBullCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
                     redBullCnt.setText(cnt + "x");
@@ -105,12 +107,12 @@ public class GameWindowController {
                 break;
             case ("WLAN"):
                 if (wLanCnt.getText().isEmpty()) {
-                    Image wlan = new Image("tbc/gui/img/wlan.png");
-                    wLanCard.setImage(wlan);
+                    Image wLan = new Image("tbc/gui/img/wlan.png");
+                    wLanCard.setImage(wLan);
                     cnt = 1;
                     wLanCnt.setText(cnt + "x");
                 } else {
-                    String label = coffeeCnt.getText();
+                    String label = wLanCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
                     wLanCnt.setText(cnt + "x");
@@ -123,7 +125,7 @@ public class GameWindowController {
                     cnt = 1;
                     studyCnt.setText(cnt + "x");
                 } else {
-                    String label = coffeeCnt.getText();
+                    String label = studyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
                     studyCnt.setText(cnt + "x");
@@ -136,7 +138,7 @@ public class GameWindowController {
                     cnt = 1;
                     profCnt.setText(cnt + "x");
                 } else {
-                    String label = coffeeCnt.getText();
+                    String label = profCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
                     profCnt.setText(cnt + "x");
@@ -149,7 +151,7 @@ public class GameWindowController {
                     cnt = 1;
                     partyCnt.setText(cnt + "x");
                 } else {
-                    String label = coffeeCnt.getText();
+                    String label = partyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
                     partyCnt.setText(cnt + "x");
@@ -162,7 +164,7 @@ public class GameWindowController {
                     cnt = 1;
                     plagCnt.setText(cnt + "x");
                 } else {
-                    String label = coffeeCnt.getText();
+                    String label = plagCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
                     plagCnt.setText(cnt + "x");
@@ -359,6 +361,104 @@ public class GameWindowController {
         String count = labelCnt.substring(0, labelCnt.indexOf("x"));
         int cnt = Integer.parseInt(count);
         return cnt;
+    }
+
+    /**
+     * Switches the card name and loads the specific card image to the imageView place.
+     * If there is already one card it loads the demo.png and deletes the label.
+     * Else it checks the number of the existing cards and decrements the number in the label.
+     * @param cardName The name of the card that the user wants to throw away.
+     */
+    public void throwTheCard(String cardName) {
+        int cnt;
+        switch (cardName) {
+            case ("Coffee"):
+                if (coffeeCnt.getText().equals("1x")) {
+                    Image coffee = new Image("tbc/gui/img/demo.png");
+                    coffeeCard.setImage(coffee);
+                    coffeeCnt.setText("");
+                } else {
+                    String label = coffeeCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    coffeeCnt.setText(cnt + "x");
+                }
+                break;
+            case ("RedBull"):
+                if (redBullCnt.getText().equals("1x")) {
+                    Image redBull = new Image("tbc/gui/img/demo.png");
+                    redBullCard.setImage(redBull);
+                    redBullCnt.setText("");
+                } else {
+                    String label = redBullCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    redBullCnt.setText(cnt + "x");
+                }
+                break;
+            case ("WLAN"):
+                if (wLanCnt.getText().equals("1x")) {
+                    Image wLan = new Image("tbc/gui/img/demo.png");
+                    wLanCard.setImage(wLan);
+                    wLanCnt.setText("");
+                } else {
+                    String label = wLanCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    wLanCnt.setText(cnt + "x");
+                }
+                break;
+            case ("Study"):
+                if (studyCnt.getText().equals("1x")) {
+                    Image study = new Image("tbc/gui/img/demo.png");
+                    studyCard.setImage(study);
+                    studyCnt.setText("");
+                } else {
+                    String label = studyCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    studyCnt.setText(cnt + "x");
+                }
+                break;
+            case ("GoodLecturer"):
+                if (profCnt.getText().equals("1x")) {
+                    Image goodLecturer = new Image("tbc/gui/img/demo.png");
+                    profCard.setImage(goodLecturer);
+                    profCnt.setText("");
+                } else {
+                    String label = profCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    profCnt.setText(cnt + "x");
+                }
+                break;
+            case ("Party"):
+                if (partyCnt.getText().equals("1x")) {
+                    Image party = new Image("tbc/gui/img/demo.png");
+                    partyCard.setImage(party);
+                    partyCnt.setText("");
+                } else {
+                    String label = partyCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    partyCnt.setText(cnt + "x");
+                }
+                break;
+            case ("Plagiarism"):
+                if (plagCnt.getText().equals("1x")) {
+                    Image plagiarism = new Image("tbc/gui/img/demo.png");
+                    plagCard.setImage(plagiarism);
+                    plagCnt.setText("");
+                } else {
+                    String label = plagCnt.getText();
+                    cnt = getCnt(label);
+                    cnt--;
+                    plagCnt.setText(cnt + "x");
+                }
+                break;
+            default:
+                LOGGER.error(cardName + " does not exist.");
+        }
     }
 
 }
