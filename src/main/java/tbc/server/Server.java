@@ -132,6 +132,9 @@ public class Server {
                 LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
                 e.printStackTrace();
             }
-		}
+    }
 
+    public static HashMap<String, ServerHandler> getClients() {
+        return clients;
+    }
 }

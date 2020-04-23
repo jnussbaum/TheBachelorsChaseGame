@@ -1,11 +1,12 @@
 package tbc.server;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.ServerGame;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Server-side lobby, created by the Server.
@@ -107,5 +108,9 @@ public class Lobby {
 
     public boolean isGameActive() {
         return isGameActive;
+    }
+
+    public HashMap<String, ServerHandler> getClients() {
+        return clients;
     }
 }
