@@ -1,6 +1,11 @@
 package tbc.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,9 +16,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import tbc.client.Client;
 
 public class SelectOptions {
+
+    private static final Integer STARTTIME = 10;
+    private static Timeline timeline;
+    private static TextField timerField = new TextField();
+    private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
     public static void display() {
         Stage window = new Stage();
@@ -53,12 +64,24 @@ public class SelectOptions {
             stage.close();
         });
 
-        TextField timer = new TextField();
-        timer.setEditable(false);
-        timer.setPrefWidth(30.0);
+        //TextField timer = new TextField();
+        timerField.setEditable(false);
+        timerField.setPrefWidth(30.0);
+        timerField.textProperty().bind(timeSeconds.asString());
+
+        if (timeline != null) {
+            timeline.stop();
+        }
+        timeSeconds.set(STARTTIME);
+        timeline = new Timeline();
+        timeline.getKeyFrames().add(
+                new KeyFrame(Duration.seconds(STARTTIME+1),
+                        new KeyValue(timeSeconds, 0)));
+        timeline.playFromStart();
+
         Label timerLabel = new Label(" seconds left");
         HBox hBox = new HBox(10);
-        hBox.getChildren().addAll(timer, timerLabel);
+        hBox.getChildren().addAll(timerField, timerLabel);
         hBox.setAlignment(Pos.CENTER);
 
         VBox layout = new VBox(10);

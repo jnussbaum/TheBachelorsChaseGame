@@ -483,8 +483,9 @@ public class GameWindowController {
         }
     }
 
-    public void droppedOutWindow() {
-        DropppedOutWindow.display();
+    /*
+    public void showTimer(int countdown) {
+        SelectOptions.setTimer(countdown);
     }
-
+     */
 }

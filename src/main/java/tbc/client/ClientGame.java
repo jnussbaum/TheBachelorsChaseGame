@@ -5,13 +5,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.Card;
 import tbc.game.Player;
+import tbc.gui.DropppedOutWindow;
 import tbc.gui.LobbyController;
 import tbc.gui.SelectOptions;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class ClientGame {
 
@@ -53,21 +53,6 @@ public class ClientGame {
 
     public void giveTurn() {
         selectOptions();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            int countdown = 10;
-            public void run() {
-                if (countdown > 0) {
-                    countdown = countdown - 1;
-                    //TODO: Print countdown (int variable with seconds left) in GUI;
-                } else {
-                    //countdown == 0
-                    //TODO: Print countdown = 0 a last time
-                    timer.cancel();
-                    //TODO: Make it impossible for this client to take further actions: make buttons grey
-                }
-            }
-        }, 0, 1000);
         timer.cancel();
     }
 
@@ -254,7 +239,7 @@ public class ClientGame {
 
     public void droppedOut() {
         Platform.runLater(() -> {
-            LobbyController.gameWindowController.droppedOutWindow();
+            DropppedOutWindow.display();
         });
     }
 }
