@@ -10,7 +10,7 @@ public class Player {
     boolean notifyDropOut = false;
     String name;
     int numOfPoints;
-    int numOfCoins = 10;
+    int numOfCoins = 0;
     int numOfCards;
     ServerHandler serverHandler;
     ArrayList<Card> cards = new ArrayList<>();

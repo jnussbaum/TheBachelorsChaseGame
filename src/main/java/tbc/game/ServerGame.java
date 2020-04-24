@@ -57,8 +57,8 @@ public class ServerGame implements Runnable {
             players[i] = new Player(clientNames[i]);
         }
         // Fill the carddeck with the specified number of cards per card type
-        cardDeck.put(Card.Plagiarism, 5);
-        cardDeck.put(Card.Party, 5);
+        cardDeck.put(Card.Plagiarism, 2);
+        cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
         cardDeck.put(Card.RedBull, 10);
         cardDeck.put(Card.WLAN, 10);
@@ -121,7 +121,7 @@ public class ServerGame implements Runnable {
         String randomCardName = getDeckAsArray()[randomInt];
 
         //Give the chosen random card to the client
-        nametoPlayer(clientName).cards.add(Card.valueOf(randomCardName));
+        nameToPlayer(clientName).cards.add(Card.valueOf(randomCardName));
         lobby.getServerHandler(clientName).giveCard(randomCardName);
 
         //Reset the number of available cards in the carddeck
@@ -146,7 +146,7 @@ public class ServerGame implements Runnable {
     public void quitThisMatch(String clientName) {
         // timer.cancel();
         calculatePoints();
-        nametoPlayer(clientName).setQuitMatch(true);
+        nameToPlayer(clientName).setQuitMatch(true);
         turnController.release();
     }
 
@@ -156,17 +156,17 @@ public class ServerGame implements Runnable {
     public void throwCard(String clientName, String cardName) {
         //timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
-        if (!nametoPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
+        if (!nameToPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
             LOGGER.error("The client " + clientName + "cannot throw away the card " + cardName
                     + " because he does not have such a card.");
         }
         LOGGER
-                .info("number of coins pre-calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+                .info("number of coins pre-calculatePoints: " + nameToPlayer(clientName).getNumOfPoints());
         calculatePoints();
         LOGGER.info(
-                "number of coins after calculatePoints: " + nametoPlayer(clientName).getNumOfPoints());
+                "number of coins after calculatePoints: " + nameToPlayer(clientName).getNumOfPoints());
         //Subtract coins from player
-        nametoPlayer(clientName).setNumOfCoins(nametoPlayer(clientName).getNumOfCoins() - THROWCOST);
+        nameToPlayer(clientName).setNumOfCoins(nameToPlayer(clientName).getNumOfCoins() - THROWCOST);
         turnController.release();
     }
 
@@ -193,7 +193,7 @@ public class ServerGame implements Runnable {
                     activeClient++;
                 }
                 //Give the turn to the client whose number was set before
-                if (nametoPlayer(clientsAsArray[activeClient]).quitMatch == true) {
+                if (nameToPlayer(clientsAsArray[activeClient]).quitMatch == true) {
                     giveTurnToNext();
                 } else {
                     lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
@@ -222,7 +222,6 @@ public class ServerGame implements Runnable {
             LOGGER.info("coins and winnername have been sent to " + clientName);
         }
         LOGGER.info("endMatch has sent the coins and the winnername " + winnerName + " to all clients");
-        //terminate match:
     }
 
     String allCoinsToString() {
@@ -235,7 +234,7 @@ public class ServerGame implements Runnable {
         return s.substring(0, s.length() - 2);
     }
 
-    public Player nametoPlayer(String clientName) {
+    public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(clientName)) {
                 return players[i];
@@ -281,7 +280,11 @@ public class ServerGame implements Runnable {
             if (a.getNumOfPoints() == 180) {
                 a.setNumOfCoins(a.getNumOfCoins() + 180 * 2);
             } else if (a.getNumOfPoints() < 180) {
-                a.setNumOfCoins(a.getNumOfCoins() + a.getNumOfPoints());
+                if (a.getNumOfPoints() < 50) {
+                    a.setNumOfCoins(a.getNumOfCoins());
+                } else {
+                    a.setNumOfCoins(a.getNumOfCoins() + a.getNumOfPoints() - 50);
+                }
             }
             a.setNumOfPoints(0);
         }

@@ -11,6 +11,7 @@ import tbc.gui.SelectOptions;
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientGame {
 
@@ -47,31 +48,27 @@ public class ClientGame {
                     LobbyController.gameWindowController.showCard(cardName);
                 }
         );
+        calculatePoints();
     }
 
     public void giveTurn() {
-        //LOGGER.info("It's your turn. Seconds left:");
-        //TODO Implement the Timer to the game when gui ready
-        /*
+        selectOptions();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             int countdown = 10;
-
             public void run() {
                 if (countdown > 0) {
                     countdown = countdown - 1;
-                    //System.out.println(countdown);
+                    //TODO: Print countdown (int variable with seconds left) in GUI;
                 } else {
                     //countdown == 0
+                    //TODO: Print countdown = 0 a last time
                     timer.cancel();
-                    //TODO: Make it impossible for this client to take further actions
+                    //TODO: Make it impossible for this client to take further actions: make buttons grey
                 }
             }
         }, 0, 1000);
-        //TODO: What to do when the user takes an action before the 10 secs are left
-        //TODO: Use this countdown in the gui
-        */
-        selectOptions();
+        timer.cancel();
     }
 
     /**
@@ -95,7 +92,6 @@ public class ClientGame {
     public void takeCard() {
         //timer.cancel();
         clientHandler.askForCard();
-        calculatePoints();
     }
 
     public void throwCard(String cardName) {
@@ -155,8 +151,7 @@ public class ClientGame {
         points = sum;
         Platform.runLater(
                 () -> LobbyController.gameWindowController
-                        .appendGameMsg("Points have been calculated and they are: "
-                                + points)
+                        .appendGameMsg("You have " + points + " points.")
         );
     }
 
@@ -178,12 +173,39 @@ public class ClientGame {
         //split String into substrings, then write information into Player-Array
         String[] s = allCoins.split("::");
         String name;
+        int[] scores = new int[players.length];
         for (int i = 0; i < s.length - 1; i++) {
             if (i % 2 == 0) {
-                //A name is at this position
+                //a name is at this position
                 name = s[i];
-                nameToPlayer(name).setNumOfCoins(Integer.parseInt(s[i + 1]));
+                int coins = Integer.parseInt(s[i + 1]);
+                nameToPlayer(name).setNumOfCoins(coins);
                 LOGGER.info("Player " + name + " received his coins");
+                scores[i] = coins;
+            }
+        }
+
+        //use this information for the HighScore
+        //bubble sort scores
+        for (int i = 0; i < scores.length; i++) {
+            for (int j = 0; j < scores.length; j++) {
+                if (j + 1 < scores.length && scores[j] < scores[j + 1]) {
+                    int old = scores[j];
+                    scores[j] = scores[j + 1];
+                    scores[j + 1] = old;
+                }
+            }
+        }
+
+        for (int i = 0; i < s.length - 1; i++) {
+            if (i % 2 == 1) {
+                //number is at this position
+                int number = Integer.parseInt(s[i]);
+                for (int j = 0; j < scores.length; j++) {
+                    if (scores[j] == number) {
+                        //TODO: Finish highscore implementation OR: delete all this
+                    }
+                }
             }
         }
     }
