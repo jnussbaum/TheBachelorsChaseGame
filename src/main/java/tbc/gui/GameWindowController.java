@@ -230,7 +230,7 @@ public class GameWindowController {
                 txtAChat.setStyle("-fx-text-fill: green");
                 break;
             case "hippy":
-                txtAChat.setStyle("-fx-text-fill: yellow");
+                txtAChat.setStyle("-fx-text-fill: #cfba21");
                 break;
             case "emo":
                 txtAChat.setStyle("-fx-text-fill: purple");
