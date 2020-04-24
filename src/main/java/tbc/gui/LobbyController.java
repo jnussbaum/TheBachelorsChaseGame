@@ -58,8 +58,7 @@ public class LobbyController {
                 clientHandler.sendMessage("ALL", "false", "Welcome, " + Client.userName);
 
                 // Tells the user to press the 'Ready' buton
-                gameWindowController
-                        .appendGameMsg("Press the button 'Ready' if you are ready for the game");
+                gameWindowController.appendGameMsg("Press the button 'Ready' if you are ready for the game");
 
                 // The send button from the chat is disabled as long as there is no input in the chat field
                 gameWindowController.btnSend.disableProperty().bind(
@@ -67,6 +66,7 @@ public class LobbyController {
                                 .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                                 .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                 );
+
                 gameWindow.setOnCloseRequest(e -> ConfirmBox.display());
             } catch (Exception e) {
                 LOGGER.error("Couldn't find GameWindowFXML file.");
