@@ -119,7 +119,7 @@ public class LobbyController {
                 + "After a player has reached 180 KP, the coins are distributed as follows:"
                 + "\nThe player with 180 KP receives 360 coins."
                 + "\nThose with more than 180 HP receive 0 coins."
-                + "\nAll other players receive as many coins as their sum of the number of cards."
+                + "\nAll other players receive as many coins as their sum of the number of cards reduced by 50 coins."
                 + "\nThese coins will be awarded after a game round has ended, "
                 + "that means if one of the player has reached 180 KP, "
                 + "the coins will be sum up and can therefore be used in the next game round "
