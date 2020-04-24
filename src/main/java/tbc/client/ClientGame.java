@@ -229,4 +229,8 @@ public class ClientGame {
     public Player[] getPlayers() {
         return players;
     }
+
+    public void droppedOut() {
+        //TODO: Pop up window that tells the player that he dropped out because of too many points
+    }
 }

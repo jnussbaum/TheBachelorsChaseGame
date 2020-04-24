@@ -266,4 +266,9 @@ public class ServerHandler implements Runnable {
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
+
+    public void droppedOut() {
+        clientOutputStream.println("DROPPEDOUT");
+        clientOutputStream.flush();
+    }
 }

@@ -258,6 +258,7 @@ public class ServerGame implements Runnable {
             } else if (sum > 180) {
                 players[i].quitMatch = true;
                 players[i].setNumOfPoints(0);
+                lobby.getServerHandler(players[i].getName()).droppedOut();
             }
         }
         if (winner != null) {
