@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Player {
 
     boolean quitMatch = false;
+    boolean notifyDropOut = false;
     String name;
     int numOfPoints;
     int numOfCoins = 10;
@@ -79,5 +80,9 @@ public class Player {
 
     public void setQuitMatch(boolean quitMatch) {
         this.quitMatch = quitMatch;
+    }
+
+    public void setNotifyDropOut(boolean notifyDropOut) {
+        this.notifyDropOut = notifyDropOut;
     }
 }

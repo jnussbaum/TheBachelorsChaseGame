@@ -258,7 +258,11 @@ public class ServerGame implements Runnable {
             } else if (sum > 180) {
                 players[i].quitMatch = true;
                 players[i].setNumOfPoints(0);
-                lobby.getServerHandler(players[i].getName()).droppedOut();
+                //FIXME Becuase of the for loop it's showing the window after each round...
+                if(players[i].notifyDropOut == false) {
+                    lobby.getServerHandler(players[i].getName()).droppedOut();
+                    players[i].notifyDropOut = true;
+                }
             }
         }
         if (winner != null) {
@@ -297,6 +301,7 @@ public class ServerGame implements Runnable {
             p.setNumOfPoints(0);
             p.clearCards();
             p.setQuitMatch(false);
+            p.setNotifyDropOut(false);
             LOGGER.info(p.getName() + " Has been resetted");
             LOGGER.info(p.numOfPoints + " is the number of his points");
         }
