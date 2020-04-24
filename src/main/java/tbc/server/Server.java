@@ -1,9 +1,5 @@
 package tbc.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.chat.ChatServer;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -11,6 +7,9 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatServer;
 
 /**
  * All that the Server makes during his lifetime (in the main method) is to listen to new incoming connections,
@@ -68,74 +67,119 @@ public class Server {
         return Arrays.copyOf(objArray, objArray.length, String[].class);
     }
 
-    public static void createLobby(String lobbyName, ServerHandler sh) {
-        Lobby lobby = new Lobby(lobbyName, sh);
-        lobbies.put(lobbyName, lobby);
-        sh.setLobby(lobby);
+  /**
+   * Creates a new lobby and puts the first client(the one how asked to make one) in it
+   *
+   * @param lobbyName - the name of the new lobby
+   * @param sh - ServerHandler of the first occupant of the lobby
+   */
+  public static void createLobby(String lobbyName, ServerHandler sh) {
+    Lobby lobby = new Lobby(lobbyName, sh);
+    lobbies.put(lobbyName, lobby);
+    sh.setLobby(lobby);
+  }
+
+  /**
+   * gets the list of existing lobbies.
+   * if der are no lobbies the list will only contain the entry: no lobbies
+   *
+   * @return - an string-array
+   */
+  public static String[] getLobbies() {
+    Object[] objArray = lobbies.keySet().toArray();
+    String[] stringArray = Arrays.copyOf(objArray, objArray.length, String[].class);
+    return stringArray;
+  }
+
+  /**
+   * returns the lobby-object
+   *
+   * @param lobbyName - the name of the lobby
+   * @return - the lobby-object
+   */
+  public static Lobby getLobby(String lobbyName) {
+    return lobbies.get(lobbyName);
+  }
+
+  /**
+   * gets the serverHandler
+   * @return
+   */
+  public static Collection<ServerHandler> getServerHandlers() {
+    return clients.values();
+  }
+
+  /**
+   * add`s an clint to the clients-hashmap
+   *
+   * @param clientName - the name of the client
+   * @param clientServerHandler - the serverHandler of the client
+   */
+  public static void addClient(String clientName, ServerHandler clientServerHandler) {
+    clients.put(clientName, clientServerHandler);
+  }
+
+  /**
+   * puts an client in an lobby.
+   * is the lobby he wants to join does not exist it will make a new one
+   *
+   * @param lobbyName - the name of the lobby
+   * @param sh - the serverHandler
+   */
+  public static void joinLobby(String lobbyName, ServerHandler sh) {
+    if (lobbies.containsKey(lobbyName)) {
+      Lobby lobby = lobbies.get(lobbyName);
+      lobby.join(sh.getName(), sh);
+      sh.setLobby(lobby);
+    } else {
+      Lobby lobby = new Lobby(lobbyName, sh);
+      lobbies.put(lobbyName, lobby);
+      sh.setLobby(lobby);
+      LOGGER.info("Inexisting lobby, created it new.");
     }
+  }
 
-    public static String[] getLobbies() {
-        Object[] objArray = lobbies.keySet().toArray();
-        String[] stringArray = Arrays.copyOf(objArray, objArray.length, String[].class);
-        return stringArray;
+  /**
+   * the main method
+   *
+   * @param args
+   */
+  public static void main(String[] args) {
+    int portNumber = Integer.parseInt(args[1]);
+    LOGGER.info("Port: " + portNumber);
+    ServerSocket serverSocket;
+
+    // This is the Headquarter of the Chat application.
+    ChatServer chatServer = new ChatServer();
+
+    try {
+      serverSocket = new ServerSocket(portNumber);
+      LOGGER.info("Type this address in the client after starting the client: "
+          + InetAddress.getLocalHost().getHostAddress());
+      Socket socket;
+      int i = 0;
+      while (true) {
+        socket = serverSocket.accept();
+        String name = socket.getInetAddress().getHostName() + i;
+        i++;
+        ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
+        Thread shThread = new Thread(serverHandler);
+        shThread.start();
+        clients.put(name, serverHandler);
+        chatServer.register(name, serverHandler);
+      }
+    } catch (IOException e) {
+      LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
+      e.printStackTrace();
     }
+  }
 
-    public static Lobby getLobby(String lobbyName) {
-        return lobbies.get(lobbyName);
-    }
-
-    public static Collection<ServerHandler> getServerHandlers() {
-        return clients.values();
-    }
-
-    public static void addClient(String clientName, ServerHandler clientServerHandler) {
-        clients.put(clientName, clientServerHandler);
-    }
-
-    public static void joinLobby(String lobbyName, ServerHandler sh) {
-        if (lobbies.containsKey(lobbyName)) {
-            Lobby lobby = lobbies.get(lobbyName);
-            lobby.join(sh.getName(), sh);
-            sh.setLobby(lobby);
-        } else {
-            Lobby lobby = new Lobby(lobbyName, sh);
-            lobbies.put(lobbyName, lobby);
-            sh.setLobby(lobby);
-            LOGGER.info("Inexisting lobby, created it new.");
-        }
-    }
-
-    public static void main(String[] args) {
-        int portNumber = Integer.parseInt(args[1]);
-        LOGGER.info("Port: " + portNumber);
-        ServerSocket serverSocket;
-
-        // This is the Headquarter of the Chat application.
-        ChatServer chatServer = new ChatServer();
-
-        try {
-            serverSocket = new ServerSocket(portNumber);
-            LOGGER.info("Type this address in the client after starting the client: "
-                    + InetAddress.getLocalHost().getHostAddress());
-            Socket socket;
-            int i = 0;
-            while (true) {
-                socket = serverSocket.accept();
-                String name = socket.getInetAddress().getHostName() + i;
-                i++;
-                ServerHandler serverHandler = new ServerHandler(name, socket, chatServer);
-                Thread shThread = new Thread(serverHandler);
-                shThread.start();
-                clients.put(name, serverHandler);
-                chatServer.register(name, serverHandler);
-            }
-        } catch (IOException e) {
-            LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
-            e.printStackTrace();
-        }
-    }
-
-    public static HashMap<String, ServerHandler> getClients() {
-        return clients;
-    }
+  /**
+   * gets an hashmap with all clients that are connected to the server
+   *
+   * @return an hashmap
+   */
+  public static HashMap<String, ServerHandler> getClients() {
+    return clients;
+  }
 }
