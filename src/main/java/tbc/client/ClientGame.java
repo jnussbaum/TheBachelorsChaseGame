@@ -3,11 +3,10 @@ package tbc.client;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.gui.CardDeck;
-import tbc.gui.LobbyController;
-import tbc.gui.SelectOptions;
 import tbc.game.Card;
 import tbc.game.Player;
+import tbc.gui.LobbyController;
+import tbc.gui.SelectOptions;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
@@ -48,8 +47,6 @@ public class ClientGame {
                     LobbyController.gameWindowController.showCard(cardName);
                 }
         );
-        // Show the specific image on the gui
-
     }
 
     public void giveTurn() {
@@ -127,6 +124,7 @@ public class ClientGame {
                         () -> {
                             LobbyController.gameWindowController.appendGameMsg(
                                     "The Card " + cardName + " was thrown away");
+                            LobbyController.gameWindowController.throwTheCard(cardName);
                         }
                 );
             } else {
@@ -190,7 +188,7 @@ public class ClientGame {
         }
     }
 
-    private Player nameToPlayer(String clientName) {
+    public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(clientName)) {
                 return players[i];
@@ -220,8 +218,19 @@ public class ClientGame {
         );
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     public Player[] getPlayers() {
         return players;
     }
 
+    public void droppedOut() {
+        //TODO: Pop up window that tells the player that he dropped out because of too many points
+    }
 }

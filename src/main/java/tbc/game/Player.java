@@ -18,6 +18,11 @@ public class Player {
         this.name = name;
     }
 
+    public Player(String userName, int coins) {
+        this.name = userName;
+        this.numOfCoins = coins;
+    }
+
     public ServerHandler getServerHandler() {
         return serverHandler;
     }

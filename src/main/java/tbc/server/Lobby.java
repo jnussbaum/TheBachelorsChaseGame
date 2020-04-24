@@ -117,5 +117,4 @@ public class Lobby {
     public HashMap<String, ServerHandler> getClients() {
         return clients;
     }
-
 }

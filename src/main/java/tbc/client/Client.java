@@ -3,8 +3,8 @@ package tbc.client;
 import javafx.application.Application;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.gui.Login;
 import tbc.chat.ChatClient;
+import tbc.gui.Login;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

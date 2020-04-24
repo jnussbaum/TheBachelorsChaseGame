@@ -3,8 +3,8 @@ package tbc.chat;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.gui.LobbyController;
 import tbc.client.ClientHandler;
+import tbc.gui.LobbyController;
 
 /**
  * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the client

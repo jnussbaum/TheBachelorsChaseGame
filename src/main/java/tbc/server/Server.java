@@ -135,4 +135,7 @@ public class Server {
         }
     }
 
+    public static HashMap<String, ServerHandler> getClients() {
+        return clients;
+    }
 }

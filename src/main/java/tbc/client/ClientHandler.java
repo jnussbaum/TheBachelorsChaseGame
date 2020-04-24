@@ -128,6 +128,9 @@ public class ClientHandler implements Runnable {
             case "LOGOUT":
                 System.exit(0);
                 break;
+            case "DROPPEDOUT":
+                Client.getGame().droppedOut();
+                break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");
         }
