@@ -10,8 +10,6 @@ import tbc.gui.SelectOptions;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ClientGame {
 
@@ -23,7 +21,6 @@ public class ClientGame {
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
     private final BufferedReader input;
     private int points;
-    private Timer timer;
 
     public ClientGame(ClientHandler ch, String[] namePlayers, BufferedReader input) {
         this.clientHandler = ch;
@@ -37,7 +34,6 @@ public class ClientGame {
 
     /**
      * Appends the new card to the ArrayList 'cards'.
-     *
      * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
      */
     public void addCard(String cardName) {
@@ -51,31 +47,10 @@ public class ClientGame {
         calculatePoints();
     }
 
-    public void giveTurn() {
-        selectOptions();
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            int countdown = 10;
-            public void run() {
-                if (countdown > 0) {
-                    countdown = countdown - 1;
-                    //TODO: Print countdown (int variable with seconds left) in GUI;
-                } else {
-                    //countdown == 0
-                    //TODO: Print countdown = 0 a last time
-                    timer.cancel();
-                    //TODO: Make it impossible for this client to take further actions: make buttons grey
-                }
-            }
-        }, 0, 1000);
-        timer.cancel();
-    }
-
     /**
-     * Calls the method display() from the class SelectOptions, so the user can select one of the
-     * options.
+     * This method is called when the server gives the turn to this client.
      */
-    void selectOptions() {
+    public void giveTurn() {
         LOGGER.info("Show the three options");
         Platform.runLater(
                 () -> {
@@ -90,12 +65,10 @@ public class ClientGame {
     }
 
     public void takeCard() {
-        //timer.cancel();
         clientHandler.askForCard();
     }
 
     public void throwCard(String cardName) {
-        //timer.cancel();
         ArrayList<String> cardsAsStrings = new ArrayList<>();
         for (Card c : cards) {
             cardsAsStrings.add(c.toString());
@@ -136,7 +109,6 @@ public class ClientGame {
     }
 
     public void quitThisMatch() {
-        //timer.cancel();
         nameToPlayer(myName).setQuitMatch(true);
         clientHandler.quitThisMatch();
         calculatePoints();
