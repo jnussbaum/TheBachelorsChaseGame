@@ -14,12 +14,7 @@ Wenn ein Spieler das Spiel verlässt, ist das Spiel vorbei.
 Gewinner/in des Spieles ist dann der/diejenige, der/die am Schluss die meisten Coins hat.
 
 ## Coinsystem
-Jeder Spieler hat ein Konto, das zur Beginn der ersten Runde noch leer ist. 
-Nachdem ein Spieler 180 KP erzielt hat, werden die Coins folgendermasse verteilt: \
-Der Spieler mit 180 KP erhält 360 Coins. \
-Diejenigen Spieler mit über 180 KP erhalten 0 coins. \
-Alle anderen Spieler erhalten soviele Coins wie ihre Summe der Kartenaugenzahl. \
-Diese Coins werden nach Beendigung einer Spielrunde, das heisst nachdem ein Spieler 180 KP erreicht hat, aufsummiert
-und kann somit bei der nächsten Spielrunde verwendet werden (z.B. um eine Karte wegzuschmeissen).
+Jeder Spieler hat ein Konto, das zu Beginn der ersten Runde noch leer ist. Nachdem ein Spieler 180 KP erreicht hat, erhält dieser 360 Coins. Diejenigen Spieler mit über 180 KP bekommen 0 Coins. Die Spieler, die unter 180 KP haben, bekommen die Anzahl Coins die sie als KP erreicht haben, jedoch werden 50 Coins abgezogen (ohne in den negativ-Bereich zu gelangen). Siehe Handbuch für ein Beispiel.
+
 
 Viel Spass und Erfolg wünscht euch The Chasers!
