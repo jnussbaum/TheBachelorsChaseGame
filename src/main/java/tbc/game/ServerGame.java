@@ -7,6 +7,7 @@ import tbc.server.Lobby;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
 
 public class ServerGame implements Runnable {
@@ -56,14 +57,7 @@ public class ServerGame implements Runnable {
             int x = 0;
             players[i] = new Player(clientNames[i]);
         }
-        // Fill the carddeck with the specified number of cards per card type
-        cardDeck.put(Card.Plagiarism, 2);
-        cardDeck.put(Card.Party, 10);
-        cardDeck.put(Card.Coffee, 10);
-        cardDeck.put(Card.RedBull, 10);
-        cardDeck.put(Card.WLAN, 10);
-        cardDeck.put(Card.Study, 5);
-        cardDeck.put(Card.GoodLecturer, 2);
+        restackDeck();
     }
 
     public int getDeckSize() {
@@ -75,8 +69,8 @@ public class ServerGame implements Runnable {
     }
 
     void restackDeck() {
-        cardDeck.put(Card.Plagiarism, 5);
-        cardDeck.put(Card.Party, 5);
+        cardDeck.put(Card.Plagiarism, 2);
+        cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
         cardDeck.put(Card.RedBull, 10);
         cardDeck.put(Card.WLAN, 10);
@@ -133,7 +127,7 @@ public class ServerGame implements Runnable {
      * First of the three possibilities when it is a client's turn: Give a card to the client.
      */
     public void giveCardToClient(String clientName) {
-        //timer.cancel();
+        timer.cancel();
         giveRandomCard(clientName);
         turnController.release();
         LOGGER.info("ServerGame called giveRandomCard");
@@ -144,7 +138,7 @@ public class ServerGame implements Runnable {
      * Second of the three possibilities when it is a client's turn: Quit this match.
      */
     public void quitThisMatch(String clientName) {
-        // timer.cancel();
+        timer.cancel();
         calculatePoints();
         nameToPlayer(clientName).setQuitMatch(true);
         turnController.release();
@@ -154,7 +148,7 @@ public class ServerGame implements Runnable {
      * Third of the three possibilities when it is a client's turn: throw away a card.
      */
     public void throwCard(String clientName, String cardName) {
-        //timer.cancel();
+        timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nameToPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
             LOGGER.error("The client " + clientName + "cannot throw away the card " + cardName
@@ -327,13 +321,13 @@ public class ServerGame implements Runnable {
                     while (matchEnd == false) {
                         turnController.acquire();
                         giveTurnToNext();
-                        //timer = new Timer();
-                /*timer.schedule(new TimerTask() {
-                    public void run() {
-                        turnController.release();
-                    }
-                }, 10000);
-                */
+                        timer = new Timer();
+                        timer.schedule(new TimerTask() {
+                            public void run() {
+                                giveTurnToNext();
+                                turnController.release();
+                            }
+                        }, 10000);
                     }
                     LOGGER.info("matchEnd-while-loop terminated.");
                 }
