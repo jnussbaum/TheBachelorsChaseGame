@@ -86,12 +86,6 @@ public class Client {
         } catch (Exception e) {
             LOGGER.error("Could not set the username.");
         }
-
-        LOGGER.info("Client.main came to its end and will enter while loop now.");
-        while (true) {
-            //do nothing
-            //TODO: Remove this.
-        }
     }
 
     public static void joinALobby(String lobby) {
