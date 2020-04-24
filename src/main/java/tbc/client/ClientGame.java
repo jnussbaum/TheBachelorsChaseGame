@@ -225,6 +225,8 @@ public class ClientGame {
     }
 
     public void droppedOut() {
-        //TODO: Pop up window that tells the player that he dropped out because of too many points
+        Platform.runLater(() -> {
+            LobbyController.gameWindowController.droppedOutWindow();
+        });
     }
 }

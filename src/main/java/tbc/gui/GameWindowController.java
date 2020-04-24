@@ -482,4 +482,9 @@ public class GameWindowController {
                 LOGGER.error(cardName + " does not exist.");
         }
     }
+
+    public void droppedOutWindow() {
+        DropppedOutWindow.display();
+    }
+
 }

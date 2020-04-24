@@ -268,6 +268,7 @@ public class ServerHandler implements Runnable {
     }
 
     public void droppedOut() {
+        System.out.println("ServerHandler.droppedOut");
         clientOutputStream.println("DROPPEDOUT");
         clientOutputStream.flush();
     }
