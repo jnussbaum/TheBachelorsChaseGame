@@ -13,6 +13,7 @@ import javafx.stage.Window;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
+import tbc.game.Player;
 
 /**
  * Processes a client's request to start the Game. Here it will show all the graphical components of
@@ -21,13 +22,14 @@ import tbc.client.Client;
 public class GameWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(GameWindowController.class);
+    //private ObservableList<Player> players = observableArrayList();
 
     @FXML
-    public TableView highScoreTable;
+    public TableView<Player> highScoreTable;
     @FXML
-    public TableColumn highScoreName;
+    public TableColumn<Player, String> highScoreName;
     @FXML
-    public TableColumn highScoreCoins;
+    public TableColumn<Player, Integer> highScoreCoins;
     @FXML
     public TextField msgField;
     @FXML
@@ -70,10 +72,38 @@ public class GameWindowController {
     private TextArea gameChatArea;
     private Window secondStage;
 
+    /*
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Platform.runLater(() -> {
+            Player[] players = Client.game.getPlayers();
+            System.out.println("GameWindowController.initialize " + Arrays.toString(players));
+            for (Player name : players) {
+                String playerName = name.getName();
+                int coins = name.getNumOfCoins();
+                LOGGER.info("Name: " + playerName + " Coins: " + coins);
+                //addPlayerToList(playerName, coins);
+            }
+            //setTable();
+        });
+    }
+
+    private void setTable() {
+        highScoreName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        highScoreCoins.setCellValueFactory(new PropertyValueFactory<>("numOfCoins"));
+
+        highScoreTable.setItems(players);
+    }
+
+    private void addPlayerToList(String name, int coins) {
+        players.add(new Player(name, coins));
+    }*/
+
     /**
      * Switches the card name and loads the specific card image to the imageView place.
      * If there is none card it will load the specific card image and increments the number in the label.
      * Else it checks the number of existing cards and increments its number in the label.
+     *
      * @param card The name of the card that has been drawn.
      */
     public void showCard(String card) {
@@ -302,16 +332,6 @@ public class GameWindowController {
 
         appendGameMsg("Waiting for other players to be ready...");
         btnRdy.setDisable(true);
-
-        // For the highScore
-        /*Platform.runLater(() -> {
-            Player[] players = Client.game.getPlayers();
-            for (Player name : players) {
-                String playerName = name.getName();
-                int coins = name.getNumOfCoins();
-                LOGGER.info("Name: " + playerName + " Coins: " + coins);
-            }
-        });*/
     }
 
     /**
@@ -354,6 +374,7 @@ public class GameWindowController {
 
     /**
      * Method to check how many number of cards you have from a specific card.
+     *
      * @param labelCnt A String from the label of the drawn cards.
      * @return Number of already drawn cards.
      */
@@ -367,6 +388,7 @@ public class GameWindowController {
      * Switches the card name and loads the specific card image to the imageView place.
      * If there is already one card it loads the demo.png and deletes the label.
      * Else it checks the number of the existing cards and decrements the number in the label.
+     *
      * @param cardName The name of the card that the user wants to throw away.
      */
     public void throwTheCard(String cardName) {
@@ -460,5 +482,4 @@ public class GameWindowController {
                 LOGGER.error(cardName + " does not exist.");
         }
     }
-
 }
