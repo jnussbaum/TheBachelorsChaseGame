@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane fx:id="loginWindow" prefHeight="581.0" prefWidth="398.0" style="-fx-background-color: #A52A2A#A52A2A;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tbc.gui.LoginController">
+<BorderPane fx:id="loginWindow" prefHeight="581.0" prefWidth="398.0" style="-fx-background-color: #A52A2A#A52A2A;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tbc.gui.LoginController">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -89,7 +84,7 @@
                         <Insets left="20.0" right="20.0" top="15.0" />
                      </HBox.margin>
                      <children>
-                        <Rectangle fx:id="logoHippy" arcHeight="5.0" arcWidth="5.0" fill="#eeff1f" height="150.0" onMouseClicked="#hippy" stroke="BLACK" strokeType="INSIDE" width="150.0" />
+                        <Rectangle fx:id="logoHippy" arcHeight="5.0" arcWidth="5.0" fill="#cfba21fc" height="150.0" onMouseClicked="#hippy" stroke="BLACK" strokeType="INSIDE" width="150.0" />
                         <Label fx:id="labelHippy" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mouseTransparent="true" prefHeight="148.0" prefWidth="150.0" style="-fx-text-fill: #000000#000000;" text="Hippy" textAlignment="CENTER">
                            <font>
                               <Font size="24.0" />
