@@ -118,7 +118,7 @@ public class ServerGame implements Runnable {
         nameToPlayer(clientName).cards.add(Card.valueOf(randomCardName));
         lobby.getServerHandler(clientName).giveCard(randomCardName);
 
-        //Reset the number of available cards in the carddeck
+        //Reset the number of available cards in the cardDeck
         int pos = cardDeck.get(Card.valueOf(randomCardName));
         cardDeck.put(Card.valueOf(randomCardName), pos - 1);
     }
