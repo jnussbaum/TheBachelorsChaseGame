@@ -483,9 +483,7 @@ public class GameWindowController {
         }
     }
 
-    /*
-    public void showTimer(int countdown) {
-        SelectOptions.setTimer(countdown);
+    public void rejectLobbyJoiner() {
+        RejectJoiningLobbyWindow.display();
     }
-     */
 }

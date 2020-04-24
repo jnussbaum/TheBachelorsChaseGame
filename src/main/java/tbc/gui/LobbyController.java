@@ -41,7 +41,9 @@ public class LobbyController {
         LOGGER.info("Join or create a lobby");
         SelectLobby.display();
 
-        if (SelectLobby.lobbyChosen == true) {
+        System.out.println("LobbyController.startGame       lobby: " + SelectLobby.lobbyChosen + " rejected: " + RejectJoiningLobbyWindow.rejected);
+
+        if (SelectLobby.lobbyChosen == true && RejectJoiningLobbyWindow.rejected == false) {
             LOGGER.info("Show game window.");
             try {
                 Stage gameWindow = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();

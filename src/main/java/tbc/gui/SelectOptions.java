@@ -3,6 +3,7 @@ package tbc.gui;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -19,6 +20,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import tbc.client.Client;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class SelectOptions {
 
     private static final Integer STARTTIME = 10;
@@ -33,12 +37,22 @@ public class SelectOptions {
         window.setTitle("The Bachelor's Chase - Options");
         window.setMinWidth(250);
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                Platform.runLater(() -> {
+                    window.close();
+                });
+            }
+        }, 10000);
+
         Label label = new Label();
         label.setText("Please select an option:");
 
         Button hit = new Button("Hit");
         hit.setOnAction(e -> {
             Client.game.takeCard();
+            timer.cancel();
             Stage stage = (Stage) hit.getScene().getWindow();
             stage.close();
         });
@@ -53,6 +67,7 @@ public class SelectOptions {
         );
         throwAway.setOnAction(e -> {
             Client.game.throwCard(cardName.getText());
+            timer.cancel();
             Stage stage = (Stage) throwAway.getScene().getWindow();
             stage.close();
         });
@@ -60,11 +75,12 @@ public class SelectOptions {
         Button quit = new Button("Quit");
         quit.setOnAction(e -> {
             Client.game.quitThisMatch();
+            timer.cancel();
             Stage stage = (Stage) quit.getScene().getWindow();
             stage.close();
         });
 
-        //TextField timer = new TextField();
+        // Timer for each round
         timerField.setEditable(false);
         timerField.setPrefWidth(30.0);
         timerField.textProperty().bind(timeSeconds.asString());
@@ -91,7 +107,7 @@ public class SelectOptions {
 
         Scene scene = new Scene(layout, 300, 250);
         window.setScene(scene);
-        window.showAndWait();
+        window.show();
     }
 
 }

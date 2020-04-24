@@ -1,8 +1,10 @@
 package tbc.client;
 
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
+import tbc.gui.LobbyController;
 
 import java.io.*;
 import java.net.Socket;
@@ -132,7 +134,10 @@ public class ClientHandler implements Runnable {
                 Client.getGame().droppedOut();
                 break;
             case "REJECTTOJOINLOBBY":
-                //TODO: Show a message in GUI that the client cannot join this lobby
+                //TODO: Show a message in GUI that the client can not join this lobby
+                Platform.runLater(() -> {
+                    LobbyController.gameWindowController.rejectLobbyJoiner();
+                });
                 break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");

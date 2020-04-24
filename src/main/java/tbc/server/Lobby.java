@@ -58,8 +58,10 @@ public class Lobby {
      * @param sh:         This client's ServerHandler
      */
     void join(String clientName, ServerHandler sh) {
+        //FIXME reject() and lobbyJoined() are running parallel
         if (clients.size() > 3 || isGameActive) {
             sh.reject();
+            return;
         }
         if (!clients.containsKey(clientName)) {
             clients.put(clientName, sh);

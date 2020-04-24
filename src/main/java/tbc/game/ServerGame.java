@@ -251,11 +251,6 @@ public class ServerGame implements Runnable {
             } else if (sum > 180) {
                 players[i].quitMatch = true;
                 players[i].setNumOfPoints(0);
-                //FIXME Becuase of the for loop it's showing the window after each round...
-                if(players[i].notifyDropOut == false) {
-                    lobby.getServerHandler(players[i].getName()).droppedOut();
-                    players[i].notifyDropOut = true;
-                }
             }
         }
         if (winner != null) {

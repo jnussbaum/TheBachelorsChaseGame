@@ -11,7 +11,6 @@ import tbc.gui.SelectOptions;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class ClientGame {
 
@@ -123,10 +122,11 @@ public class ClientGame {
             sum += c.getValue();
         }
         points = sum;
-        Platform.runLater(
-                () -> LobbyController.gameWindowController
-                        .appendGameMsg("You have " + points + " points.")
-        );
+        Platform.runLater(() -> {
+            LobbyController.gameWindowController.appendGameMsg("You have " + points + " points.");
+        });
+
+        if (points > 180) { droppedOut(); }
     }
 
     public void endMatch(String winnerName) {

@@ -11,16 +11,22 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DropppedOutWindow {
+public class RejectJoiningLobbyWindow {
 
-    private static final Logger LOGGER = LogManager.getLogger(DropppedOutWindow.class);
+    private static final Logger LOGGER = LogManager.getLogger(RejectJoiningLobbyWindow.class);
+
+    public static boolean rejected = true;
 
     public static void display() {
+
+        System.out.println("RejectJoiningLobbyWindow.display        rejected: " + rejected);
+
+        rejected = true;
 
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("The Bachelor's Chase - Dropped out");
+        window.setTitle("The Bachelor's Chase - Reject to join the lobby");
         window.setMinWidth(300);
 
         TextArea textArea = new TextArea();
@@ -28,13 +34,13 @@ public class DropppedOutWindow {
         textArea.setEditable(false);
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
-        textArea.setText("You have reached over 180 CP, so you dropped out. \nPlease wait for the match to end...");
+        textArea.setText("You can not join this lobby anymore...");
 
         Button ok = new Button("OK");
         ok.setOnAction(e -> {
             Stage stage = (Stage) ok.getScene().getWindow();
             stage.close();
-            LOGGER.info("Closed dropped out window.");
+            LOGGER.info("Closed rejection window.");
         });
 
         VBox layout = new VBox(10);
