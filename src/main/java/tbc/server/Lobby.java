@@ -58,8 +58,8 @@ public class Lobby {
      * @param sh:         This client's ServerHandler
      */
     void join(String clientName, ServerHandler sh) {
-        if (clients.size() > 3) {
-            //TODO: Tell client that this lobby is already full
+        if (clients.size() > 3 || isGameActive) {
+            sh.reject();
         }
         if (!clients.containsKey(clientName)) {
             clients.put(clientName, sh);
@@ -116,5 +116,10 @@ public class Lobby {
 
     public HashMap<String, ServerHandler> getClients() {
         return clients;
+    }
+
+    public void logout(String name) {
+        clients.remove(name);
+        serverGame.logout(name);
     }
 }

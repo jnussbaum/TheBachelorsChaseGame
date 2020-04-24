@@ -131,6 +131,9 @@ public class ClientHandler implements Runnable {
             case "DROPPEDOUT":
                 Client.getGame().droppedOut();
                 break;
+            case "REJECTTOJOINLOBBY":
+                //TODO: Show a message in GUI that the client cannot join this lobby
+                break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");
         }

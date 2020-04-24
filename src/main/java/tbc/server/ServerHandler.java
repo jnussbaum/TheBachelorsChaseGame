@@ -153,6 +153,7 @@ public class ServerHandler implements Runnable {
      * Before closing the streams and the socket it should give a message to the clientOutputStream.
      */
     public void closeConnection() {
+        lobby.logout(myName);
         clientOutputStream.println("LOGOUT");
         clientOutputStream.flush();
 
@@ -270,6 +271,11 @@ public class ServerHandler implements Runnable {
     public void droppedOut() {
         System.out.println("ServerHandler.droppedOut");
         clientOutputStream.println("DROPPEDOUT");
+        clientOutputStream.flush();
+    }
+
+    public void reject() {
+        clientOutputStream.println("REJECTTOJOINLOBBY");
         clientOutputStream.flush();
     }
 }
