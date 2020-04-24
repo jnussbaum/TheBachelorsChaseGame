@@ -6,24 +6,13 @@ import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
 import tbc.gui.Login;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
-/**
- * When a client is started, its main method connects the server and starts a name setting process.
- * Once the name is definitively set, the main method is finished, but the clientHandler and the
- * chatClient continue their lives.
- */
 public class Client {
 
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
-
     public static String userName;
     public static ClientHandler clientHandler;
     public static ChatClient chatClient;
     public static ClientGame game;
-    private static BufferedReader input;
     private static Thread clientHandlerThread;
 
     public static ClientGame getGame() {
@@ -33,6 +22,8 @@ public class Client {
     /**
      * When a new Client connects to the server, he chooses his name and sends a request to the server
      * to connect with this name. The Server answers by invoking this method.
+     * @param feedback: Answer yes/no if the name changing succeeded or not.
+     * @param newName: The new name.
      */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
@@ -45,10 +36,14 @@ public class Client {
         }
     }
 
+    /**
+     * Answer from the Server to this client that a game starts now.
+     * @param player: String with all players in this game
+     */
     public static void startGame(String player) {
         String[] players = player.split("::");
-        game = new ClientGame(clientHandler, players, input);
-        System.out.println("Client's startGame() was invoked");
+        game = new ClientGame(clientHandler, players);
+        LOGGER.info("Client's startGame() was invoked");
     }
 
     public static void main(String[] args) {
@@ -66,8 +61,6 @@ public class Client {
         LOGGER.info("Hostname: " + hostName);
         int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
         LOGGER.info("Portnumber: " + portNumber);
-
-        input = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 
         try {
             clientHandlerThread = new Thread(
@@ -88,11 +81,18 @@ public class Client {
         }
     }
 
+    /**
+     * Send a request to the server to join a lobby
+     * @param lobby: The lobby which should be joined
+     */
     public static void joinALobby(String lobby) {
         LOGGER.info("A request will be sent to join the lobby " + lobby);
         clientHandler.joinLobby(lobby);
     }
 
+    /**
+     * Send a request to the server to start a game.
+     */
     public static void askToStartAGame() {
         clientHandler.readyForGame();
     }

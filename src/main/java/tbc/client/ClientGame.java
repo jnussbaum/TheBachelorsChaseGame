@@ -20,13 +20,11 @@ public class ClientGame {
     private final ArrayList<Card> cards = new ArrayList<>();
     private final Player[] players;
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
-    private final BufferedReader input;
     private int points;
 
-    public ClientGame(ClientHandler ch, String[] namePlayers, BufferedReader input) {
+    public ClientGame(ClientHandler ch, String[] namePlayers) {
         this.clientHandler = ch;
         myName = clientHandler.getMyName();
-        this.input = input;
         players = new Player[namePlayers.length];
         for (int i = 0; i < namePlayers.length; i++) {
             players[i] = new Player(namePlayers[i]);
