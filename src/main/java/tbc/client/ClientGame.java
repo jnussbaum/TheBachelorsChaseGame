@@ -188,7 +188,7 @@ public class ClientGame {
         }
     }
 
-    private Player nameToPlayer(String clientName) {
+    public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(clientName)) {
                 return players[i];
@@ -218,8 +218,15 @@ public class ClientGame {
         );
     }
 
+    public int getPoints() {
+        return points;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
     public Player[] getPlayers() {
         return players;
     }
-
 }

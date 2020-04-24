@@ -1,0 +1,2 @@
+myLobby
+yes

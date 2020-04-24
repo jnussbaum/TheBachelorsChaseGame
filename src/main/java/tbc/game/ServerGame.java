@@ -66,7 +66,7 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.GoodLecturer, 2);
     }
 
-    int getDeckSize() {
+    public int getDeckSize() {
         int n = 0;
         for (int i : cardDeck.values()) {
             n += i;
@@ -88,7 +88,7 @@ public class ServerGame implements Runnable {
      * Get the deck as String-array which contains every single card, one per array position. The
      * cards are not mixed, but grouped together by their type.
      */
-    String[] getDeckAsArray() {
+    public String[] getDeckAsArray() {
         String[] output = new String[getDeckSize()];
         int pos = 0;
         //Iterate over the card types
@@ -235,7 +235,7 @@ public class ServerGame implements Runnable {
         return s.substring(0, s.length() - 2);
     }
 
-    private Player nametoPlayer(String clientName) {
+    public Player nametoPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
             if (players[i].getName().equals(clientName)) {
                 return players[i];
@@ -333,5 +333,6 @@ public class ServerGame implements Runnable {
             e.printStackTrace();
         }
     }
+
 
 }
