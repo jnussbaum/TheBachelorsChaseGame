@@ -22,7 +22,7 @@ public class ServerGame implements Runnable {
      * Administration of the clients in this game with their respective cardset. Administration of the
      * coins of each client. Administration of the points of each client.
      */
-    private final Player[] players;
+    private Player[] players;
     /**
      * Administration of all cards which are not yet distributed to a client. Card: Type of card
      * Integer: number of cards of this type which are still available.
@@ -338,4 +338,25 @@ public class ServerGame implements Runnable {
     }
 
 
+    public void logout(String name) {
+        Player[] newPlayers = new Player[players.length - 1];
+        int a = 0;
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getName().equals(name) == false) {
+                newPlayers[a] = players[i];
+                a++;
+            }
+        }
+        players = newPlayers;
+
+        String[] newClients = new String[clientsAsArray.length - 1];
+        int b = 0;
+        for (int i = 0; i < clientsAsArray.length; i++) {
+            if (clientsAsArray[i].equals(name) == false) {
+                newClients[b] = clientsAsArray[i];
+                b++;
+            }
+        }
+        clientsAsArray = newClients;
+    }
 }
