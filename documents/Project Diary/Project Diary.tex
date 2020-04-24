@@ -214,12 +214,37 @@ Entscheidungen:
 \begin{itemize}
 \item HighScore Liste wird von GUI Team implementiert, nicht von Spiellogik-Team.
 \item F\"ur die Demo morgen haben wir in einem Drehbuch festgelegt, welche Karten im Deck vorkommen, sodass ein guter Demo-Effekt erzielt wird. 
-\item Der Server wird via VPN zur Verfügung gestellt, Johannes wird zwei Clients starten und in der Konsole vorzeigen.
+\item Der Server wird via VPN zur Verf\"ugung gestellt, Johannes wird zwei Clients starten und in der Konsole vorzeigen.
 \item Zus\"atzliches Metrics f\"ur QA: Lines of Code pro Methode
 \end{itemize}
 
 \paragraph{Eintrag 28:}
 Donnerstag, 16.04.2020\\
-Pr\"asentation
+Pr\"asentationstag! Leider wird die Pr\"asentation \"uberschattet von einem Verbindungsunterbruch im Zoom-Meeting, und dass die Demo nicht genau so funktioniert, wie wir das geplant h\"atten. Sonst l\"auft alles gut.
+
+\paragraph{Eintrag 29:}
+Dienstag, 21.04.2020\\
+Treffen von Adrian, Meipei und Anna um 13.00 Uhr via Zoom. Wir rekapitulieren den gegenw\"artigen Stand des Projekts und vergegenw\"artigen die Achievements f\"ur Meilenstein IV. Uns f\"allt auf, dass wir noch das Spiel komplett auf der GUI spielbar machen m\"ussen, sowie einen Highscore, der sichtbar sein sollte. In der Spiellogik m\"ussen noch ein paar Regeln verfeinert werden und ein Timer, sowie die UnitTests m\"ussen noch implementiert werden. Wir setzen ein Gruppentermin f\"ur den kommenden Freitag.
+
+\paragraph{Eintrag 30:}
+Mittwoch, 22.04.2020\\
+Mei und Anna treffen sich um 10.00 Uhr via Zoom, um eine korrekte Kartenanzeige auf der GUI zu implementieren. Es ist nicht einfach mit dem ImageView umzugehen und das Spielfeld sinnvoll zu gestalten. Wir schreiben uns die Fragen, die sich ergeben haben auf und fragen den Tutor in der heutigen \"Ubungsstunde.\\
+Um 14.00 Uhr ist \"Ubungsstunde, wo wir Inputs vom Tutor erhalten. Johannes weiss noch nicht, wie er die Unit Tests sinnvoll aufbauen k\"onnte, und bekommt Hinweise vom Tutor, wie er es machen k\"onnte. Anschliessen arbeitet er separat an den JUnit Tests weiter.
+
+\paragraph{Eintrag 31:}
+Donnerstag, 23.04.2020\\
+Mei und Anna treffen sich um 13.30 Uhr via Zoom und setzen sich an die Spiellogik. Bis 21.00 Uhr haben wir es geschafft, die Karten korrekt auf dem Spielfeld anzuzeigen und die restlichen Elemente \"uber die GUI anzeigen zu lassen. Das einzige was noch nicht richtig funktioniert ist der Highscore. Wir nehmen uns vor, am n\"achsten Tag die anderen der Gruppe zu fragen, welche Variablen den Inhalt der Clients wiedergeben, die sich innerhalb derselben Lobby befinden.
+
+\paragraph{Eintrag 32:}
+Freitag, 24.04.2020\\
+Treffen zu viert. Wir fassen folgende Beschl\"usse:
+\begin{itemize}
+\item Adrian und Anna werden das Game vorzeigen in der \"Ubungsstunde, mit Hilfe von Hamachi.
+\item Johannes und Adrian implementieren heute noch den Timer und den High Score. Anschliessend informieren sie Mei, damit sie diese Sachen ins GUI \"ubernehmen kann.
+\item Johannes und Adrian setzen den Anfangsstand der Coins auf 0, stellen sicher, dass das Spiel spielbar ist f\"ur 2-4 Spieler und passen die Kartenh\"aufigkeit an (es hat zuviele Minuskarten mit zu vielen Minuspunkten). Ebenso passen sie die Textausgabe an, dass man die aktuellen Punkte angezeigt bekommt nach dem Ziehen einer Karte (und nicht vor dem Ziehen).
+\item Wenn man weniger als 180 Punkte erreicht, bekommt man x-50 Coins, aber keine Minus-Coins.
+\item Wir haben einen DROPPEDOUT Befehl vom Server an Client ins Netzwerkprotokoll \"ubernommen. Johannes wird das Dokument anpassen.
+\item Es ist jetzt nicht mehr m\"oglich, einer Lobby beizutreten, wenn ein Spiel am Laufen ist. Das Netzwerkprotokoll wurde erg\"anzt um den Befehl REJECTTOJOINLOBBY.
+\end{itemize}
 
 \end{document}
