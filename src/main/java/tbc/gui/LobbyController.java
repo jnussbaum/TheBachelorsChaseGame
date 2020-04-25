@@ -17,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import static tbc.client.Client.clientHandler;
 
 /**
- * Processes a client's request to get the informations of the pushed Button. It opens a window for
+ * Processes a client's request to get the information of the pushed Button. It opens a window for
  * almost every Button and shows the details about the Game.
  */
 public class LobbyController {
@@ -26,7 +26,7 @@ public class LobbyController {
     public static GameWindowController gameWindowController;
     public static VariousWindowController variousWindowController;
     public static CardWindowController cardWindowController;
-    private final Stage secondStage = null;
+    private Stage secondStage;
     @FXML
     private BorderPane window;
     @FXML

@@ -29,6 +29,10 @@ public class VariousWindowController {
     @FXML
     private Button btnClose;
 
+    /**
+     * If the button 'Enter' is pressed it will get the text from the field and checks if the new username is available.
+     * If the username is not available anymore, it will be set from the system automatically.
+     */
     public void checkNewUsername() {
         String clientName = newUsername.getText();
         newUsername.clear();
@@ -45,7 +49,6 @@ public class VariousWindowController {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                 }
-
                 // UI update is run on the Application thread
                 Platform.runLater(updater);
             }
@@ -55,16 +58,27 @@ public class VariousWindowController {
         thread.start();
     }
 
+    /**
+     * If the user presses on 'Playerlist', this method will call up the display() method from the
+     * class PlayerList. It opens a window to show a list of the current players.
+     */
     public void showPlayerList() {
         LOGGER.info("Show playerlist");
         PlayerList.display();
     }
 
+    /**
+     * If the user presses on 'Lobbylist', this method will call up the display() method from the
+     * class LobbyList. It opens a window to show a list of the current lobbies.
+     */
     public void showLobbyList() {
         LOGGER.info("Show lobbylist");
         LobbyList.display();
     }
 
+    /**
+     * If the button 'Close' is pressed, it closes this window.
+     */
     public void closeVariousWindow() {
         Stage stage = (Stage) btnClose.getScene().getWindow();
         stage.close();

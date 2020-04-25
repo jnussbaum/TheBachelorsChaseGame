@@ -34,9 +34,7 @@ public class ChatInfoWindow {
         textArea.setText("Send message to everyone:\n"
                 + "<message>\n"
                 + "\nSend private message:\n"
-                + "@<username of another player> <message>\n"
-                + "\nTo logout:\n"
-                + "Write LOGOUT in the chat or use Logout in the menu The Bachelor's Chase > Logout\n"
+                + "@<username of another player> <message>\n \n"
                 + "Do NOT use the character '#' in the chat nor for your name.");
 
         Button close = new Button("Close");

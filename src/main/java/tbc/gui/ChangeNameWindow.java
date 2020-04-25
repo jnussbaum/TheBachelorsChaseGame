@@ -23,7 +23,7 @@ import static tbc.client.Client.clientHandler;
  */
 public class ChangeNameWindow {
 
-    private static final Logger LOGGER = LogManager.getLogger(ChatInfoWindow.class);
+    private static final Logger LOGGER = LogManager.getLogger(ChangeNameWindow.class);
 
     public static void display() {
         Stage window = new Stage();
@@ -77,7 +77,7 @@ public class ChangeNameWindow {
             Stage stage = (Stage) close.getScene().getWindow();
             stage.close();
             LobbyController.gameWindowController.appendMsg("Your name is " + clientHandler.getMyName());
-            LOGGER.info("Closed chat info window.");
+            LOGGER.info("Closed change name window.");
         });
 
         VBox layout = new VBox(10);

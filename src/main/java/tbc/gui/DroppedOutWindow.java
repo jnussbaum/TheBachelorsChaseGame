@@ -11,9 +11,9 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class DropppedOutWindow {
+public class DroppedOutWindow {
 
-    private static final Logger LOGGER = LogManager.getLogger(DropppedOutWindow.class);
+    private static final Logger LOGGER = LogManager.getLogger(DroppedOutWindow.class);
 
     public static void display() {
 

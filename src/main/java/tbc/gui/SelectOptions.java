@@ -23,6 +23,11 @@ import tbc.client.Client;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Opens a window where the user can press 'Hit', 'Throw away' or 'Quit'
+ * The button 'Throw away' is disabled as long as there is nothing typed in the field below.
+ * This window will close automatically after 10 seconds if the user did not press any button.
+ */
 public class SelectOptions {
 
     private static final Integer STARTTIME = 10;

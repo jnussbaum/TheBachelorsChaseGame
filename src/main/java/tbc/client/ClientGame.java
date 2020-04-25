@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.Card;
 import tbc.game.Player;
-import tbc.gui.DropppedOutWindow;
+import tbc.gui.DroppedOutWindow;
 import tbc.gui.LobbyController;
 import tbc.gui.SelectOptions;
 
@@ -176,7 +176,6 @@ public class ClientGame {
         //split String into substrings, then write information into Player-Array
         String[] s = allCoins.split("::");
         String name;
-        int[] scores = new int[players.length];
         for (int i = 0; i < s.length - 1; i++) {
             if (i % 2 == 0) {
                 //a name is at this position
@@ -184,34 +183,13 @@ public class ClientGame {
                 int coins = Integer.parseInt(s[i + 1]);
                 nameToPlayer(name).setNumOfCoins(coins);
                 LOGGER.info("Player " + name + " received his coins");
-                //scores[i] = coins; //FIXME ArrayIndexOutOfBoundsException
-            }
-        }
-/*
-        //use this information for the HighScore
-        //bubble sort scores
-        for (int i = 0; i < scores.length; i++) {
-            for (int j = 0; j < scores.length; j++) {
-                if (j + 1 < scores.length && scores[j] < scores[j + 1]) {
-                    int old = scores[j];
-                    scores[j] = scores[j + 1];
-                    scores[j + 1] = old;
-                }
             }
         }
 
-        for (int i = 0; i < s.length - 1; i++) {
-            if (i % 2 == 1) {
-                //number is at this position
-                int number = Integer.parseInt(s[i]);
-                for (int j = 0; j < scores.length; j++) {
-                    if (scores[j] == number) {
-                        //TODO: Finish highscore implementation OR: delete all this
-                    }
-                }
-            }
-        }
- */
+        // update the high score table
+        Platform.runLater(() -> {
+            LobbyController.gameWindowController.setHighScore();
+        });
     }
 
     /**
@@ -278,7 +256,7 @@ public class ClientGame {
      */
     public void droppedOut() {
         Platform.runLater(() -> {
-            DropppedOutWindow.display();
+            DroppedOutWindow.display();
         });
     }
 }

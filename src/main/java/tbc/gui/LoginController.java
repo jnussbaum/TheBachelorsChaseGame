@@ -20,7 +20,7 @@ import tbc.client.Client;
  */
 public class LoginController {
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
     public static String chosenLogo;
     @FXML
     public TextField userName;
@@ -35,6 +35,12 @@ public class LoginController {
         userName.setText(name);
     }
 
+    /**
+     * If the user hasn't choose a logo, the user will be told to do that.
+     * If a logo has been chosen the lobby window will open.
+     *
+     * @param event
+     */
     public void checkLogo(ActionEvent event) {
         if (logoChosen() == false) {
             labelStatus.setText("Please choose a logo.");
@@ -61,6 +67,9 @@ public class LoginController {
 
     }
 
+    /**
+     * If the logo 'Girly' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     */
     public void girly() {
         chosenLogo = "girly";
         labelNerd.setFont(Font.font(24));
@@ -69,6 +78,9 @@ public class LoginController {
         labelGirly.setFont(Font.font(36));
     }
 
+    /**
+     * If the logo 'Nerd' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     */
     public void nerd() {
         chosenLogo = "nerd";
         labelGirly.setFont(Font.font(24));
@@ -77,6 +89,9 @@ public class LoginController {
         labelNerd.setFont(Font.font(36));
     }
 
+    /**
+     * If the logo 'Hippy' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     */
     public void hippy() {
         chosenLogo = "hippy";
         labelGirly.setFont(Font.font(24));
@@ -85,6 +100,9 @@ public class LoginController {
         labelHippy.setFont(Font.font(36));
     }
 
+    /**
+     * If the logo 'Emo' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     */
     public void emo() {
         chosenLogo = "emo";
         labelGirly.setFont(Font.font(24));
@@ -93,6 +111,11 @@ public class LoginController {
         labelEmo.setFont(Font.font(36));
     }
 
+    /**
+     * If one logo is chosen and its font is set to 36, the boolean logoChosen will be set to true.
+     *
+     * @return True if one logo is chosen.
+     */
     private boolean logoChosen() {
         return labelGirly.getFont().getSize() == 36 || labelNerd.getFont().getSize() == 36
                 || labelHippy.getFont().getSize() == 36 || labelEmo.getFont().getSize() == 36;

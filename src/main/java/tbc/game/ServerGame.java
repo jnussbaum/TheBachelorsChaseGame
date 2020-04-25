@@ -63,7 +63,7 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * restacks the cands in the carddeck
+     * restacks the cards in the carddeck
      */
     void restackDeck() {
         cardDeck.put(Card.Plagiarism, 2);
@@ -150,7 +150,7 @@ public class ServerGame implements Runnable {
         timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nameToPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
-            LOGGER.error("The client " + clientName + "cannot throw away the card " + cardName
+            LOGGER.error("The client " + clientName + " cannot throw away the card " + cardName
                     + " because he does not have such a card.");
         }
         LOGGER
@@ -224,9 +224,9 @@ public class ServerGame implements Runnable {
             String clientName = players[i].getName();
             lobby.getServerHandler(clientName).sendCoins(allCoinsToString());
             lobby.getServerHandler(clientName).endMatch(winnerName);
-            LOGGER.info("coins and winnername have been sent to " + clientName);
+            LOGGER.info("coins and winner name have been sent to " + clientName);
         }
-        LOGGER.info("endMatch has sent the coins and the winnername " + winnerName + " to all clients");
+        LOGGER.info("endMatch has sent the coins and the winner name " + winnerName + " to all clients");
     }
 
     /**
@@ -307,7 +307,7 @@ public class ServerGame implements Runnable {
     public void startMatchAgain() {
         turnController = new Semaphore(1);
         reset();
-        LOGGER.info("Match has bin started again");
+        LOGGER.info("Match has been started again");
         winner = false;
         matchEnd = false;
         restackDeck();

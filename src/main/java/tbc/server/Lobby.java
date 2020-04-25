@@ -22,7 +22,7 @@ public class Lobby {
      * Administration of all clients by their name and serverHandler
      */
     private final HashMap<String, ServerHandler> clients = new HashMap<>();
-  
+
     /**
      * The game belonging to this lobby is stored in this variable.
      */

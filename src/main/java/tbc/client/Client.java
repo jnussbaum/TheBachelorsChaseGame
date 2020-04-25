@@ -1,9 +1,11 @@
 package tbc.client;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
+import tbc.gui.LobbyController;
 import tbc.gui.Login;
 
 public class Client {
@@ -46,6 +48,9 @@ public class Client {
         String[] players = player.split("::");
         game = new ClientGame(clientHandler, players);
         LOGGER.info("Client's startGame() was invoked");
+        Platform.runLater(() -> {
+            LobbyController.gameWindowController.setHighScore();
+        });
     }
 
     public static void main(String[] args) {
