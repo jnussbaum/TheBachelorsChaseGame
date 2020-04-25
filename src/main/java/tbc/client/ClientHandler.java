@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
-import tbc.gui.LobbyController;
+import tbc.gui.RejectJoiningLobbyWindow;
 
 import java.io.*;
 import java.net.Socket;
@@ -136,7 +136,7 @@ public class ClientHandler implements Runnable {
             case "REJECTTOJOINLOBBY":
                 //TODO: Show a message in GUI that the client can not join this lobby
                 Platform.runLater(() -> {
-                    LobbyController.gameWindowController.rejectLobbyJoiner();
+                    RejectJoiningLobbyWindow.display();
                 });
                 break;
             default:

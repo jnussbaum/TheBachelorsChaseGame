@@ -483,7 +483,4 @@ public class GameWindowController {
         }
     }
 
-    public void rejectLobbyJoiner() {
-        RejectJoiningLobbyWindow.display();
-    }
 }
