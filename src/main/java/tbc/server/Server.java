@@ -29,7 +29,10 @@ public class Server {
      */
     private static final HashMap<String, Lobby> lobbies = new HashMap<>();
 
-    private static int clientNameCount = 0;
+  /**
+   *
+   */
+  private static int clientNameCount = 0;
 
     /**
      * Processes a client's request to change his name. If newUserName is occupied, it sends a negative

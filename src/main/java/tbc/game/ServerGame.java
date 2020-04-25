@@ -1,14 +1,13 @@
 package tbc.game;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
-
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
 
 public class ServerGame implements Runnable {
 
@@ -68,7 +67,10 @@ public class ServerGame implements Runnable {
         return n;
     }
 
-    void restackDeck() {
+  /**
+   * restacks the cands in the carddeck
+   */
+  void restackDeck() {
         cardDeck.put(Card.Plagiarism, 2);
         cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
@@ -164,7 +166,10 @@ public class ServerGame implements Runnable {
         turnController.release();
     }
 
-    void updateDroppedOut() {
+  /**
+   * updates the number of dropped out players
+   */
+  void updateDroppedOut() {
         int i = 0;
         for (Player p : players) {
             if (p.quitMatch) {
@@ -174,7 +179,10 @@ public class ServerGame implements Runnable {
         numOfDroppedOut = i;
     }
 
-    public void giveTurnToNext() {
+  /**
+   * determinants and gives the turn to the next player
+   */
+  public void giveTurnToNext() {
         updateDroppedOut();
         LOGGER.info(
                 "ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
@@ -202,7 +210,12 @@ public class ServerGame implements Runnable {
     }
 
 
-    void endMatch(String winnerName) {
+  /**
+   * is called to execute the routine at the end of an match
+   *
+   * @param winnerName - the name of the winner ot the match
+   */
+  void endMatch(String winnerName) {
         LOGGER.info("endMatch has been called");
         matchEnd = true;
         winner = true;
@@ -218,7 +231,12 @@ public class ServerGame implements Runnable {
         LOGGER.info("endMatch has sent the coins and the winnername " + winnerName + " to all clients");
     }
 
-    String allCoinsToString() {
+  /**
+   * takes all the coins of the players and generates an string
+   *
+   * @return the string
+   */
+  String allCoinsToString() {
         String s = "";
         for (int i = 0; i < clientsAsArray.length; i++) {
             String clientName = clientsAsArray[i];
@@ -228,15 +246,21 @@ public class ServerGame implements Runnable {
         return s.substring(0, s.length() - 2);
     }
 
-    public Player nameToPlayer(String clientName) {
-        for (int i = 0; i < players.length; i++) {
-            if (players[i].getName().equals(clientName)) {
-                return players[i];
-            }
-        }
-        LOGGER.error("no Player with that name ");
-        return new Player("Badplayer");
+  /**
+   * takes a string and serches for the matching Player-object
+   *
+   * @param clientName - the name of the client
+   * @return - the player-object
+   */
+  public Player nameToPlayer(String clientName) {
+    for (int i = 0; i < players.length; i++) {
+      if (players[i].getName().equals(clientName)) {
+        return players[i];
+      }
     }
+    LOGGER.error("no Player with that name ");
+    return new Player("Badplayer");
+  }
 
     /**
      * Checks all Players if the Win or Lose-Conditions are met. This method is always called after
@@ -279,7 +303,10 @@ public class ServerGame implements Runnable {
         }
     }
 
-    public void startMatchAgain() {
+  /**
+   * preparing and restarting the match
+   */
+  public void startMatchAgain() {
         turnController = new Semaphore(1);
         reset();
         LOGGER.info("Match has bin started again");
@@ -288,7 +315,10 @@ public class ServerGame implements Runnable {
         restackDeck();
     }
 
-    private void reset() {
+  /**
+   * resets important values
+   */
+  private void reset() {
         for (Player p : players) {
             p.setNumOfPoints(0);
             p.clearCards();
@@ -332,7 +362,11 @@ public class ServerGame implements Runnable {
         }
     }
 
-
+  /**
+   * handels an logout in the Game-logic
+   *
+   * @param name - the name of the Client that wants to leave
+   */
     public void logout(String name) {
         Player[] newPlayers = new Player[players.length - 1];
         int a = 0;
