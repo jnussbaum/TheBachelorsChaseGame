@@ -22,10 +22,9 @@ public class ClientGame {
     private int points;
 
     /**
-     * the Constructor of ClientGame
-     *
-     * @param ch          - the ClientHandler for sending stuff to the server
-     * @param namePlayers - the Playernames that are participating in the game
+     * The Client starts a new game.
+     * @param ch:          the clientHandler for sending stuff to the server
+     * @param namePlayers: the player names that are participating in the game
      */
     public ClientGame(ClientHandler ch, String[] namePlayers) {
         this.clientHandler = ch;
@@ -38,7 +37,6 @@ public class ClientGame {
 
     /**
      * Appends the new card to the ArrayList 'cards'.
-     *
      * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
      */
     public void addCard(String cardName) {
@@ -70,16 +68,15 @@ public class ClientGame {
     }
 
     /**
-     * directs an request for a new card to the clienthandler
+     * Directs a request for a new card to the clientHandler
      */
     public void takeCard() {
         clientHandler.askForCard();
     }
 
     /**
-     * Handels the process of throwing away a card on clientside
-     *
-     * @param cardName - name of the card to throw away
+     * Handles the process of throwing away a card on client side
+     * @param cardName: name of the card to throw away
      */
     public void throwCard(String cardName) {
         ArrayList<String> cardsAsStrings = new ArrayList<>();
@@ -122,7 +119,7 @@ public class ClientGame {
     }
 
     /**
-     * handels the exiting of the player
+     * Handles the exiting of the player
      */
     public void quitThisMatch() {
         nameToPlayer(myName).setQuitMatch(true);
@@ -132,7 +129,7 @@ public class ClientGame {
     }
 
     /**
-     * calculate the points and checks is there are to much
+     * Calculates the points and checks if they are too high
      */
     void calculatePoints() {
         int sum = 0;
@@ -150,9 +147,8 @@ public class ClientGame {
     }
 
     /**
-     * Handles the routine at the end of an match
-     *
-     * @param winnerName - name of the client that has won
+     * Handles the routine at the end of a match
+     * @param winnerName: Name of the client who has won
      */
     public void endMatch(String winnerName) {
         Platform.runLater(
@@ -164,16 +160,22 @@ public class ClientGame {
                 }
         );
         reset();
-        askToStartNewMatch();
+        Platform.runLater(
+                () -> {
+                    LobbyController.gameWindowController.appendGameMsg(
+                            "Press the button 'New match' if you want to start a new match");
+                    LobbyController.gameWindowController.btnNewMatch.setDisable(false);
+                }
+        );
     }
 
     /**
-     * takes the String and processes the it
-     *
-     * @param allCoins - all coins and the corresponding player-names as one String
+     * Receives a string with the coins of all players, in order to update the own coins
+     * and for the highscore table
+     * @param allCoins: All coins and the corresponding player names as one string
      */
     public void receiveCoins(String allCoins) {
-        //split String into substrings, then write information into Player-Array
+        //split string into substrings, then write information into the player objects
         String[] s = allCoins.split("::");
         String name;
         for (int i = 0; i < s.length - 1; i++) {
@@ -193,10 +195,9 @@ public class ClientGame {
     }
 
     /**
-     * gets the player-object by the client name
-     *
-     * @param clientName - name of the client
-     * @return - the player-object
+     * Returns the player object of the requested player
+     * @param clientName: Name of the client as string
+     * @return: The player-object
      */
     public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
@@ -204,55 +205,29 @@ public class ClientGame {
                 return players[i];
             }
         }
-        System.err.println("no Player with that name ");
+        LOGGER.error("no Player with that name ");
         return new Player("Badplayer");
     }
 
     /**
-     * resets important values
+     * Resets important values of the player-objects in order to start a new match
      */
     private void reset() {
         for (Player p : players) {
             p.setNumOfPoints(0);
             p.clearCards();
             p.setQuitMatch(false);
-            LOGGER.info(p.getName() + " Has been resetted");
+            LOGGER.info(p.getName() + " Has been reset");
         }
         cards.clear();
     }
 
-    /**
-     * asks to start a new match
-     */
-    void askToStartNewMatch() {
-        Platform.runLater(
-                () -> {
-                    LobbyController.gameWindowController.appendGameMsg(
-                            "Press the button 'New match' if you want to start a new match");
-                    LobbyController.gameWindowController.btnNewMatch.setDisable(false);
-                }
-        );
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public ArrayList<Card> getCards() {
-        return cards;
-    }
-
-    /**
-     * gets the player array
-     *
-     * @return - the player-array
-     */
     public Player[] getPlayers() {
         return players;
     }
 
     /**
-     * signals the display that the player has dropped out
+     * Displays a window with the alert that the player has dropped out because of too many points
      */
     public void droppedOut() {
         Platform.runLater(() -> {
