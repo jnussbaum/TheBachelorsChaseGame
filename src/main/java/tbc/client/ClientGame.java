@@ -153,10 +153,10 @@ public class ClientGame {
                 int coins = Integer.parseInt(s[i + 1]);
                 nameToPlayer(name).setNumOfCoins(coins);
                 LOGGER.info("Player " + name + " received his coins");
-                scores[i] = coins;
+                //scores[i] = coins; //FIXME ArrayIndexOutOfBoundsException
             }
         }
-
+/*
         //use this information for the HighScore
         //bubble sort scores
         for (int i = 0; i < scores.length; i++) {
@@ -180,6 +180,7 @@ public class ClientGame {
                 }
             }
         }
+ */
     }
 
     public Player nameToPlayer(String clientName) {

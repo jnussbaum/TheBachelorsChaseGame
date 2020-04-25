@@ -30,10 +30,6 @@ public class ServerGame implements Runnable {
     private final HashMap<Card, Integer> cardDeck = new HashMap<>();
     volatile boolean matchEnd = false;
     boolean winner = false;
-    /**
-     * Here, the clients are stored in a String-Array
-     */
-    private String[] clientsAsArray = new String[4];
     private Timer timer;
     private Semaphore turnController;
     /**
@@ -51,10 +47,8 @@ public class ServerGame implements Runnable {
      */
     public ServerGame(Lobby lobby, String[] clientNames) {
         this.lobby = lobby;
-        clientsAsArray = clientNames;
         players = new Player[clientNames.length];
         for (int i = 0; i < clientNames.length; i++) {
-            int x = 0;
             players[i] = new Player(clientNames[i]);
         }
         restackDeck();
@@ -99,8 +93,8 @@ public class ServerGame implements Runnable {
      * Initial distribution of one card to each client.
      */
     public void distributeCards() {
-        for (String clientName : clientsAsArray) {
-            giveRandomCard(clientName);
+        for (Player p : players) {
+            giveRandomCard(p.getName());
         }
     }
 
@@ -132,6 +126,7 @@ public class ServerGame implements Runnable {
         turnController.release();
         LOGGER.info("ServerGame called giveRandomCard");
         calculatePoints();
+        giveTurnToNext();
     }
 
     /**
@@ -142,6 +137,7 @@ public class ServerGame implements Runnable {
         calculatePoints();
         nameToPlayer(clientName).setQuitMatch(true);
         turnController.release();
+        giveTurnToNext();
     }
 
     /**
@@ -162,6 +158,7 @@ public class ServerGame implements Runnable {
         //Subtract coins from player
         nameToPlayer(clientName).setNumOfCoins(nameToPlayer(clientName).getNumOfCoins() - THROWCOST);
         turnController.release();
+        giveTurnToNext();
     }
 
     void updateDroppedOut() {
@@ -179,7 +176,7 @@ public class ServerGame implements Runnable {
         LOGGER.info(
                 "ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
         if (winner == false) {
-            if (numOfDroppedOut < clientsAsArray.length) {
+            if (numOfDroppedOut < players.length) {
                 //Find out the number of the next client
                 if (activeClient == players.length - 1) {
                     activeClient = 0;
@@ -187,12 +184,12 @@ public class ServerGame implements Runnable {
                     activeClient++;
                 }
                 //Give the turn to the client whose number was set before
-                if (nameToPlayer(clientsAsArray[activeClient]).quitMatch == true) {
+                if (players[activeClient].quitMatch == true) {
                     giveTurnToNext();
                 } else {
-                    lobby.getServerHandler(clientsAsArray[activeClient]).giveTurn();
+                    lobby.getServerHandler(players[activeClient].getName()).giveTurn();
                     System.out.println("ServerGame's method giveTurnToNext() gave turn to "
-                            + clientsAsArray[activeClient]);
+                            + players[activeClient].getName());
                 }
             } else {
                 System.out.println("All players dropped out of the game");
@@ -209,8 +206,8 @@ public class ServerGame implements Runnable {
         //Give coins to all clients
         calculateCoins();
         // Tell all clients that XY won and that they receive now their coins
-        for (int i = 0; i < clientsAsArray.length; i++) {
-            String clientName = clientsAsArray[i];
+        for (int i = 0; i < players.length; i++) {
+            String clientName = players[i].getName();
             lobby.getServerHandler(clientName).sendCoins(allCoinsToString());
             lobby.getServerHandler(clientName).endMatch(winnerName);
             LOGGER.info("coins and winnername have been sent to " + clientName);
@@ -220,8 +217,8 @@ public class ServerGame implements Runnable {
 
     String allCoinsToString() {
         String s = "";
-        for (int i = 0; i < clientsAsArray.length; i++) {
-            String clientName = clientsAsArray[i];
+        for (int i = 0; i < players.length; i++) {
+            String clientName = players[i].getName();
             s = s + clientName + "::";
             s = s + players[i].getNumOfCoins() + "::";
         }
@@ -313,9 +310,9 @@ public class ServerGame implements Runnable {
                 while (!matchEnd) {
                     distributeCards();
                     LOGGER.info("matchEnd status: " + matchEnd);
+                    giveTurnToNext();
                     while (matchEnd == false) {
                         turnController.acquire();
-                        giveTurnToNext();
                         timer = new Timer();
                         timer.schedule(new TimerTask() {
                             public void run() {
@@ -343,15 +340,5 @@ public class ServerGame implements Runnable {
             }
         }
         players = newPlayers;
-
-        String[] newClients = new String[clientsAsArray.length - 1];
-        int b = 0;
-        for (int i = 0; i < clientsAsArray.length; i++) {
-            if (clientsAsArray[i].equals(name) == false) {
-                newClients[b] = clientsAsArray[i];
-                b++;
-            }
-        }
-        clientsAsArray = newClients;
     }
 }

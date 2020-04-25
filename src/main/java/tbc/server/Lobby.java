@@ -15,7 +15,7 @@ public class Lobby {
 
     private static final Logger LOGGER = LogManager.getLogger();
     public static String lobbyName;
-    private final ArrayList<String> readyGameClients = new ArrayList<>();
+    final ArrayList<String> readyGameClients = new ArrayList<>();
     private final ArrayList<String> readyMatchClients = new ArrayList<>();
     public ServerGame serverGame;
     private boolean isGameActive = false;
