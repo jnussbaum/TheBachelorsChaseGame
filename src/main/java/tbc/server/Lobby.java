@@ -47,7 +47,7 @@ public class Lobby {
      * @param clientName: Name of the client who wants to join
      * @param sh:         This client's ServerHandler
      */
-    void join(String clientName, ServerHandler sh) {
+    public void join(String clientName, ServerHandler sh) {
         if (clients.size() > 3 || isGameActive || clients.containsKey(clientName)) {
             sh.reject();
         } else {

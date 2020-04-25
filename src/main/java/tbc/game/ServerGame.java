@@ -14,34 +14,37 @@ public class ServerGame implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
+    volatile boolean matchEnd = false;
+    boolean winner = false;
+    private Timer timer;
+    private Semaphore turnController;
+    private int numOfDroppedOut = 0;
+
     /**
      * The lobby from which this game was started.
      */
     private final Lobby lobby;
+
     /**
      * Administration of all cards which are not yet distributed to a client. Card: Type of card
      * Integer: number of cards of this type which are still available.
      */
     private final HashMap<Card, Integer> cardDeck = new HashMap<>();
-    volatile boolean matchEnd = false;
-    boolean winner = false;
+
     /**
-     * Administration of the clients in this game with their respective cardset. Administration of the
+     * Administration of the clients in this game with their respective cardsets. Administration of the
      * coins of each client. Administration of the points of each client.
      */
     private Player[] players;
-    private Timer timer;
-    private Semaphore turnController;
+
     /**
      * Counts through the clients and represents which client's turn it is.
      */
     private int activeClient = 0;
 
-    private int numOfDroppedOut = 0;
 
     /**
      * Create a game and initialize the carddeck
-     *
      * @param lobby:       The lobby from which this game was started
      * @param clientNames: All clients who will be in this game
      */
@@ -65,7 +68,7 @@ public class ServerGame implements Runnable {
     /**
      * restacks the cards in the carddeck
      */
-    void restackDeck() {
+    private void restackDeck() {
         cardDeck.put(Card.Plagiarism, 2);
         cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
@@ -95,7 +98,7 @@ public class ServerGame implements Runnable {
     /**
      * Initial distribution of one card to each client.
      */
-    public void distributeCards() {
+    private void distributeCards() {
         for (Player p : players) {
             giveRandomCard(p.getName());
         }
@@ -105,7 +108,7 @@ public class ServerGame implements Runnable {
      * Helper method to give a random card to a client. This method is invoked by other methods who
      * want to give out cards.
      */
-    public void giveRandomCard(String clientName) {
+    void giveRandomCard(String clientName) {
         //Choose a random card
         Random random = new Random();
         int randomInt = random.nextInt(getDeckSize());
@@ -167,7 +170,7 @@ public class ServerGame implements Runnable {
     /**
      * updates the number of dropped out players
      */
-    void updateDroppedOut() {
+    private void updateDroppedOut() {
         int i = 0;
         for (Player p : players) {
             if (p.quitMatch) {
@@ -178,9 +181,9 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * determinants and gives the turn to the next player
+     * Determines who is the next player, and gives the turn to him
      */
-    public void giveTurnToNext() {
+    private void giveTurnToNext() {
         updateDroppedOut();
         LOGGER.info(
                 "ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
@@ -202,18 +205,17 @@ public class ServerGame implements Runnable {
                 }
             } else {
                 System.out.println("All players dropped out of the game");
-                endMatch("NoBody");
+                endMatch("nobody");
             }
         }
     }
 
 
     /**
-     * is called to execute the routine at the end of an match
-     *
-     * @param winnerName - the name of the winner ot the match
+     * Is called to execute the routine at the end of a match
+     * @param winnerName: the name of the winner of the match
      */
-    void endMatch(String winnerName) {
+    private void endMatch(String winnerName) {
         LOGGER.info("endMatch has been called");
         matchEnd = true;
         winner = true;
@@ -230,9 +232,7 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * takes all the coins of the players and generates an string
-     *
-     * @return the string
+     * Takes the coins of all the players and generates a string with them
      */
     String allCoinsToString() {
         String s = "";
@@ -245,10 +245,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * takes a string and serches for the matching Player-object
-     *
-     * @param clientName - the name of the client
-     * @return - the player-object
+     * Takes a string and searches for the matching Player-object
+     * @param clientName: The name of the client
      */
     public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
@@ -261,10 +259,10 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Checks all Players if the Win or Lose-Conditions are met. This method is always called after
+     * Checks all players if the win-condition is met. This method is always called after
      * every turn.
      */
-    void calculatePoints() {
+    private void calculatePoints() {
         String winner = null;
         for (int i = 0; i < players.length; i++) {
             int sum = players[i].calculatePoints();
@@ -282,9 +280,9 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Calculates the Coins of all Players and resets the Points to 0
+     * Calculates the coins of all players and resets the points to 0
      */
-    void calculateCoins() {
+    private void calculateCoins() {
         LOGGER.info("Coins will be calculated");
         for (int i = 0; i < players.length; i++) {
             Player a = players[i];
@@ -302,7 +300,7 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * preparing and restarting the match
+     * Preparing and restarting the match
      */
     public void startMatchAgain() {
         turnController = new Semaphore(1);
@@ -314,7 +312,7 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * resets important values
+     * Resets important values of the player-objects in order to start a new match
      */
     private void reset() {
         for (Player p : players) {
@@ -322,13 +320,9 @@ public class ServerGame implements Runnable {
             p.clearCards();
             p.setQuitMatch(false);
             p.setNotifyDropOut(false);
-            LOGGER.info(p.getName() + " Has been resetted");
+            LOGGER.info(p.getName() + " Has been reset");
             LOGGER.info(p.numOfPoints + " is the number of his points");
         }
-    }
-
-    public void setMatchEnd(boolean b) {
-        matchEnd = b;
     }
 
     /**
@@ -361,9 +355,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * handels an logout in the Game-logic
-     *
-     * @param name - the name of the Client that wants to leave
+     * Handles a logout in the game logic
+     * @param name: The name of the client who wants to leave
      */
     public void logout(String name) {
         Player[] newPlayers = new Player[players.length - 1];
