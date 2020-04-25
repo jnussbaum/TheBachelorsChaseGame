@@ -23,6 +23,7 @@ public class SelectLobby {
     private static final Logger LOGGER = LogManager.getLogger(ChatInfoWindow.class);
 
     public static boolean lobbyChosen = false;
+    private static TextField newLobby = new TextField();
 
     public static void display() {
         Stage window = new Stage();
@@ -45,7 +46,7 @@ public class SelectLobby {
         }
         lobbyList.setText(clientHandler.getLobbiesGui());
 
-        TextField newLobby = new TextField();
+        //TextField newLobby = new TextField();
         newLobby.setFocusTraversable(false);
         newLobby.setPromptText("Type in a new or an existing lobby name");
 
@@ -83,4 +84,8 @@ public class SelectLobby {
         window.setOnCloseRequest(e -> display());
     }
 
+    public static void notifyReject() {
+        newLobby.setPromptText("You can not join this lobby anymore...");
+        lobbyChosen = false;
+    }
 }

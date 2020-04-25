@@ -11,16 +11,19 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This will be called if a user can not join a lobby anymore because the game already started in this lobby.
+ */
 public class RejectJoiningLobbyWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(RejectJoiningLobbyWindow.class);
 
-    public static volatile boolean rejected = false;
+    public static boolean rejected = false;
 
+    /**
+     * It opens a window with the message to tell the user he can not join anymore.
+     */
     public static void display() {
-
-        System.out.println("RejectJoiningLobbyWindow.display        rejected: " + rejected);
-
         rejected = true;
 
         Stage window = new Stage();
@@ -52,4 +55,5 @@ public class RejectJoiningLobbyWindow {
         window.setScene(scene);
         window.showAndWait();
     }
+
 }

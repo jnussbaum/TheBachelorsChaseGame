@@ -13,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.client.Client;
 
 import static tbc.client.Client.clientHandler;
 
@@ -41,8 +40,7 @@ public class LobbyController {
         LOGGER.info("Join or create a lobby");
         SelectLobby.display();
 
-        System.out.println("LobbyController.startGame       lobby: " + SelectLobby.lobbyChosen + " rejected: " + RejectJoiningLobbyWindow.rejected);
-
+        // Check if a lobby is chosen and if the game in this lobby has already started.
         if (SelectLobby.lobbyChosen == true && !RejectJoiningLobbyWindow.rejected) {
             LOGGER.info("Show game window.");
             try {
@@ -57,7 +55,7 @@ public class LobbyController {
                 gameWindowController = loader.getController();
 
                 // Welcomes the client in all the chat windows
-                clientHandler.sendMessage("ALL", "false", "Welcome, " + Client.userName);
+                clientHandler.sendMessage("ALL", "false", "Welcome, " + clientHandler.getMyName());
 
                 // Tells the user to press the 'Ready' buton
                 gameWindowController.appendGameMsg("Press the button 'Ready' if you are ready for the game");

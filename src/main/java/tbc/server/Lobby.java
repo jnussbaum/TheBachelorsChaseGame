@@ -1,12 +1,11 @@
 package tbc.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.game.ServerGame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.game.ServerGame;
 
 /**
  * Server-side lobby, created by the Server.
@@ -17,13 +16,21 @@ public class Lobby {
     public static String lobbyName;
     final ArrayList<String> readyGameClients = new ArrayList<>();
     private final ArrayList<String> readyMatchClients = new ArrayList<>();
-    public ServerGame serverGame;
-    private boolean isGameActive = false;
 
-    /**
-     * Administration of all clients by their name and serverHandler
-     */
-    private final HashMap<String, ServerHandler> clients = new HashMap<>();
+  /**
+   * Administration of all clients by their name and serverHandler
+   */
+  private final HashMap<String, ServerHandler> clients = new HashMap<>();
+  
+  /**
+   * The game belonging to this lobby is stored in this variable.
+   */
+  public ServerGame serverGame;
+
+  /**
+   * This boolean stores the information whether a game is active right now or not.
+   */
+  private boolean isGameActive = false;
 
     /**
      * When a new lobby is created, the serverHandler of the client who initiated this lobby
@@ -37,6 +44,7 @@ public class Lobby {
 
     /**
      * A client's join request leads to the invocation of this method
+     *
      * @param clientName: Name of the client who wants to join
      * @param sh:         This client's ServerHandler
      */
@@ -100,17 +108,28 @@ public class Lobby {
         }
     }
 
-    public ServerHandler getServerHandler(String clientName) {
-        return clients.get(clientName);
-    }
+  /**
+   * gets the serverhandler of a client by using his name
+   *
+   * @param clientName - the name of the client
+   * @return
+   */
+  public ServerHandler getServerHandler(String clientName) {
+    return clients.get(clientName);
+  }
 
     public String getLobbyName() {
         return lobbyName;
     }
 
-    public HashMap<String, ServerHandler> getClients() {
-        return clients;
-    }
+  /**
+   * returns the Hashmap filled wir the clients in the lobby
+   *
+   * @return
+   */
+  public HashMap<String, ServerHandler> getClients() {
+    return clients;
+  }
 
     /**
      * When a client logs out, he is removed from the lobby and the serverGame.
