@@ -47,20 +47,27 @@ public class LobbyTest {
      * This method tests if the lobby correctly rejects new players when a game is active.
      */
     @Test
-    public void testJoinWhenGameIsActive() {
-
+    public void testJoinWhenGameIsActive() throws IOException {
+        int oldSize = lobby.getClients().size();
+        lobby.isGameActive = true;
+        lobby.join("InvalidPlayer", new ServerHandler(
+                "InvalidPlayer",
+                new Socket("localhost", 135),
+                new ChatServer()));
+        Assert.assertEquals(oldSize, lobby.getClients().size());
     }
 
     /**
      * Tests if a client who is not in the lobby can be registered as ready for a game
      */
     @Test
-    public void testReadyForGame() {
+    public void testReadyForGame() throws IOException {
         int oldSize = lobby.readyGameClients.size();
         lobby.join("InvalidPlayer", new ServerHandler(
                 "InvalidPlayer",
-                new Socket(null),
+                new Socket("localhost", 135),
                 new ChatServer()));
+        Assert.assertEquals(oldSize, lobby.readyGameClients.size());
     }
 
     /**
@@ -68,7 +75,9 @@ public class LobbyTest {
      */
     @Test
     public void testReadyForMatch() {
-        readyGameClients
+        int oldSize = lobby.readyMatchClients.size();
+        lobby.readyForMatch("InvalidPlayer");
+        Assert.assertEquals(oldSize, lobby.readyMatchClients.size());
     }
 
 
