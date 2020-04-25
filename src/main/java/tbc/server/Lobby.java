@@ -14,32 +14,16 @@ import java.util.HashMap;
 public class Lobby {
 
     private static final Logger LOGGER = LogManager.getLogger();
-
-    /**
-     * Name of this lobby as string.
-     */
     public static String lobbyName;
+    private final ArrayList<String> readyGameClients = new ArrayList<>();
+    private final ArrayList<String> readyMatchClients = new ArrayList<>();
+    public ServerGame serverGame;
+    private boolean isGameActive = false;
 
     /**
      * Administration of all clients by their name and serverHandler
      */
     private final HashMap<String, ServerHandler> clients = new HashMap<>();
-
-    /**
-     * Controls all clients if they are ready to start a game or not.
-     */
-    private final ArrayList<String> readyGameClients = new ArrayList<>();
-    private final ArrayList<String> readyMatchClients = new ArrayList<>();
-
-    /**
-     * The game belonging to this lobby is stored in this variable.
-     */
-    public ServerGame serverGame;
-
-    /**
-     * This boolean stores the information whether a game is active right now or not.
-     */
-    private boolean isGameActive = false;
 
     /**
      * When a new lobby is created, the serverHandler of the client who initiated this lobby
@@ -53,7 +37,6 @@ public class Lobby {
 
     /**
      * A client's join request leads to the invocation of this method
-     *
      * @param clientName: Name of the client who wants to join
      * @param sh:         This client's ServerHandler
      */
@@ -66,23 +49,41 @@ public class Lobby {
         }
     }
 
+    /**
+     * When a player is ready to start a game and clicks his "Ready" button, this method will be called.
+     * @param myName: Name of the player who is ready
+     */
     void readyForGame(String myName) {
-        readyGameClients.add(myName);
+        if (clients.containsKey(myName)) {
+            readyGameClients.add(myName);
+        } else {
+            LOGGER.error(myName + " is not a client in this lobby, and cannot be ready therefore.");
+        }
         if (readyGameClients.size() == clients.size() && readyGameClients.size() > 1) {
             startGame();
         }
     }
 
+    /**
+     * When a player is ready to start a new match and clicks his "Ready" button, this method will be called.
+     * @param myName: Name of the player who is ready
+     */
     void readyForMatch(String myName) {
-        readyMatchClients.add(myName);
-        LOGGER.info("readyForMatch has been called");
+        if (clients.containsKey(myName)) {
+            readyMatchClients.add(myName);
+        } else {
+            LOGGER.error(myName + " is not a client in this lobby, and cannot be ready therefore.");
+        }
         if (readyMatchClients.size() == clients.size() && readyMatchClients.size() > 1) {
             serverGame.startMatchAgain();
-            LOGGER.info("everyone is ready and the next match is staring");
+            LOGGER.info("everyone is ready and the next match is starting");
             readyMatchClients.clear();
         }
     }
 
+    /**
+     * As soon as all clients in the lobby are ready, the game is started.
+     */
     void startGame() {
         LOGGER.info("Lobby's startGame() method was invoked");
         if (isGameActive == false) {
@@ -103,10 +104,6 @@ public class Lobby {
         return clients.get(clientName);
     }
 
-    public boolean isGameActive() {
-        return isGameActive;
-    }
-
     public String getLobbyName() {
         return lobbyName;
     }
@@ -115,6 +112,10 @@ public class Lobby {
         return clients;
     }
 
+    /**
+     * When a client logs out, he is removed from the lobby and the serverGame.
+     * @param name: Name of the client who logged out
+     */
     public void logout(String name) {
         clients.remove(name);
         serverGame.logout(name);
