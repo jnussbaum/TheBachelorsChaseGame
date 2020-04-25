@@ -18,6 +18,10 @@ public class ServerGameTest {
                 "Player1",
                 new Socket("localhost", 135),
                 new ChatServer()));
+        lobby.join("Player2", new ServerHandler(
+                "Player2",
+                new Socket("localhost", 135),
+                new ChatServer()));
         serverGame = new ServerGame(lobby, new String[]{"Player1", "Player2"});
     }
 
@@ -46,17 +50,5 @@ public class ServerGameTest {
     public void testAllCoinsToString() {
         Assert.assertEquals("Player1::0::Player2::0", serverGame.allCoinsToString());
     }
-
-    /**
-     * Tests if the ServerGame created its players correctly. Works only before any game action has taken place.
-     */
-    /*@Test
-    public void testNameToPlayer() {
-        Assert.assertEquals(new Player("Player1"), serverGame.nameToPlayer("Player1"));
-        Assert.assertEquals(new Player("Player2"), serverGame.nameToPlayer("Player2"));
-        Assert.assertEquals(new Player("Badplayer"), serverGame.nameToPlayer("Player3"));
-    }
-
-*/
 
 }

@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import tbc.chat.ChatServer;
 import tbc.game.ServerGame;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
