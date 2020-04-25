@@ -15,7 +15,7 @@ public class RejectJoiningLobbyWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(RejectJoiningLobbyWindow.class);
 
-    public static boolean rejected = true;
+    public static volatile boolean rejected = false;
 
     public static void display() {
 
