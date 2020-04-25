@@ -58,16 +58,11 @@ public class Lobby {
      * @param sh:         This client's ServerHandler
      */
     void join(String clientName, ServerHandler sh) {
-        //FIXME reject() and lobbyJoined() are running parallel
-        if (clients.size() > 3 || isGameActive) {
+        if (clients.size() > 3 || isGameActive || clients.containsKey(clientName)) {
             sh.reject();
-            return;
-        }
-        if (!clients.containsKey(clientName)) {
+        } else {
             clients.put(clientName, sh);
             sh.lobbyJoined(lobbyName);
-        } else {
-            LOGGER.error("This client cannot join the lobby twice");
         }
     }
 
