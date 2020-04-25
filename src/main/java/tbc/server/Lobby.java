@@ -3,7 +3,6 @@ package tbc.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.ServerGame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,14 +13,14 @@ import java.util.HashMap;
 public class Lobby {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    public static String lobbyName;
-    final ArrayList<String> readyGameClients = new ArrayList<>();
-    private final ArrayList<String> readyMatchClients = new ArrayList<>();
+    public String lobbyName;
+    ArrayList<String> readyGameClients = new ArrayList<>();
+    ArrayList<String> readyMatchClients = new ArrayList<>();
 
     /**
      * Administration of all clients by their name and serverHandler
      */
-    private final HashMap<String, ServerHandler> clients = new HashMap<>();
+    private HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
      * The game belonging to this lobby is stored in this variable.
@@ -31,21 +30,20 @@ public class Lobby {
     /**
      * This boolean stores the information whether a game is active right now or not.
      */
-    private boolean isGameActive = false;
+    boolean isGameActive = false;
 
     /**
      * When a new lobby is created, the serverHandler of the client who initiated this lobby
      * is added to the clients' administration.
      */
     public Lobby(String lobbyName, ServerHandler sh) {
-        Lobby.lobbyName = lobbyName;
+        this.lobbyName = lobbyName;
         clients.put(sh.getName(), sh);
         sh.lobbyJoined(lobbyName);
     }
 
     /**
      * A client's join request leads to the invocation of this method
-     *
      * @param clientName: Name of the client who wants to join
      * @param sh:         This client's ServerHandler
      */
@@ -60,7 +58,6 @@ public class Lobby {
 
     /**
      * When a player is ready to start a game and clicks his "Ready" button, this method will be called.
-     *
      * @param myName: Name of the player who is ready
      */
     void readyForGame(String myName) {
@@ -76,7 +73,6 @@ public class Lobby {
 
     /**
      * When a player is ready to start a new match and clicks his "Ready" button, this method will be called.
-     *
      * @param myName: Name of the player who is ready
      */
     void readyForMatch(String myName) {
@@ -111,12 +107,6 @@ public class Lobby {
         }
     }
 
-    /**
-     * gets the serverhandler of a client by using his name
-     *
-     * @param clientName - the name of the client
-     * @return
-     */
     public ServerHandler getServerHandler(String clientName) {
         return clients.get(clientName);
     }
@@ -125,18 +115,12 @@ public class Lobby {
         return lobbyName;
     }
 
-    /**
-     * returns the Hashmap filled wir the clients in the lobby
-     *
-     * @return
-     */
     public HashMap<String, ServerHandler> getClients() {
         return clients;
     }
 
     /**
      * When a client logs out, he is removed from the lobby and the serverGame.
-     *
      * @param name: Name of the client who logged out
      */
     public void logout(String name) {
