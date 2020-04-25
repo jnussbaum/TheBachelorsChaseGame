@@ -1,6 +1,5 @@
 package tbc.client;
 
-import java.util.ArrayList;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +8,8 @@ import tbc.game.Player;
 import tbc.gui.DropppedOutWindow;
 import tbc.gui.LobbyController;
 import tbc.gui.SelectOptions;
+
+import java.util.ArrayList;
 
 public class ClientGame {
 
@@ -20,23 +21,24 @@ public class ClientGame {
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
     private int points;
 
-  /**
-   * the Constructor of ClientGame
-   *
-   * @param ch - the ClientHandler for sending stuff to the server
-   * @param namePlayers - the Playernames that are participating in the game
-   */
-  public ClientGame(ClientHandler ch, String[] namePlayers) {
-    this.clientHandler = ch;
-    myName = clientHandler.getMyName();
-    players = new Player[namePlayers.length];
-    for (int i = 0; i < namePlayers.length; i++) {
-      players[i] = new Player(namePlayers[i]);
+    /**
+     * the Constructor of ClientGame
+     *
+     * @param ch          - the ClientHandler for sending stuff to the server
+     * @param namePlayers - the Playernames that are participating in the game
+     */
+    public ClientGame(ClientHandler ch, String[] namePlayers) {
+        this.clientHandler = ch;
+        myName = clientHandler.getMyName();
+        players = new Player[namePlayers.length];
+        for (int i = 0; i < namePlayers.length; i++) {
+            players[i] = new Player(namePlayers[i]);
+        }
     }
-  }
 
     /**
      * Appends the new card to the ArrayList 'cards'.
+     *
      * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
      */
     public void addCard(String cardName) {
@@ -67,19 +69,19 @@ public class ClientGame {
         );
     }
 
-  /**
-   * directs an request for a new card to the clienthandler
-   */
-  public void takeCard() {
-    clientHandler.askForCard();
-  }
+    /**
+     * directs an request for a new card to the clienthandler
+     */
+    public void takeCard() {
+        clientHandler.askForCard();
+    }
 
-  /**
-   * Handels the process of throwing away a card on clientside
-   *
-   * @param cardName - name of the card to throw away
-   */
-  public void throwCard(String cardName) {
+    /**
+     * Handels the process of throwing away a card on clientside
+     *
+     * @param cardName - name of the card to throw away
+     */
+    public void throwCard(String cardName) {
         ArrayList<String> cardsAsStrings = new ArrayList<>();
         for (Card c : cards) {
             cardsAsStrings.add(c.toString());
@@ -119,20 +121,20 @@ public class ClientGame {
         }
     }
 
-  /**
-   * handels the exiting of the player
-   */
-  public void quitThisMatch() {
+    /**
+     * handels the exiting of the player
+     */
+    public void quitThisMatch() {
         nameToPlayer(myName).setQuitMatch(true);
         clientHandler.quitThisMatch();
         calculatePoints();
         LOGGER.info("quitThisMatch has been executed");
     }
 
-  /**
-   * calculate the points and checks is there are to much
-   */
-  void calculatePoints() {
+    /**
+     * calculate the points and checks is there are to much
+     */
+    void calculatePoints() {
         int sum = 0;
         for (Card c : cards) {
             sum += c.getValue();
@@ -142,15 +144,17 @@ public class ClientGame {
             LobbyController.gameWindowController.appendGameMsg("You have " + points + " points.");
         });
 
-        if (points > 180) { droppedOut(); }
+        if (points > 180) {
+            droppedOut();
+        }
     }
 
-  /**
-   * Handles the routine at the end of an match
-   *
-   * @param winnerName - name of the client that has won
-   */
-  public void endMatch(String winnerName) {
+    /**
+     * Handles the routine at the end of an match
+     *
+     * @param winnerName - name of the client that has won
+     */
+    public void endMatch(String winnerName) {
         Platform.runLater(
                 () -> {
                     LobbyController.gameWindowController.appendGameMsg("The match has ended, the winner is "
@@ -163,12 +167,12 @@ public class ClientGame {
         askToStartNewMatch();
     }
 
-  /**
-   * takes the String and processes the it
-   *
-   * @param allCoins - all coins and the corresponding player-names as one String
-   */
-  public void receiveCoins(String allCoins) {
+    /**
+     * takes the String and processes the it
+     *
+     * @param allCoins - all coins and the corresponding player-names as one String
+     */
+    public void receiveCoins(String allCoins) {
         //split String into substrings, then write information into Player-Array
         String[] s = allCoins.split("::");
         String name;
@@ -210,26 +214,26 @@ public class ClientGame {
  */
     }
 
-  /**
-   * gets the player-object by the client name
-   *
-   * @param clientName - name of the client
-   * @return - the player-object
-   */
-  public Player nameToPlayer(String clientName) {
-    for (int i = 0; i < players.length; i++) {
-      if (players[i].getName().equals(clientName)) {
-        return players[i];
-      }
+    /**
+     * gets the player-object by the client name
+     *
+     * @param clientName - name of the client
+     * @return - the player-object
+     */
+    public Player nameToPlayer(String clientName) {
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].getName().equals(clientName)) {
+                return players[i];
+            }
+        }
+        System.err.println("no Player with that name ");
+        return new Player("Badplayer");
     }
-    System.err.println("no Player with that name ");
-    return new Player("Badplayer");
-  }
 
-  /**
-   * resets important values
-   */
-  private void reset() {
+    /**
+     * resets important values
+     */
+    private void reset() {
         for (Player p : players) {
             p.setNumOfPoints(0);
             p.clearCards();
@@ -239,10 +243,10 @@ public class ClientGame {
         cards.clear();
     }
 
-  /**
-   * asks to start a new match
-   */
-  void askToStartNewMatch() {
+    /**
+     * asks to start a new match
+     */
+    void askToStartNewMatch() {
         Platform.runLater(
                 () -> {
                     LobbyController.gameWindowController.appendGameMsg(
@@ -260,19 +264,19 @@ public class ClientGame {
         return cards;
     }
 
-  /**
-   * gets the player array
-   *
-   * @return - the player-array
-   */
-  public Player[] getPlayers() {
+    /**
+     * gets the player array
+     *
+     * @return - the player-array
+     */
+    public Player[] getPlayers() {
         return players;
-  }
+    }
 
-  /**
-   * signals the display that the player has dropped out
-   */
-  public void droppedOut() {
+    /**
+     * signals the display that the player has dropped out
+     */
+    public void droppedOut() {
         Platform.runLater(() -> {
             DropppedOutWindow.display();
         });

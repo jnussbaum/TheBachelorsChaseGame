@@ -1,15 +1,12 @@
 package tbc.server;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
+
+import java.io.*;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -143,8 +140,7 @@ public class ServerHandler implements Runnable {
      * if his name change request was allowed or rejected.
      *
      * @param feedback - tells if the Change was accepted
-     * @param newName - the requested name
-     *
+     * @param newName  - the requested name
      */
     public void giveFeedbackToChange(boolean feedback, String newName) {
         if (feedback) {
@@ -240,7 +236,7 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     *Sends the notification that the game has Started
+     * Sends the notification that the game has Started
      *
      * @param players - an Array with all the names of the participating players
      */

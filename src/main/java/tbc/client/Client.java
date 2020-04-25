@@ -22,8 +22,9 @@ public class Client {
     /**
      * When a new Client connects to the server, he chooses his name and sends a request to the server
      * to connect with this name. The Server answers by invoking this method.
+     *
      * @param feedback: Answer yes/no if the name changing succeeded or not.
-     * @param newName: The new name.
+     * @param newName:  The new name.
      */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
@@ -38,6 +39,7 @@ public class Client {
 
     /**
      * Answer from the Server to this client that a game starts now.
+     *
      * @param player: String with all players in this game
      */
     public static void startGame(String player) {
@@ -83,6 +85,7 @@ public class Client {
 
     /**
      * Send a request to the server to join a lobby
+     *
      * @param lobby: The lobby which should be joined
      */
     public static void joinALobby(String lobby) {

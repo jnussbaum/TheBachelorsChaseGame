@@ -3,18 +3,13 @@ package tbc.game;
 import org.junit.Assert;
 import org.junit.Test;
 import tbc.chat.ChatServer;
-import tbc.client.Client;
-import tbc.client.ClientGame;
 import tbc.server.Lobby;
-import tbc.server.Server;
 import tbc.server.ServerHandler;
-
 import java.io.IOException;
 import java.net.Socket;
 
 public class ServerGameTest {
 
-    //the often used variables are stored here
     Lobby lobby;
     ServerGame serverGame;
 

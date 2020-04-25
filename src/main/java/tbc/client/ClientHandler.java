@@ -1,18 +1,15 @@
 package tbc.client;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
 import tbc.gui.RejectJoiningLobbyWindow;
+
+import java.io.*;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -164,13 +161,13 @@ public class ClientHandler implements Runnable {
     /**
      * sends a chatMessage
      *
-     * @param receiver - the name of the receiver
+     * @param receiver     - the name of the receiver
      * @param isPrivateMsg - statment if the message is private
-     * @param msg - the Message the client wants to send
+     * @param msg          - the Message the client wants to send
      */
     public void sendMessage(String receiver, String isPrivateMsg, String msg) {
         clientOutputStream
-            .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
+                .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
     }
 
@@ -183,7 +180,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     *sends a request for the Lobby-list
+     * sends a request for the Lobby-list
      */
     public void askForLobbyList() {
         clientOutputStream.println("GETLOBBYLIST");
@@ -191,8 +188,6 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     *
-     *
      * @param lobbyName
      */
     void createLobby(String lobbyName) {
@@ -200,7 +195,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     *this method takes the received String array and translates it
+     * this method takes the received String array and translates it
      *
      * @param commands - the received list of lobby names
      */
@@ -268,6 +263,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * Gets the PlayerListGui
+     *
      * @return - the PlayerlistGUI
      */
     public String getPlayerListGui() {
@@ -294,6 +290,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * send an request to throw away a card
+     *
      * @param cardName - name of the card that shall be cast away
      */
     public void throwCard(String cardName) {
@@ -318,6 +315,7 @@ public class ClientHandler implements Runnable {
         clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }
+
     /**
      * sending the server a message that the client is ready to start an new match
      */

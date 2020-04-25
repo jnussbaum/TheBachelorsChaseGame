@@ -91,7 +91,7 @@ public class SelectOptions {
         timeSeconds.set(STARTTIME);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(STARTTIME+1),
+                new KeyFrame(Duration.seconds(STARTTIME + 1),
                         new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
 
