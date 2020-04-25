@@ -8,6 +8,7 @@ import tbc.chat.ChatClient;
 import tbc.gui.LobbyController;
 import tbc.gui.Login;
 
+
 public class Client {
 
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
@@ -53,40 +54,43 @@ public class Client {
         });
     }
 
-    public static void main(String[] args) {
-        // Run jar without a username. Username is set from the server as the system name.
-        if (args.length < 3) {
-            userName = System.getProperty("user.name");
-            LOGGER.info("Username has been set from the server: " + userName);
-        } else {
-            // Run jar with username
-            userName = args[2];
-            LOGGER.info("Username has been set from the client: " + userName);
-        }
-
-        String hostName = args[1].substring(0, args[1].indexOf(':'));
-        LOGGER.info("Hostname: " + hostName);
-        int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
-        LOGGER.info("Portnumber: " + portNumber);
-
-        try {
-            clientHandlerThread = new Thread(
-                    clientHandler = new ClientHandler(userName, hostName, portNumber));
-            chatClient = new ChatClient(clientHandler);
-        } catch (Exception e) {
-            LOGGER.error("Couldn't get I/O for the connection to the hostname");
-        }
-
-        try {
-            clientHandlerThread.start();
-            clientHandler.registerChatClient(chatClient);
-            // Check if username is already being used
-            clientHandler.changeName(userName);
-            Application.launch(Login.class, args);
-        } catch (Exception e) {
-            LOGGER.error("Could not set the username.");
-        }
+  /**
+   * try`s to connect to the server and starts the game-window
+   */
+  public static void main(String[] args) {
+    // Run jar without a username. Username is set from the server as the system name.
+    if (args.length < 3) {
+      userName = System.getProperty("user.name");
+      LOGGER.info("Username has been set from the server: " + userName);
+    } else {
+      // Run jar with username
+      userName = args[2];
+      LOGGER.info("Username has been set from the client: " + userName);
     }
+
+    String hostName = args[1].substring(0, args[1].indexOf(':'));
+    LOGGER.info("Hostname: " + hostName);
+    int portNumber = Integer.parseInt(args[1].substring(args[1].indexOf(':') + 1));
+    LOGGER.info("Portnumber: " + portNumber);
+
+    try {
+      clientHandlerThread = new Thread(
+          clientHandler = new ClientHandler(userName, hostName, portNumber));
+      chatClient = new ChatClient(clientHandler);
+    } catch (Exception e) {
+      LOGGER.error("Couldn't get I/O for the connection to the hostname");
+    }
+
+    try {
+      clientHandlerThread.start();
+      clientHandler.registerChatClient(chatClient);
+      // Check if username is already being used
+      clientHandler.changeName(userName);
+      Application.launch(Login.class, args);
+    } catch (Exception e) {
+      LOGGER.error("Could not set the username.");
+    }
+  }
 
     /**
      * Send a request to the server to join a lobby

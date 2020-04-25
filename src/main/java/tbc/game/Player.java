@@ -1,9 +1,11 @@
 package tbc.game;
 
+import java.util.ArrayList;
 import tbc.server.ServerHandler;
 
-import java.util.ArrayList;
-
+/**
+ * this class ist used to save the Dater of the players on the server and client-side respectively
+ */
 public class Player {
 
     boolean quitMatch = false;
@@ -15,6 +17,11 @@ public class Player {
     ServerHandler serverHandler;
     ArrayList<Card> cards = new ArrayList<>();
 
+    /**
+     * the Constructor
+     *
+     * @param name - the name of the player
+     */
     public Player(String name) {
         this.name = name;
     }
@@ -24,6 +31,10 @@ public class Player {
         this.numOfCoins = coins;
     }
 
+    /**
+     * returns the serverHandler of the player
+     * @return - serverHandler
+     */
     public ServerHandler getServerHandler() {
         return serverHandler;
     }
@@ -63,7 +74,6 @@ public class Player {
     /**
      * Calculates the Points the Player through the given Carts
      */
-
     int calculatePoints() {
         //Iterate through a client's cards
         int sum = 0;
@@ -74,6 +84,9 @@ public class Player {
         return sum;
     }
 
+    /**
+     * clear the player of all cards
+     */
     public void clearCards() {
         cards.clear();
     }
