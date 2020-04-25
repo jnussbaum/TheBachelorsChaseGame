@@ -1,15 +1,18 @@
 package tbc.client;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
 import tbc.gui.RejectJoiningLobbyWindow;
-
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -148,31 +151,59 @@ public class ClientHandler implements Runnable {
         this.chatClient = chatClient;
     }
 
+    /**
+     * Sends an request to change the name of the client
+     *
+     * @param userName - the name that the client wants to change in to
+     */
     public void changeName(String userName) {
         clientOutputStream.println("CHANGENAME" + "#" + userName);
         clientOutputStream.flush();
     }
 
+    /**
+     * sends a chatMessage
+     *
+     * @param receiver - the name of the receiver
+     * @param isPrivateMsg - statment if the message is private
+     * @param msg - the Message the client wants to send
+     */
     public void sendMessage(String receiver, String isPrivateMsg, String msg) {
         clientOutputStream
-                .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
+            .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
     }
 
+    /**
+     * sends the logout-request
+     */
     public void logOut() {
         clientOutputStream.println("LOGOUT");
         clientOutputStream.flush();
     }
 
+    /**
+     *sends a request for the Lobby-list
+     */
     public void askForLobbyList() {
         clientOutputStream.println("GETLOBBYLIST");
         clientOutputStream.flush();
     }
 
+    /**
+     *
+     *
+     * @param lobbyName
+     */
     void createLobby(String lobbyName) {
         clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
     }
 
+    /**
+     *this method takes the received String array and translates it
+     *
+     * @param commands - the received list of lobby names
+     */
     public void receiveLobbyList(String[] commands) {
         if (commands.length > 1) {
             String[] lobbies = new String[commands.length - 1];
@@ -193,15 +224,28 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * gets the LobbyGui name
+     *
+     * @return - the name of the LobbyGUI
+     */
     public String getLobbiesGui() {
         return lobbiesGui;
     }
 
+    /**
+     * send an request for the PlayerList
+     */
     public void askForPlayerList() {
         clientOutputStream.println("GETPLAYERLIST");
         clientOutputStream.flush();
     }
 
+    /**
+     * translate the received list
+     *
+     * @param commands - the list of Player-names
+     */
     public void receivePlayerList(String[] commands) {
         if (commands.length > 1) {
             String[] players = new String[commands.length - 1];
@@ -222,36 +266,61 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Gets the PlayerListGui
+     * @return - the PlayerlistGUI
+     */
     public String getPlayerListGui() {
         return playersGui;
     }
 
+    /**
+     * sends an request to join the named lobby
+     *
+     * @param lobbyName - the Lobby-name
+     */
     void joinLobby(String lobbyName) {
         clientOutputStream.println("JOINLOBBY" + "#" + lobbyName);
         clientOutputStream.flush();
     }
 
+    /**
+     * send an request for an card
+     */
     public void askForCard() {
         clientOutputStream.println("ASKFORCARD");
         clientOutputStream.flush();
     }
 
+    /**
+     * send an request to throw away a card
+     * @param cardName - name of the card that shall be cast away
+     */
     public void throwCard(String cardName) {
         clientOutputStream.println("THROWCARD" + "#" + cardName);
         clientOutputStream.flush();
     }
 
+    /**
+     * sending the server the message that the client wants to skip the
+     * active match
+     */
     public void quitThisMatch() {
         clientOutputStream.println("QUITTHISMATCH");
         clientOutputStream.flush();
     }
 
+    /**
+     * sending the server a message that the client is ready to start an new game
+     */
     public void readyForGame() {
         LOGGER.info("readyforgame was send");
         clientOutputStream.println("READYFORGAME");
         clientOutputStream.flush();
     }
-
+    /**
+     * sending the server a message that the client is ready to start an new match
+     */
     public void askForNewMatch() {
         clientOutputStream.println("READYFORMATCH");
         clientOutputStream.flush();
