@@ -23,6 +23,7 @@ public class ClientGame {
 
     /**
      * The Client starts a new game.
+     *
      * @param ch:          the clientHandler for sending stuff to the server
      * @param namePlayers: the player names that are participating in the game
      */
@@ -37,6 +38,7 @@ public class ClientGame {
 
     /**
      * Appends the new card to the ArrayList 'cards'.
+     *
      * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
      */
     public void addCard(String cardName) {
@@ -76,6 +78,7 @@ public class ClientGame {
 
     /**
      * Handles the process of throwing away a card on client side
+     *
      * @param cardName: name of the card to throw away
      */
     public void throwCard(String cardName) {
@@ -148,6 +151,7 @@ public class ClientGame {
 
     /**
      * Handles the routine at the end of a match
+     *
      * @param winnerName: Name of the client who has won
      */
     public void endMatch(String winnerName) {
@@ -172,6 +176,7 @@ public class ClientGame {
     /**
      * Receives a string with the coins of all players, in order to update the own coins
      * and for the highscore table
+     *
      * @param allCoins: All coins and the corresponding player names as one string
      */
     public void receiveCoins(String allCoins) {
@@ -196,8 +201,9 @@ public class ClientGame {
 
     /**
      * Returns the player object of the requested player
+     *
      * @param clientName: Name of the client as string
-     * @return: The player-object
+     * @return The player-object
      */
     public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {

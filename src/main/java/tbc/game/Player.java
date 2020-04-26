@@ -1,7 +1,8 @@
 package tbc.game;
 
-import java.util.ArrayList;
 import tbc.server.ServerHandler;
+
+import java.util.ArrayList;
 
 /**
  * this class ist used to save the Dater of the players on the server and client-side respectively
@@ -33,6 +34,7 @@ public class Player {
 
     /**
      * returns the serverHandler of the player
+     *
      * @return - serverHandler
      */
     public ServerHandler getServerHandler() {

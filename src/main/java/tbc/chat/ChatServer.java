@@ -15,6 +15,10 @@ public class ChatServer {
 
     /**
      * When the ChatServer receives a message, he forwards it to the correct clients.
+     *
+     * @param sender   The user who sent a message.
+     * @param receiver The user who gets the message
+     * @param msg      The message which was sent.
      */
     public void receiveMessage(String sender, String receiver, String msg) {
         if (receiver.equals("ALL")) {
@@ -51,6 +55,9 @@ public class ChatServer {
 
     /**
      * Use this method to tell the ChatServer that a new client exists.
+     *
+     * @param clientName          The new user's name who needs to be added.
+     * @param clientServerHandler The serverHandler from the new user.
      */
     public void register(String clientName, ServerHandler clientServerHandler) {
         Server.addClient(clientName, clientServerHandler);
@@ -58,6 +65,9 @@ public class ChatServer {
 
     /**
      * Verify if a user is registered in this ChatServer.
+     *
+     * @param checkName The name of the user who has to be checked it she/he is registered.
+     * @return False if not registered.
      */
     public boolean checkUser(String checkName) {
         for (ServerHandler sh : Server.getServerHandlers()) {

@@ -39,7 +39,7 @@ public class LoginController {
      * If the user hasn't choose a logo, the user will be told to do that.
      * If a logo has been chosen the lobby window will open.
      *
-     * @param event
+     * @param event The event that represents the pressed button.
      */
     public void checkLogo(ActionEvent event) {
         if (logoChosen() == false) {

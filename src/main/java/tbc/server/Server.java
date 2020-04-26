@@ -39,6 +39,9 @@ public class Server {
      * Processes a client's request to change his name. If newUserName is occupied, it sends a negative
      * answer back and puts a number behind the newUserName. If newUserName is available,
      * it changes requester's name to newUserName and sends a positive answer back.
+     *
+     * @param requester   The user who wants to change her/his name.
+     * @param newUserName The new name which the user wants to change to.
      */
     public static void changeName(String requester, String newUserName) {
         if (clients.containsKey(newUserName)) {
@@ -65,6 +68,8 @@ public class Server {
 
     /**
      * This method returns a copy of a string array with all the players name in it.
+     *
+     * @return The copy of the string array from the player.
      */
     public static String[] getPlayers() {
         Object[] objArray = clients.keySet().toArray();
@@ -99,7 +104,7 @@ public class Server {
      * returns the lobby-object
      *
      * @param lobbyName - the name of the lobby
-     * @return - the lobby-object
+     * @return the lobby-object
      */
     public static Lobby getLobby(String lobbyName) {
         return lobbies.get(lobbyName);
@@ -108,7 +113,7 @@ public class Server {
     /**
      * gets the serverHandler
      *
-     * @return
+     * @return All server handlers
      */
     public static Collection<ServerHandler> getServerHandlers() {
         return clients.values();
@@ -147,7 +152,7 @@ public class Server {
     /**
      * the main method
      *
-     * @param args
+     * @param args The String array with the arguments from the user. Will be split into port number.
      */
     public static void main(String[] args) {
         int portNumber = Integer.parseInt(args[1]);

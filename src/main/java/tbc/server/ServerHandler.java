@@ -128,6 +128,10 @@ public class ServerHandler implements Runnable {
 
     /**
      * The chatServer sends a chat message to this handler's client.
+     *
+     * @param sender       The user who sent the message.
+     * @param isPrivateMsg String to tell if the message is private or not.
+     * @param msg          The String with the message from a user.
      */
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
         clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);

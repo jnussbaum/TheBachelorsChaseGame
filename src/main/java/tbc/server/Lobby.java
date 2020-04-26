@@ -3,6 +3,7 @@ package tbc.server;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.ServerGame;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,8 +34,11 @@ public class Lobby {
     boolean isGameActive = false;
 
     /**
-     * When a new lobby is created, the serverHandler of the client who initiated this lobby
-     * is added to the clients' administration.
+     * When a new lobby is created, the serverHandler of the client
+     * who initiated this lobby is added to the clients' administration.
+     *
+     * @param lobbyName The name of the lobby.
+     * @param sh        The server handler from the client who joins the lobby.
      */
     public Lobby(String lobbyName, ServerHandler sh) {
         this.lobbyName = lobbyName;
@@ -44,6 +48,7 @@ public class Lobby {
 
     /**
      * A client's join request leads to the invocation of this method
+     *
      * @param clientName: Name of the client who wants to join
      * @param sh:         This client's ServerHandler
      */
@@ -58,6 +63,7 @@ public class Lobby {
 
     /**
      * When a player is ready to start a game and clicks his "Ready" button, this method will be called.
+     *
      * @param myName: Name of the player who is ready
      */
     void readyForGame(String myName) {
@@ -73,6 +79,7 @@ public class Lobby {
 
     /**
      * When a player is ready to start a new match and clicks his "Ready" button, this method will be called.
+     *
      * @param myName: Name of the player who is ready
      */
     void readyForMatch(String myName) {
@@ -121,6 +128,7 @@ public class Lobby {
 
     /**
      * When a client logs out, he is removed from the lobby and the serverGame.
+     *
      * @param name: Name of the client who logged out
      */
     public void logout(String name) {

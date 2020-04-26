@@ -29,6 +29,10 @@ public class ClientHandler implements Runnable {
 
     /**
      * The constructor of ClientHandler tries to connect to the server.
+     *
+     * @param name       The name of the user.
+     * @param hostName   The hostname which the user typed in.
+     * @param portNumber The port number which the user typed in.
      */
     public ClientHandler(String name, String hostName, int portNumber) {
         this.myName = name;

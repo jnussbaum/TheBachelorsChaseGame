@@ -33,8 +33,10 @@ public class LobbyController {
     private TextArea textArea;
 
     /**
-     * If the circle "Start" is pressed a new window will open, where the user has to chose or create
-     * a lobby. If no lobby is chosen, the game window won't show up.
+     * If the circle "Start" is pressed a new window will open, where the user has to chose or create a lobby.
+     * If no lobby is chosen, the game window won't show up.
+     *
+     * @param mouseEvent mouse event to pick the top-most node under cursor.
      */
     public void startGame(MouseEvent mouseEvent) {
         LOGGER.info("Join or create a lobby");

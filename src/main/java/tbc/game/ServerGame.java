@@ -45,6 +45,7 @@ public class ServerGame implements Runnable {
 
     /**
      * Create a game and initialize the carddeck
+     *
      * @param lobby:       The lobby from which this game was started
      * @param clientNames: All clients who will be in this game
      */
@@ -79,8 +80,10 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Get the deck as String-array which contains every single card, one per array position. The
-     * cards are not mixed, but grouped together by their type.
+     * Get the deck as String-array which contains every single card, one per array position.
+     * The cards are not mixed, but grouped together by their type.
+     *
+     * @return Output with the cards of the deck.
      */
     public String[] getDeckAsArray() {
         String[] output = new String[getDeckSize()];
@@ -125,6 +128,8 @@ public class ServerGame implements Runnable {
 
     /**
      * First of the three possibilities when it is a client's turn: Give a card to the client.
+     *
+     * @param clientName The name of the user who the server gives the card to.
      */
     public void giveCardToClient(String clientName) {
         timer.cancel();
@@ -137,6 +142,8 @@ public class ServerGame implements Runnable {
 
     /**
      * Second of the three possibilities when it is a client's turn: Quit this match.
+     *
+     * @param clientName The name of the user who wants to quit this match.
      */
     public void quitThisMatch(String clientName) {
         timer.cancel();
@@ -148,6 +155,9 @@ public class ServerGame implements Runnable {
 
     /**
      * Third of the three possibilities when it is a client's turn: throw away a card.
+     *
+     * @param clientName The name of the user who wants to throw a card away.
+     * @param cardName   The name of the card which the user wants to throw away.
      */
     public void throwCard(String clientName, String cardName) {
         timer.cancel();
@@ -213,6 +223,7 @@ public class ServerGame implements Runnable {
 
     /**
      * Is called to execute the routine at the end of a match
+     *
      * @param winnerName: the name of the winner of the match
      */
     private void endMatch(String winnerName) {
@@ -232,7 +243,9 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Takes the coins of all the players and generates a string with them
+     * Takes the coins of all the players and generates a string with them.
+     *
+     * @return The String with all the coins.
      */
     String allCoinsToString() {
         String s = "";
@@ -246,7 +259,9 @@ public class ServerGame implements Runnable {
 
     /**
      * Takes a string and searches for the matching Player-object
+     *
      * @param clientName: The name of the client
+     * @return If player exist return this player. Else return a new Player with the name 'Badplayer'.
      */
     public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
@@ -356,6 +371,7 @@ public class ServerGame implements Runnable {
 
     /**
      * Handles a logout in the game logic
+     *
      * @param name: The name of the client who wants to leave
      */
     public void logout(String name) {

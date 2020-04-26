@@ -25,6 +25,8 @@ public class ChatClient {
 
     /**
      * When something was typed on the keyboard, the run method passes it to this method.
+     *
+     * @param s The String which was read from the chat field.
      */
     public void processInput(String s) {
         // the client wants to logout
@@ -57,6 +59,10 @@ public class ChatClient {
 
     /**
      * When a chat message arrives, the clientHandler invokes this method. The message will then be printed out.
+     *
+     * @param sender       The user that sent the message.
+     * @param isPrivateMsg String to tell if the message is private or not.
+     * @param msg          The String message which will be printed to the screen.
      */
     public void chatArrived(String sender, String isPrivateMsg, String msg) {
         if (isPrivateMsg.equals("true")) {
