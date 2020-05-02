@@ -1,7 +1,10 @@
 package tbc.client;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
@@ -61,6 +64,18 @@ public class Client {
      *             user name (if one exists)
      */
     public static void main(String[] args) {
+        // Play the music in the background
+        // TODO This is just an example so put a real music file in it!
+        try {
+            String musicFile = "backgroundMusic.wav";     // For example
+
+            Media sound = new Media(new File(musicFile).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
+        } catch (Exception e) {
+            LOGGER.error("Could not find the music file.");
+        }
+
         // Run jar without a username. Username is set from the server as the system name.
         if (args.length < 3) {
             userName = System.getProperty("user.name");

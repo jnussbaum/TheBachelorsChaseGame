@@ -202,7 +202,7 @@ public class ClientGame {
             LobbyController.gameWindowController.setHighScore();
         });
 
-        // FIXME Only write it once in the .txt file and not twice
+        // FIXME Only write it once in the .txt file and not twice. Put it on the server side
         WriteHighScore data = new WriteHighScore(true);
         StringBuilder stringBuilder = new StringBuilder();
         for (Player playerNames : players) {
