@@ -23,5 +23,13 @@ public class Main {
             LOGGER.error("Usage: client <hostadress>:<port> [<username>] | server <port>");
         }
     }
+/*
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        String musicFile = "backgroundMusic.wav";     // For example
 
+        Media sound = new Media(new File(musicFile).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+    }*/
 }

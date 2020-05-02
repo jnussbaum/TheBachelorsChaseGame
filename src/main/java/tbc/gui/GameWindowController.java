@@ -230,12 +230,12 @@ public class GameWindowController {
                     Image coffee = new Image("tbc/gui/img/coffee.png");
                     coffeeCard.setImage(coffee);
                     cnt = 1;
-                    coffeeCnt.setText(cnt + "x");
+                    coffeeCnt.setText(cnt + "x Coffee");
                 } else {
                     String label = coffeeCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    coffeeCnt.setText(cnt + "x");
+                    coffeeCnt.setText(cnt + "x Coffee");
                 }
                 break;
             case ("RedBull"):
@@ -243,12 +243,12 @@ public class GameWindowController {
                     Image redBull = new Image("tbc/gui/img/redbull.png");
                     redBullCard.setImage(redBull);
                     cnt = 1;
-                    redBullCnt.setText(cnt + "x");
+                    redBullCnt.setText(cnt + "x EnergyDrink");
                 } else {
                     String label = redBullCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    redBullCnt.setText(cnt + "x");
+                    redBullCnt.setText(cnt + "x EnergyDrink");
                 }
                 break;
             case ("WLAN"):
@@ -256,12 +256,12 @@ public class GameWindowController {
                     Image wLan = new Image("tbc/gui/img/wlan.png");
                     wLanCard.setImage(wLan);
                     cnt = 1;
-                    wLanCnt.setText(cnt + "x");
+                    wLanCnt.setText(cnt + "x WLAN");
                 } else {
                     String label = wLanCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    wLanCnt.setText(cnt + "x");
+                    wLanCnt.setText(cnt + "x WLAN");
                 }
                 break;
             case ("Study"):
@@ -269,12 +269,12 @@ public class GameWindowController {
                     Image study = new Image("tbc/gui/img/study.png");
                     studyCard.setImage(study);
                     cnt = 1;
-                    studyCnt.setText(cnt + "x");
+                    studyCnt.setText(cnt + "x Study");
                 } else {
                     String label = studyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    studyCnt.setText(cnt + "x");
+                    studyCnt.setText(cnt + "x Study");
                 }
                 break;
             case ("GoodLecturer"):
@@ -282,12 +282,12 @@ public class GameWindowController {
                     Image goodLecturer = new Image("tbc/gui/img/goodlecturer.png");
                     profCard.setImage(goodLecturer);
                     cnt = 1;
-                    profCnt.setText(cnt + "x");
+                    profCnt.setText(cnt + "x GoodLecturer");
                 } else {
                     String label = profCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    profCnt.setText(cnt + "x");
+                    profCnt.setText(cnt + "x GoodLecturer");
                 }
                 break;
             case ("Party"):
@@ -295,12 +295,12 @@ public class GameWindowController {
                     Image party = new Image("tbc/gui/img/party.png");
                     partyCard.setImage(party);
                     cnt = 1;
-                    partyCnt.setText(cnt + "x");
+                    partyCnt.setText(cnt + "x Party");
                 } else {
                     String label = partyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    partyCnt.setText(cnt + "x");
+                    partyCnt.setText(cnt + "x Party");
                 }
                 break;
             case ("Plagiarism"):
@@ -308,12 +308,12 @@ public class GameWindowController {
                     Image plagiarism = new Image("tbc/gui/img/plagiarism.png");
                     plagCard.setImage(plagiarism);
                     cnt = 1;
-                    plagCnt.setText(cnt + "x");
+                    plagCnt.setText(cnt + "x Plagiarism");
                 } else {
                     String label = plagCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    plagCnt.setText(cnt + "x");
+                    plagCnt.setText(cnt + "x Plagiarism");
                 }
                 break;
             default:
@@ -332,7 +332,7 @@ public class GameWindowController {
         int cnt;
         switch (cardName) {
             case ("Coffee"):
-                if (coffeeCnt.getText().equals("1x")) {
+                if (coffeeCnt.getText().startsWith("1x")) {
                     Image coffee = new Image("tbc/gui/img/demo.png");
                     coffeeCard.setImage(coffee);
                     coffeeCnt.setText("");
@@ -340,11 +340,11 @@ public class GameWindowController {
                     String label = coffeeCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    coffeeCnt.setText(cnt + "x");
+                    coffeeCnt.setText(cnt + "x Coffee");
                 }
                 break;
             case ("RedBull"):
-                if (redBullCnt.getText().equals("1x")) {
+                if (redBullCnt.getText().startsWith("1x")) {
                     Image redBull = new Image("tbc/gui/img/demo.png");
                     redBullCard.setImage(redBull);
                     redBullCnt.setText("");
@@ -352,11 +352,11 @@ public class GameWindowController {
                     String label = redBullCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    redBullCnt.setText(cnt + "x");
+                    redBullCnt.setText(cnt + "x EnergyDrink");
                 }
                 break;
             case ("WLAN"):
-                if (wLanCnt.getText().equals("1x")) {
+                if (wLanCnt.getText().startsWith("1x")) {
                     Image wLan = new Image("tbc/gui/img/demo.png");
                     wLanCard.setImage(wLan);
                     wLanCnt.setText("");
@@ -364,11 +364,11 @@ public class GameWindowController {
                     String label = wLanCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    wLanCnt.setText(cnt + "x");
+                    wLanCnt.setText(cnt + "x WLAN");
                 }
                 break;
             case ("Study"):
-                if (studyCnt.getText().equals("1x")) {
+                if (studyCnt.getText().startsWith("1x")) {
                     Image study = new Image("tbc/gui/img/demo.png");
                     studyCard.setImage(study);
                     studyCnt.setText("");
@@ -376,11 +376,11 @@ public class GameWindowController {
                     String label = studyCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    studyCnt.setText(cnt + "x");
+                    studyCnt.setText(cnt + "x Study");
                 }
                 break;
             case ("GoodLecturer"):
-                if (profCnt.getText().equals("1x")) {
+                if (profCnt.getText().startsWith("1x")) {
                     Image goodLecturer = new Image("tbc/gui/img/demo.png");
                     profCard.setImage(goodLecturer);
                     profCnt.setText("");
@@ -388,11 +388,11 @@ public class GameWindowController {
                     String label = profCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    profCnt.setText(cnt + "x");
+                    profCnt.setText(cnt + "x GoodLecturer");
                 }
                 break;
             case ("Party"):
-                if (partyCnt.getText().equals("1x")) {
+                if (partyCnt.getText().startsWith("1x")) {
                     Image party = new Image("tbc/gui/img/demo.png");
                     partyCard.setImage(party);
                     partyCnt.setText("");
@@ -400,11 +400,11 @@ public class GameWindowController {
                     String label = partyCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    partyCnt.setText(cnt + "x");
+                    partyCnt.setText(cnt + "x Party");
                 }
                 break;
             case ("Plagiarism"):
-                if (plagCnt.getText().equals("1x")) {
+                if (plagCnt.getText().startsWith("1x")) {
                     Image plagiarism = new Image("tbc/gui/img/demo.png");
                     plagCard.setImage(plagiarism);
                     plagCnt.setText("");
@@ -412,7 +412,7 @@ public class GameWindowController {
                     String label = plagCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    plagCnt.setText(cnt + "x");
+                    plagCnt.setText(cnt + "x Plagiarism");
                 }
                 break;
             default:
@@ -473,8 +473,12 @@ public class GameWindowController {
                 int coins = name.getNumOfCoins();
                 LOGGER.info("Name: " + playerName + " Coins: " + coins);
                 addPlayerToList(playerName, coins);
+                WriteHighscore data = new WriteHighscore("Highscore.txt", true);
+                data.writeToFile(playerName, coins);
+                System.out.println("es wurde aufs file geschrieben");
             }
             setTable();
+
         });
     }
 
