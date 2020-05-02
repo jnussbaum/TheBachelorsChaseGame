@@ -10,6 +10,7 @@ import tbc.gui.LobbyController;
 import tbc.gui.SelectOptions;
 
 import java.util.ArrayList;
+import tbc.gui.WriteHighScore;
 
 public class ClientGame {
 
@@ -107,6 +108,8 @@ public class ClientGame {
                             LobbyController.gameWindowController.appendGameMsg(
                                     "The Card " + cardName + " was thrown away");
                             LobbyController.gameWindowController.throwTheCard(cardName);
+                            // update the high score table
+                            LobbyController.gameWindowController.setHighScore();
                         }
                 );
             } else {
@@ -163,6 +166,7 @@ public class ClientGame {
                             + nameToPlayer(myName).getNumOfCoins());
                 }
         );
+
         reset();
         Platform.runLater(
                 () -> {
@@ -197,6 +201,18 @@ public class ClientGame {
         Platform.runLater(() -> {
             LobbyController.gameWindowController.setHighScore();
         });
+
+        // FIXME Only write it once in the .txt file and not twice
+        WriteHighScore data = new WriteHighScore(true);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Player playerNames : players) {
+            String playerName = playerNames.getName();
+            int coins = playerNames.getNumOfCoins();
+            stringBuilder.append(playerName).append(" ").append(coins).append("\n");
+            LOGGER.info("Name: " + playerName + " Coins: " + coins);
+        }
+        String string = stringBuilder.toString();
+        data.writeToFile(string);
     }
 
     /**

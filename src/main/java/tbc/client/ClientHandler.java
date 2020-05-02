@@ -166,7 +166,7 @@ public class ClientHandler implements Runnable {
      * sends a chatMessage
      *
      * @param receiver     - the name of the receiver
-     * @param isPrivateMsg - statment if the message is private
+     * @param isPrivateMsg - statement if the message is private
      * @param msg          - the Message the client wants to send
      */
     public void sendMessage(String receiver, String isPrivateMsg, String msg) {

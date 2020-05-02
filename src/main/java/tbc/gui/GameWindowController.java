@@ -112,16 +112,6 @@ public class GameWindowController {
     }
 
     /**
-     * If the user presses on 'Change username' in the menubar, this method will call up the display()
-     * method from the class ChangeNameWindow. It opens a window where the user can change his/her
-     * username.
-     */
-    public void changeUsername() {
-        LOGGER.info("Show change name window.");
-        ChangeNameWindow.display();
-    }
-
-    /**
      * If the user presses on 'Logout' in the menubar, this method will call up the display() method
      * from the class ConfirmBox. It opens a window where it alerts the user that she/he will logout
      * and asks for a confirmation.
@@ -473,12 +463,8 @@ public class GameWindowController {
                 int coins = name.getNumOfCoins();
                 LOGGER.info("Name: " + playerName + " Coins: " + coins);
                 addPlayerToList(playerName, coins);
-                WriteHighscore data = new WriteHighscore("Highscore.txt", true);
-                data.writeToFile(playerName, coins);
-                System.out.println("es wurde aufs file geschrieben");
             }
             setTable();
-
         });
     }
 
