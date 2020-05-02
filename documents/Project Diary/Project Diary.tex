@@ -252,5 +252,34 @@ Samstag, 25.04.2020\\
 Wir treffen uns um 13.30 Uhr als ganze Gruppe. Gemeinsam knobeln wir an den letzten Schwierigkeiten im Game: Das Fenster, das den Spieler zu seinem Zug auffordert, erscheint zuerst zu oft, und dann zu selten. Nach langem Suchen finden wir die Fehler, sie waren beide in der Spiellogik.\\
 In Einzelarbeit erledigen wir anschliessend kleinere Aufgaben: Johannes macht die Unittests fertig, Mei implementiert den Highscore mithilfe von Anregungen Adrians, Adrian f\"ugt die noch fehlenden Javadocs in in allen Nicht-GUI-Klassen hinzu, und Anna macht Messungen f\"ur die QA-Metrics.
 
+\paragraph{Eintrag 34:}
+Mittwoch, 29.04.2020\\
+In der \"Ubungsstunde haben wir Meilenstein 4-Pr\"asentation.\\
+Die Bilanz ist durchzogen, es gibt einige Kritikpunkte:
+\begin{itemize}
+\item Die Javadoc-Dokumentation muss noch ausf\"uhrlicher sein, sodass auch Exceptions und illegale Eingabwerte dokumentiert sind.
+\item Unsere Unit-Tests sind unzul\"anglich, weil sie nur wenige Methoden testen, statt der gesamten Unit. Um dies zu \"andern, m\"ussten wir mit Mockito arbeiten und substanzielle \"Anderungen an der Architektur vornehmen, n\"amlich eine Entflechtung der Klassen, sodass die Komponenten in sich geschlossen funktionieren, und damit besser testbar sind. Alle relevanten Teile/Methoden/Vorg\"ange der Komponente m\"ussen getestet werden, nicht nur einige ausgew\"ahlte. Statt des ben\"otigten Sockets k\"onnte ein Mock-Objekt erstellt werden.
+\item Der HighScore muss persistent sein, d.h. \"uber den Neustart des Servers hinaus verf\"ugbar sein.
+\end{itemize}
+
+\paragraph{Eintrag 35:}
+Samstag, 02.05.2020\\
+Anna, Meipei und Johannes treffen sich zu einer Lagebesprechung. Wir treffen folgende Beschl\"usse/Aufgabenverteilung:
+\begin{itemize}
+\item Unit-Tests auf andern Computern lauff\"ahig machen, aber sonst sein lassen: Johannes
+\item Javadoc: auch Exceptions dokumentieren und komplexere Getter, und was passiert wenn man negative Werte eingibt statt den erwarteten positiven: Johannes
+\item Archiving/Outreach folder: Anna
+\item Cheatcode zum gewinnen: Adrian
+\item Highscore persistent machen: Meipei
+\item Manual + QA: Korrekturlesen kurz vor Abgabetermin: Johannes.
+\item Lessons Learned in Powerpoint erg\"anzen: alle
+\item In der Pr\"asentation die richtigen Prozentzahlen der QA-Funktionalit\"at eintragen: Johannes
+\item F\"ur den Bonus-Punkt "Bug- und Issue-Tracker": Bitte benutzt alle die Issues in GitLab, und tragt eure Aufgaben dort ein, und schliesst die Issues, wenn sie erledigt sind. Auch die Bugs dort melden.
+\item Free as in Speech 5 Bonus-Punkte: RedBull auf Energy Drink \"andern: Anna (GUI) + Adrian (Spiellogik)
+\item Im Netzwerkprotokoll-Dokument ein Beispiel einf\"ugen: Adrian
+\item Tutor fragen: All external libraries in your project are managed by gradle via maven central
+\item Tutor fragen: Final version of network protocol is completely defined and documented in source code: Muss es Kommentare im Code haben?
+\item Tutor fragen: Wie kann Socket f\"ur Tests erstellt werden?
+\end{itemize}
 
 \end{document}
