@@ -92,11 +92,12 @@
                   <Insets bottom="15.0" left="10.0" top="15.0" />
                </padding>
                <children>
-                  <Button focusTraversable="false" minHeight="100.0" mnemonicParsing="false" onAction="#showPlayerList" prefWidth="100.0" text="Playerlist" />
-                  <Button focusTraversable="false" minHeight="100.0" mnemonicParsing="false" onAction="#showLobbyList" prefWidth="100.0" text="Lobbylist" />
-                  <Button focusTraversable="false" minHeight="100.0" mnemonicParsing="false" onAction="#showCards" prefWidth="100.0" text="Cards" />
-                  <Button fx:id="btnRdy" focusTraversable="false" minHeight="100.0" mnemonicParsing="false" onAction="#rdyForTheGame" prefWidth="100.0" text="Ready" />
-                  <Button fx:id="btnNewMatch" disable="true" focusTraversable="false" minHeight="100.0" mnemonicParsing="false" onAction="#startNewMatch" prefWidth="100.0" text="New match" />
+                  <Button focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#showPlayerList" prefWidth="100.0" text="Playerlist" />
+                  <Button focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#showLobbyList" prefWidth="100.0" text="Lobbylist" />
+                  <Button focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#showCards" prefWidth="100.0" text="Cards" />
+                  <Button focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#showHighScore" prefWidth="100.0" text="Highscore" />
+                  <Button fx:id="btnRdy" focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#rdyForTheGame" prefWidth="100.0" text="Ready" />
+                  <Button fx:id="btnNewMatch" disable="true" focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#startNewMatch" prefWidth="100.0" text="New match" />
                </children>
             </VBox>
          </right>

@@ -1,15 +1,18 @@
 package tbc.client;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
 import tbc.gui.RejectJoiningLobbyWindow;
-
-import java.io.*;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -26,6 +29,7 @@ public class ClientHandler implements Runnable {
     private PrintWriter clientOutputStream;
     private String lobbiesGui;
     private String playersGui;
+    private String highScoreGui;
 
     /**
      * The constructor of ClientHandler tries to connect to the server.
@@ -39,7 +43,7 @@ public class ClientHandler implements Runnable {
         try {
             clientSocket = new Socket(hostName, portNumber);
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
+                new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (UnknownHostException e) {
             LOGGER.error("Unknown hostname: " + hostName);
@@ -54,8 +58,8 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming information
-     * on the clientInputStream, and pass this information to decode().
+     * All which a ClientHandler-Thread makes during its lifetime is to listen to incoming
+     * information on the clientInputStream, and pass this information to decode().
      */
     public void run() {
         while (true) {
@@ -78,7 +82,8 @@ public class ClientHandler implements Runnable {
      * As soon as information comes in on the clientInputStream, this String is passed to decode().
      * This method looks at the first substring (commands[0], the Network Protocol command) and then
      * invokes the appropriate methods in this object in order to process the information. The
-     * following substrings (from commands[1] on) are the parameters of the Network Protocol command.
+     * following substrings (from commands[1] on) are the parameters of the Network Protocol
+     * command.
      */
     void decode(String s) {
         LOGGER.info("ClientHandler received message: " + s);
@@ -123,25 +128,27 @@ public class ClientHandler implements Runnable {
             case "ENDMATCH":
                 String winnerName = commands[1];
                 LOGGER.info(
-                        "endmatch of ClientGame " + Client.getGame() + " was called with winnername "
-                                + winnerName);
+                    "endmatch of ClientGame " + Client.getGame() + " was called with winnername "
+                        + winnerName);
                 Client.getGame().endMatch(winnerName);
                 break;
             case "SENDCOINS":
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
                 break;
-            case "LOGOUT":
-                System.exit(0);
-                break;
             case "DROPPEDOUT":
                 Client.getGame().droppedOut();
                 break;
             case "REJECTTOJOINLOBBY":
                 //TODO: Show a message in GUI that the client can not join this lobby
-                Platform.runLater(() -> {
-                    RejectJoiningLobbyWindow.display();
-                });
+                Platform.runLater(() -> RejectJoiningLobbyWindow.display() );
+                break;
+            case "GIVEHIGHSCORE":
+                String data = commands[1];
+                setHighScore(data);
+                break;
+            case "LOGOUT":
+                System.exit(0);
                 break;
             default:
                 LOGGER.error("ClientHandler " + myName + " received an invalid message.");
@@ -171,7 +178,7 @@ public class ClientHandler implements Runnable {
      */
     public void sendMessage(String receiver, String isPrivateMsg, String msg) {
         clientOutputStream
-                .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
+            .println("CHAT" + "#" + myName + "#" + receiver + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
     }
 
@@ -303,8 +310,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sending the server the message that the client wants to skip the
-     * active match
+     * sending the server the message that the client wants to skip the active match
      */
     public void quitThisMatch() {
         clientOutputStream.println("QUITTHISMATCH");
@@ -327,4 +333,26 @@ public class ClientHandler implements Runnable {
         clientOutputStream.println("READYFORMATCH");
         clientOutputStream.flush();
     }
+
+    /**
+     * sending the server a message that the client wants to get the highscore
+     */
+    public void askForHighScore() {
+        clientOutputStream.println("ASKFORHIGHSCORE");
+        clientOutputStream.flush();
+    }
+
+    /**
+     * sets the highscore, which this method gets as the parameter, to the variable 'highScoreGui'
+     *
+     * @param data the names and coins of the highscore as a String
+     */
+    private void setHighScore(String data) {
+        highScoreGui = data;
+    }
+
+    public String getHighScoreGui() {
+        return highScoreGui;
+    }
+
 }

@@ -244,17 +244,18 @@ public class ServerGame implements Runnable {
         writeHighScore();
     }
 
+    /**
+     * This method writes the highscore (names and coins of a player)
+     * to the HighScore.txt file after a match has ended.
+     */
     private void writeHighScore() {
         WriteHighScore data = new WriteHighScore(true);
-        StringBuilder stringBuilder = new StringBuilder();
         for (Player playerNames : players) {
             String playerName = playerNames.getName();
             int coins = playerNames.getNumOfCoins();
-            stringBuilder.append(playerName).append(" ").append(coins).append("\n");
+            data.writeToFile(playerName, coins);
             LOGGER.info("Name: " + playerName + " Coins: " + coins);
         }
-        String string = stringBuilder.toString();
-        data.writeToFile(string);
     }
 
     /**

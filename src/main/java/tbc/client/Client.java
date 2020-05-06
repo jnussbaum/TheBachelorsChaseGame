@@ -65,9 +65,9 @@ public class Client {
      */
     public static void main(String[] args) {
         // Play the music in the background
-        // TODO This is just an example so put a real music file in it!
+        // FIXME Error does not find file
         try {
-            String musicFile = "backgroundMusic.wav";     // For example
+            String musicFile = "tbc/sound/backgroundMusic.wav";
 
             Media sound = new Media(new File(musicFile).toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);

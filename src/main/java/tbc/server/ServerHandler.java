@@ -118,6 +118,9 @@ public class ServerHandler implements Runnable {
             case "READYFORMATCH":
                 lobby.readyForMatch(myName);
                 break;
+            case "ASKFORHIGHSCORE":
+                Server.getHighScoreData(myName);
+                break;
             case "LOGOUT":
                 closeConnection();
                 break;
@@ -334,6 +337,17 @@ public class ServerHandler implements Runnable {
      */
     public void reject() {
         clientOutputStream.println("REJECTTOJOINLOBBY");
+        clientOutputStream.flush();
+    }
+
+    /**
+     * Giving the highscore values as a String to the clientHandler.
+     * The String can never be null.
+     *
+     * @param highScoreData The names and coins from the highscore as a String
+     */
+    public void giveHighScore(String highScoreData) {
+        clientOutputStream.println("GIVEHIGHSCORE" + "#" + highScoreData);
         clientOutputStream.flush();
     }
 }

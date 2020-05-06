@@ -133,6 +133,8 @@ public class Lobby {
      */
     public void logout(String name) {
         clients.remove(name);
-        serverGame.logout(name);
+        if (serverGame != null) {
+            serverGame.logout(name);
+        }
     }
 }

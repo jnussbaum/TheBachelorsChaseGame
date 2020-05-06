@@ -1,16 +1,19 @@
 package tbc.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.chat.ChatServer;
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.stream.Stream;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.chat.ChatServer;
 
 /**
  * All that the Server makes during his lifetime (in the main method) is to listen to new incoming connections,
@@ -191,5 +194,37 @@ public class Server {
      */
     public static HashMap<String, ServerHandler> getClients() {
         return clients;
+    }
+
+    /**
+     * Reads from the HighScroe.txt file and pass the highscore as a String to the serverHandler.
+     * '£' as a regex to split between players.
+     *
+     * @param sh The name of the client, used to get the serverhandler of it
+     */
+    public static void getHighScoreData(String sh) {
+        String path = "HighScore.txt";
+        StringBuilder sb = new StringBuilder();
+
+        try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
+            stream.forEach(s -> {
+                sb.append(s);
+                sb.append("£");
+            });
+        }
+        catch (IOException e) {
+            LOGGER.error("Could not read from the HighScore.txt file.");
+        }
+
+        // String with highscore
+        String data = sb.toString();
+
+        // Check if the highscore list is empty. If yes, then give 'data' a String
+        if (data.isEmpty()) {
+            data = "No highscore";
+            clients.get(sh).giveHighScore(data);
+        } else { // 'data' is not empty
+            clients.get(sh).giveHighScore(data);
+        }
     }
 }
