@@ -3,6 +3,7 @@ package tbc.game;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.server.Lobby;
+import tbc.server.WriteHighScore;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -240,6 +241,20 @@ public class ServerGame implements Runnable {
             LOGGER.info("coins and winner name have been sent to " + clientName);
         }
         LOGGER.info("endMatch has sent the coins and the winner name " + winnerName + " to all clients");
+        writeHighScore();
+    }
+
+    private void writeHighScore() {
+        WriteHighScore data = new WriteHighScore(true);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Player playerNames : players) {
+            String playerName = playerNames.getName();
+            int coins = playerNames.getNumOfCoins();
+            stringBuilder.append(playerName).append(" ").append(coins).append("\n");
+            LOGGER.info("Name: " + playerName + " Coins: " + coins);
+        }
+        String string = stringBuilder.toString();
+        data.writeToFile(string);
     }
 
     /**
