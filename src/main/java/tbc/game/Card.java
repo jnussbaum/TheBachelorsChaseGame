@@ -10,9 +10,28 @@ public enum Card {
   Energy(20),
     WLAN(40),
     Study(60),
-    GoodLecturer(80);
+  GoodLecturer(80),
+  Cheat10(10),
+  Cheat20(20),
+  Cheat30(30),
+  Cheat40(40),
+  Cheat50(50),
+  Cheat60(60),
+  Cheat70(70),
+  Cheat80(80),
+  Cheat90(90),
+  Cheat100(100),
+  Cheat110(110),
+  Cheat120(120),
+  Cheat130(130),
+  Cheat140(140),
+  Cheat150(150),
+  Cheat160(160),
+  Cheat170(170),
+  Cheat180(180);
 
-    private final int value;
+
+  private final int value;
 
     Card(int val) {
         value = val;

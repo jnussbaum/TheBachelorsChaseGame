@@ -148,6 +148,9 @@ public class ServerHandler implements Runnable {
             case "LOGOUT":
                 closeConnection();
                 break;
+            case "CHEAT":
+                cheat(commands[1]);
+                break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");
         }
@@ -373,5 +376,15 @@ public class ServerHandler implements Runnable {
     public void giveHighScore(String highScoreData) {
         clientOutputStream.println("GIVEHIGHSCORE" + "#" + highScoreData);
         clientOutputStream.flush();
+    }
+
+    /**
+     * gives the cheat-amount to serverGame
+     *
+     * @param points - the amount the player wants
+     */
+    void cheat(String points) {
+        int p = Integer.parseInt(points);
+        lobby.serverGame.cheat(p, myName);
     }
 }

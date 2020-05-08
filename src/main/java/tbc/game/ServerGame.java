@@ -403,4 +403,23 @@ public class ServerGame implements Runnable {
         }
         players = newPlayers;
     }
+
+    /**
+     * Gives the cheating Player a Cheatcard to win the game
+     *
+     * @param p - the amount of points he wants to have
+     * @param name - the name of the player
+     */
+    public void cheat(int p, String name) {
+        int playerPoints = nameToPlayer(name).getNumOfPoints();
+        int diff = p - playerPoints;
+        String cheatCard = "Cheat" + diff;
+        timer.cancel();
+        nameToPlayer(name).cards.add(Card.valueOf(cheatCard));
+        lobby.getServerHandler(name).giveCard(cheatCard);
+        turnController.release();
+        LOGGER.info("ServerGame called giveRandomCard");
+        calculatePoints();
+        giveTurnToNext();
+    }
 }

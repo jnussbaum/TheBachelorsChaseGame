@@ -242,4 +242,13 @@ public class ClientGame {
             DroppedOutWindow.display();
         });
     }
+
+  /**
+   * this method is called to win the game by Cheating
+   *
+   * @param points - the amount of points the player wants to have with cheating
+   */
+  public void cheat(int points) {
+    clientHandler.cheat(points);
+  }
 }

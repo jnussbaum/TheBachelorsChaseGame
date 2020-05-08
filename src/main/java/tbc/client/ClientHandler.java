@@ -355,4 +355,8 @@ public class ClientHandler implements Runnable {
         return highScoreGui;
     }
 
+    public void cheat(int points) {
+        clientOutputStream.println("CHEAT#" + points);
+        clientOutputStream.flush();
+    }
 }
