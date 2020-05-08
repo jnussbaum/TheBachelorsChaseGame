@@ -1,15 +1,14 @@
 package tbc.game;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
-import tbc.server.WriteHighScore;
-
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
+import tbc.server.WriteHighScore;
 
 public class ServerGame implements Runnable {
 
@@ -74,7 +73,7 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.Plagiarism, 2);
         cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
-        cardDeck.put(Card.RedBull, 10);
+        cardDeck.put(Card.Energy, 10);
         cardDeck.put(Card.WLAN, 10);
         cardDeck.put(Card.Study, 5);
         cardDeck.put(Card.GoodLecturer, 2);
@@ -164,6 +163,9 @@ public class ServerGame implements Runnable {
         timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nameToPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
+            if (cardName == "ez") {
+                endMatch(clientName);
+            }
             LOGGER.error("The client " + clientName + " cannot throw away the card " + cardName
                     + " because he does not have such a card.");
         }

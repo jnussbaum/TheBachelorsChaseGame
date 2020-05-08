@@ -7,7 +7,7 @@ public enum Card {
     Plagiarism(-50),
     Party(-10),
     Coffee(10),
-    RedBull(20),
+  Energy(20),
     WLAN(40),
     Study(60),
     GoodLecturer(80);
