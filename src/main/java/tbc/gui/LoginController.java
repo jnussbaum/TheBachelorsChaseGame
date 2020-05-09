@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
@@ -26,6 +27,8 @@ public class LoginController {
     public TextField userName;
     @FXML
     private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
+    @FXML
+    public Button okBtn;
 
     public static String getChosenLogo() {
         return chosenLogo;

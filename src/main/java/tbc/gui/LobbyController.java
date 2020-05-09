@@ -66,6 +66,9 @@ public class LobbyController {
                 gameWindowController
                     .appendGameMsg("Press the button 'Ready' if you are ready for the game");
 
+                // Press enter to send the chat message
+                gameWindowController.btnSend.setDefaultButton(true);
+
                 // The send button from the chat is disabled as long as there is no input in the chat field
                 gameWindowController.btnSend.disableProperty().bind(
                     Bindings.isEmpty(gameWindowController.msgField.textProperty())
@@ -166,12 +169,16 @@ public class LobbyController {
 
             variousWindowController = loader.getController();
 
+            // Press enter to enter your name
+            variousWindowController.btnEnter.setDefaultButton(true);
+
             // You can't press the enter button if you didn't type in an username.
             variousWindowController.btnEnter.disableProperty().bind(
                 Bindings.isEmpty(variousWindowController.newUsername.textProperty())
                     .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
                     .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
             );
+
         } catch (Exception e) {
             LOGGER.error("Couldn't find VariousWindowFXML file.");
             e.printStackTrace();

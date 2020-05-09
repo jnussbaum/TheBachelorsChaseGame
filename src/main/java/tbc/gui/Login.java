@@ -34,6 +34,10 @@ public class Login extends Application {
 
             LoginController loginController = loader.getController();
             loginController.setUserName(Client.userName);
+
+            // Press enter to send your ok
+            loginController.okBtn.setDefaultButton(true);
+
         } catch (Exception e) {
             LOGGER.error("Couldn't find LoginFXML file.");
             e.printStackTrace();

@@ -55,6 +55,8 @@ public class SelectLobby {
 
         Button createLobby = new Button("Create/Join a new lobby");
 
+        createLobby.setDefaultButton(true);
+
         createLobby.disableProperty().bind(
             Bindings.isEmpty(newLobby.textProperty())
                 .and(Bindings.isEmpty(newLobby.textProperty()))
