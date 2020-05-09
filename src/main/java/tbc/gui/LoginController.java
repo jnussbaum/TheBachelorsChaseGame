@@ -36,8 +36,8 @@ public class LoginController {
     }
 
     /**
-     * If the user hasn't choose a logo, the user will be told to do that.
-     * If a logo has been chosen the lobby window will open.
+     * If the user hasn't choose a logo, the user will be told to do that. If a logo has been chosen
+     * the lobby window will open.
      *
      * @param event The event that represents the pressed button.
      */
@@ -68,7 +68,8 @@ public class LoginController {
     }
 
     /**
-     * If the logo 'Girly' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     * If the logo 'Girly' is pressed, its font will be set to 36 and all fonts of the other logos
+     * will be set to 24.
      */
     public void girly() {
         chosenLogo = "girly";
@@ -79,7 +80,8 @@ public class LoginController {
     }
 
     /**
-     * If the logo 'Nerd' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     * If the logo 'Nerd' is pressed, its font will be set to 36 and all fonts of the other logos
+     * will be set to 24.
      */
     public void nerd() {
         chosenLogo = "nerd";
@@ -90,7 +92,8 @@ public class LoginController {
     }
 
     /**
-     * If the logo 'Hippy' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     * If the logo 'Hippy' is pressed, its font will be set to 36 and all fonts of the other logos
+     * will be set to 24.
      */
     public void hippy() {
         chosenLogo = "hippy";
@@ -101,7 +104,8 @@ public class LoginController {
     }
 
     /**
-     * If the logo 'Emo' is pressed, its font will be set to 36 and all fonts of the other logos will be set to 24.
+     * If the logo 'Emo' is pressed, its font will be set to 36 and all fonts of the other logos
+     * will be set to 24.
      */
     public void emo() {
         chosenLogo = "emo";
@@ -118,7 +122,7 @@ public class LoginController {
      */
     private boolean logoChosen() {
         return labelGirly.getFont().getSize() == 36 || labelNerd.getFont().getSize() == 36
-                || labelHippy.getFont().getSize() == 36 || labelEmo.getFont().getSize() == 36;
+            || labelHippy.getFont().getSize() == 36 || labelEmo.getFont().getSize() == 36;
     }
 
 }

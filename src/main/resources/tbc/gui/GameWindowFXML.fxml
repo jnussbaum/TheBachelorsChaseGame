@@ -16,7 +16,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 <BorderPane prefHeight="639.0" prefWidth="1000.0" style="-fx-background-color: #006400#006400;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tbc.gui.GameWindowController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
@@ -191,17 +190,18 @@
                                     <Label fx:id="plagCnt" textFill="WHITE" />
                                  </children>
                               </VBox>
-                              <VBox alignment="BOTTOM_CENTER">
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                                 <children>
-                                    <ImageView fx:id="logo" fitHeight="124.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@img/Logo/final.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label />
+                              <VBox alignment="CENTER">
+                                <HBox.margin>
+                                  <Insets/>
+                                </HBox.margin>
+                                <children>
+                                  <ImageView fx:id="logo" fitHeight="124.0" fitWidth="113.0"
+                                    pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                      <Image url="@img/Logo/final.png"/>
+                                    </image>
+                                  </ImageView>
+                                  <Label/>
                                  </children>
                               </VBox>
                            </children>

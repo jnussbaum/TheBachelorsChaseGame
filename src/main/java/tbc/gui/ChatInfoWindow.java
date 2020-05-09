@@ -32,10 +32,10 @@ public class ChatInfoWindow {
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
         textArea.setText("Send message to everyone:\n"
-                + "<message>\n"
-                + "\nSend private message:\n"
-                + "@<username of another player> <message>\n \n"
-                + "Do NOT use the character '#' in the chat nor for your name.");
+            + "<message>\n"
+            + "\nSend private message:\n"
+            + "@<username of another player> <message>\n \n"
+            + "Do NOT use the character '#' in the chat nor for your name.");
 
         Button close = new Button("Close");
         close.setOnAction(e -> {

@@ -7,8 +7,8 @@ import tbc.client.ClientHandler;
 import tbc.gui.LobbyController;
 
 /**
- * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the client
- * side of the chat.
+ * At the beginning of his life, a client starts a ChatClientThread who will be responsible for the
+ * client side of the chat.
  */
 public class ChatClient {
 
@@ -44,12 +44,13 @@ public class ChatClient {
             if (s.contains(" ") && msg.length() != 0) {
                 clientHandler.sendMessage(receiver, "true", msg);
                 Platform.runLater(
-                        () -> {
-                            LobbyController.gameWindowController.appendMsg("[PRIVATE] "
-                                    + clientHandler.getMyName() + ": " + msg);
-                        });
+                    () -> {
+                        LobbyController.gameWindowController.appendMsg("[PRIVATE] "
+                            + clientHandler.getMyName() + ": " + msg);
+                    });
             } else {
-                LobbyController.gameWindowController.appendMsg("Usage: @<Username vom anderen Spieler> <Nachricht>");
+                LobbyController.gameWindowController
+                    .appendMsg("Usage: @<Username vom anderen Spieler> <Nachricht>");
             }
             // send public message
         } else {
@@ -58,7 +59,8 @@ public class ChatClient {
     }
 
     /**
-     * When a chat message arrives, the clientHandler invokes this method. The message will then be printed out.
+     * When a chat message arrives, the clientHandler invokes this method. The message will then be
+     * printed out.
      *
      * @param sender       The user that sent the message.
      * @param isPrivateMsg String to tell if the message is private or not.

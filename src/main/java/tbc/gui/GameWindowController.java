@@ -32,8 +32,6 @@ import tbc.game.Player;
 public class GameWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(GameWindowController.class);
-    private ObservableList<Player> players = observableArrayList();
-
     @FXML
     public TableView<Player> highScoreTable;
     @FXML
@@ -60,6 +58,7 @@ public class GameWindowController {
     public ImageView partyCard;
     @FXML
     public ImageView plagCard;
+    private ObservableList<Player> players = observableArrayList();
     @FXML
     private TextArea txtAChat;
     @FXML
@@ -128,8 +127,8 @@ public class GameWindowController {
 
     /**
      * If the user presses on 'Info' in the menubar, this method will call up the display() method
-     * from the class GameInfoWindow. It opens a window where you can see the information of the game
-     * (rules and goals).
+     * from the class GameInfoWindow. It opens a window where you can see the information of the
+     * game (rules and goals).
      */
     public void giveInfo() {
         LOGGER.info("Show game info.");
@@ -165,8 +164,8 @@ public class GameWindowController {
     }
 
     /**
-     * If the user presses on 'Cards', this method will load the CardWindowFXML.fxml file. It opens a
-     * window to show the cards of the game.
+     * If the user presses on 'Cards', this method will load the CardWindowFXML.fxml file. It opens
+     * a window to show the cards of the game.
      */
     public void showCards() {
         LOGGER.info("Show cards.");
@@ -201,8 +200,9 @@ public class GameWindowController {
     }
 
     /**
-     * If the user presses the button 'Ready', this method will call the method askToStartAGame() from
-     * the class Client. It tells the user to wait for other players and disables the button 'Ready'.
+     * If the user presses the button 'Ready', this method will call the method askToStartAGame()
+     * from the class Client. It tells the user to wait for other players and disables the button
+     * 'Ready'.
      */
     public void rdyForTheGame() {
         Client.askToStartAGame();
@@ -211,9 +211,9 @@ public class GameWindowController {
     }
 
     /**
-     * Switches the card name and loads the specific card image to the imageView place.
-     * If there is none card it will load the specific card image and increments the number in the label.
-     * Else it checks the number of existing cards and increments its number in the label.
+     * Switches the card name and loads the specific card image to the imageView place. If there is
+     * none card it will load the specific card image and increments the number in the label. Else
+     * it checks the number of existing cards and increments its number in the label.
      *
      * @param card The name of the card that has been drawn.
      */
@@ -317,9 +317,9 @@ public class GameWindowController {
     }
 
     /**
-     * Switches the card name and loads the specific card image to the imageView place.
-     * If there is already one card it loads the demo.png and deletes the label.
-     * Else it checks the number of the existing cards and decrements the number in the label.
+     * Switches the card name and loads the specific card image to the imageView place. If there is
+     * already one card it loads the demo.png and deletes the label. Else it checks the number of
+     * the existing cards and decrements the number in the label.
      *
      * @param cardName The name of the card that the user wants to throw away.
      */
@@ -429,8 +429,8 @@ public class GameWindowController {
 
     /**
      * If the user presses the button 'New match', this method will call the method askForNewMatch()
-     * from the class ClientHandler. It disables the button 'New match' and sets all imageView to demo.png.
-     * Also deletes the label, which counts the cards number.
+     * from the class ClientHandler. It disables the button 'New match' and sets all imageView to
+     * demo.png. Also deletes the label, which counts the cards number.
      */
     public void startNewMatch() {
         Client.clientHandler.askForNewMatch();
@@ -457,7 +457,8 @@ public class GameWindowController {
     }
 
     /**
-     * This method gets all the names and the coins of the Players, which are playing in the same game.
+     * This method gets all the names and the coins of the Players, which are playing in the same
+     * game.
      */
     public void setHighScore() {
         highScoreTable.getItems().clear();
@@ -494,9 +495,8 @@ public class GameWindowController {
     }
 
     /**
-     * If the user presses the button 'Highscore', this method will call the method display()
-     * from the class HighScoreWindow.
-     * It shows the player the persistently highscore from the game.
+     * If the user presses the button 'Highscore', this method will call the method display() from
+     * the class HighScoreWindow. It shows the player the persistently highscore from the game.
      */
     public void showHighScore() {
         HighScoreWindow.display();

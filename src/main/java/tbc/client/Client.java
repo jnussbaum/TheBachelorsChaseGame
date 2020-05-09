@@ -1,10 +1,7 @@
 package tbc.client;
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
@@ -26,8 +23,8 @@ public class Client {
     }
 
     /**
-     * When a new Client connects to the server, he chooses his name and sends a request to the server
-     * to connect with this name. The Server answers by invoking this method.
+     * When a new Client connects to the server, he chooses his name and sends a request to the
+     * server to connect with this name. The Server answers by invoking this method.
      *
      * @param feedback: Answer yes/no if the name changing succeeded or not.
      * @param newName:  The new name.
@@ -38,7 +35,7 @@ public class Client {
             LOGGER.info("Hello " + userName + ", welcome to our chat!");
         } else {
             LOGGER.error("This name is not available any more. "
-                    + "Your name has been set from the server.");
+                + "Your name has been set from the server.");
             clientHandler.changeName(newName);
         }
     }
@@ -60,22 +57,10 @@ public class Client {
     /**
      * try`s to connect to the server and starts the game-window
      *
-     * @param args The String array with the arguments from the user. Will be split into hostname, port number and
-     *             user name (if one exists)
+     * @param args The String array with the arguments from the user. Will be split into hostname,
+     *             port number and user name (if one exists)
      */
     public static void main(String[] args) {
-        // Play the music in the background
-        // FIXME Error does not find file
-        try {
-            String musicFile = "tbc/sound/backgroundMusic.wav";
-
-            Media sound = new Media(new File(musicFile).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.play();
-        } catch (Exception e) {
-            LOGGER.error("Could not find the music file.");
-        }
-
         // Run jar without a username. Username is set from the server as the system name.
         if (args.length < 3) {
             userName = System.getProperty("user.name");
@@ -93,7 +78,7 @@ public class Client {
 
         try {
             clientHandlerThread = new Thread(
-                    clientHandler = new ClientHandler(userName, hostName, portNumber));
+                clientHandler = new ClientHandler(userName, hostName, portNumber));
             chatClient = new ChatClient(clientHandler);
         } catch (Exception e) {
             LOGGER.error("Couldn't get I/O for the connection to the hostname");

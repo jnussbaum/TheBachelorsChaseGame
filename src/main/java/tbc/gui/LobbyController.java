@@ -1,5 +1,7 @@
 package tbc.gui;
 
+import static tbc.client.Client.clientHandler;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +15,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static tbc.client.Client.clientHandler;
 
 /**
  * Processes a client's request to get the information of the pushed Button. It opens a window for
@@ -33,8 +33,8 @@ public class LobbyController {
     private TextArea textArea;
 
     /**
-     * If the circle "Start" is pressed a new window will open, where the user has to chose or create a lobby.
-     * If no lobby is chosen, the game window won't show up.
+     * If the circle "Start" is pressed a new window will open, where the user has to chose or
+     * create a lobby. If no lobby is chosen, the game window won't show up.
      *
      * @param mouseEvent mouse event to pick the top-most node under cursor.
      */
@@ -46,6 +46,9 @@ public class LobbyController {
         if (SelectLobby.lobbyChosen == true && !RejectJoiningLobbyWindow.rejected) {
             LOGGER.info("Show game window.");
             try {
+                Utils music = new Utils();
+                music.playAudio("backgroundMusic.wav");
+
                 Stage gameWindow = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindowFXML.fxml"));
                 Parent root = loader.load();
@@ -59,14 +62,15 @@ public class LobbyController {
                 // Welcomes the client in all the chat windows
                 clientHandler.sendMessage("ALL", "false", "Welcome, " + clientHandler.getMyName());
 
-                // Tells the user to press the 'Ready' buton
-                gameWindowController.appendGameMsg("Press the button 'Ready' if you are ready for the game");
+                // Tells the user to press the 'Ready' button
+                gameWindowController
+                    .appendGameMsg("Press the button 'Ready' if you are ready for the game");
 
                 // The send button from the chat is disabled as long as there is no input in the chat field
                 gameWindowController.btnSend.disableProperty().bind(
-                        Bindings.isEmpty(gameWindowController.msgField.textProperty())
-                                .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
-                                .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
+                    Bindings.isEmpty(gameWindowController.msgField.textProperty())
+                        .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
+                        .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
                 );
 
                 gameWindow.setOnCloseRequest(e -> ConfirmBox.display());
@@ -111,35 +115,35 @@ public class LobbyController {
         LOGGER.info("Show rules.");
         window.setVisible(true);
         textArea.setText("Game description:"
-                + "\nEach player receives a random card at the beginning of the game."
-                + "In each round the player has to decide within 10 seconds, "
-                + "whether he wants to draw a card, throw away a card (only possible against coins)"
-                + "or wants to take a turn respectively not draw a card."
-                + "\n \nRules:"
-                + "\nCoinsystem: \nEach player has an account, "
-                + "that is still empty at the beginning of the first round."
-                + "After a player has reached 180 KP, the coins are distributed as follows:"
-                + "\nThe player with 180 KP receives 360 coins."
-                + "\nThose with more than 180 HP receive 0 coins."
-                + "\nAll other players receive as many coins as their sum of the number of cards reduced by 50 coins."
-                + "\nThese coins will be awarded after a game round has ended, "
-                + "that means if one of the player has reached 180 KP, "
-                + "the coins will be sum up and can therefore be used in the next game round "
-                + "(e.g. to throw away a card).");
+            + "\nEach player receives a random card at the beginning of the game."
+            + "In each round the player has to decide within 10 seconds, "
+            + "whether he wants to draw a card, throw away a card (only possible against coins)"
+            + "or wants to take a turn respectively not draw a card."
+            + "\n \nRules:"
+            + "\nCoinsystem: \nEach player has an account, "
+            + "that is still empty at the beginning of the first round."
+            + "After a player has reached 180 KP, the coins are distributed as follows:"
+            + "\nThe player with 180 KP receives 360 coins."
+            + "\nThose with more than 180 HP receive 0 coins."
+            + "\nAll other players receive as many coins as their sum of the number of cards reduced by 50 coins."
+            + "\nThese coins will be awarded after a game round has ended, "
+            + "that means if one of the player has reached 180 KP, "
+            + "the coins will be sum up and can therefore be used in the next game round "
+            + "(e.g. to throw away a card).");
     }
 
     /**
-     * If the circle "Goal" is pressed it will show you on the right side a field with the description
-     * of the goal.
+     * If the circle "Goal" is pressed it will show you on the right side a field with the
+     * description of the goal.
      */
     public void showGoal() {
         LOGGER.info("Show goal.");
         window.setVisible(true);
         textArea.setText("Goal: \nGoal of the game is to be the first who gets 180 credits."
-                + "In each round the player can decide whether to draw a card, "
-                + "throw away a card or miss this turn."
-                + "If a player has over 180 credit points, "
-                + "he lost and gets 0 coins.");
+            + "In each round the player can decide whether to draw a card, "
+            + "throw away a card or miss this turn."
+            + "If a player has over 180 credit points, "
+            + "he lost and gets 0 coins.");
     }
 
     /**
@@ -164,9 +168,9 @@ public class LobbyController {
 
             // You can't press the enter button if you didn't type in an username.
             variousWindowController.btnEnter.disableProperty().bind(
-                    Bindings.isEmpty(variousWindowController.newUsername.textProperty())
-                            .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
-                            .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
+                Bindings.isEmpty(variousWindowController.newUsername.textProperty())
+                    .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
+                    .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
             );
         } catch (Exception e) {
             LOGGER.error("Couldn't find VariousWindowFXML file.");

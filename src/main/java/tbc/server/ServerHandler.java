@@ -27,12 +27,13 @@ public class ServerHandler implements Runnable {
     private Lobby lobby;
 
     /**
-     * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to it:
+     * When the server starts a ServerHandler-Thread, it needs to pass the following arguments to
+     * it:
      *
      * @param myName       Identifier of the client for which this serverHandler is responsible.
      * @param clientSocket The socket which belongs to this client. Needed to open the I/O-Streams.
-     * @param chatServer   The chat Headquarter on server side, to which all incoming chat messages are
-     *                     forwarded.
+     * @param chatServer   The chat Headquarter on server side, to which all incoming chat messages
+     *                     are forwarded.
      */
     public ServerHandler(String myName, Socket clientSocket, ChatServer chatServer) {
         this.myName = myName;
@@ -40,7 +41,7 @@ public class ServerHandler implements Runnable {
         this.chatServer = chatServer;
         try {
             clientInputStream = new BufferedReader(new InputStreamReader(
-                    new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
+                new DataInputStream(clientSocket.getInputStream()), StandardCharsets.UTF_8));
             clientOutputStream = new PrintWriter(clientSocket.getOutputStream());
         } catch (IOException e) {
             LOGGER.error("IOException while trying to create the ServerHandler " + myName);
@@ -49,8 +50,8 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * All which a ServerHandler-Thread makes during its lifetime is to listen to incoming information
-     * on the clientInputStream, and pass this information to decode().
+     * All which a ServerHandler-Thread makes during its lifetime is to listen to incoming
+     * information on the clientInputStream, and pass this information to decode().
      */
     public void run() {
         while (exit == false) {
@@ -77,10 +78,9 @@ public class ServerHandler implements Runnable {
             clientInputStream.close();
             clientSocket.close();
             LOGGER
-                .info("Closed streams and socket from " + myName + "because of a Connection loss");
+                .info("Closed streams and socket from " + myName + " because of a Connection loss");
             Server.removeUser(myName);
             exit = true;
-
         } catch (Exception e) {
             LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
             e.printStackTrace();
@@ -88,10 +88,11 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * As soon as information comes in on the clientInputStream, this String is passed to decode(). This method
-     * looks at the first substring (commands[0], the Network Protocol command) and then invokes the appropriate
-     * methods in this object in order to process the information. The following substrings (from commands[1] on)
-     * are the parameters of the Network Protocol command.
+     * As soon as information comes in on the clientInputStream, this String is passed to decode().
+     * This method looks at the first substring (commands[0], the Network Protocol command) and then
+     * invokes the appropriate methods in this object in order to process the information. The
+     * following substrings (from commands[1] on) are the parameters of the Network Protocol
+     * command.
      */
     void decode(String s) {
         String[] commands = s.split("#");
@@ -123,8 +124,9 @@ public class ServerHandler implements Runnable {
                 break;
             case "READYFORGAME":
                 LOGGER.info(
-                        "ServerHandler received READYFORGAME and will execute lobby.readyForGame with " +
-                                "this lobby: " + lobby.getLobbyName());
+                    "ServerHandler received READYFORGAME and will execute lobby.readyForGame with "
+                        +
+                        "this lobby: " + lobby.getLobbyName());
                 System.out.println(myName);
                 lobby.readyForGame(myName);
                 break;
@@ -164,14 +166,15 @@ public class ServerHandler implements Runnable {
      * @param msg          The String with the message from a user.
      */
     public void sendChatMessage(String sender, String isPrivateMsg, String msg) {
-        clientOutputStream.println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
+        clientOutputStream
+            .println("CHAT" + "#" + sender + "#" + myName + "#" + isPrivateMsg + "#" + msg);
         clientOutputStream.flush();
         LOGGER.info("ServerHandler " + myName + " sent message to ClientOutputStream");
     }
 
     /**
-     * The server sends a feedback to this handler's client,
-     * if his name change request was allowed or rejected.
+     * The server sends a feedback to this handler's client, if his name change request was allowed
+     * or rejected.
      *
      * @param feedback - tells if the Change was accepted
      * @param newName  - the requested name
@@ -187,11 +190,15 @@ public class ServerHandler implements Runnable {
 
     /**
      * This method closes all the streams and the socket of the client who requested the LOGOUT.
-     * Before closing the streams and the socket it should give a message to the clientOutputStream.
+     * Before closing the streams and the socket it should give a message to the
+     * clientOutputStream.
      */
     public void closeConnection() {
         try {
-            lobby.logout(myName);
+            // if a lobby is joined
+            if (lobby != null) {
+                lobby.logout(myName);
+            }
             clientOutputStream.println("LOGOUT");
             clientOutputStream.flush();
             clientOutputStream.close();
@@ -266,7 +273,8 @@ public class ServerHandler implements Runnable {
     public void giveCard(String cardName) {
         clientOutputStream.println("GIVECARD" + "#" + cardName);
         clientOutputStream.flush();
-        LOGGER.info("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName + " to Clienthandler");
+        LOGGER.info("ServerHandler " + myName + " sent the string " + "GIVECARD" + "#" + cardName
+            + " to Clienthandler");
     }
 
     /**
@@ -368,8 +376,7 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * Giving the highscore values as a String to the clientHandler.
-     * The String can never be null.
+     * Giving the highscore values as a String to the clientHandler. The String can never be null.
      *
      * @param highScoreData The names and coins from the highscore as a String
      */

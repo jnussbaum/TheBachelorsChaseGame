@@ -12,7 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This will be called if a user can not join a lobby anymore because the game already started in this lobby.
+ * This will be called if a user can not join a lobby anymore because the game already started in
+ * this lobby.
  */
 public class RejectJoiningLobbyWindow {
 
