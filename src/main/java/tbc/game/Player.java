@@ -1,13 +1,16 @@
 package tbc.game;
 
-import tbc.server.ServerHandler;
-
 import java.util.ArrayList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.ServerHandler;
 
 /**
  * this class ist used to save the Dater of the players on the server and client-side respectively
  */
 public class Player {
+
+    private static final Logger LOGGER = LogManager.getLogger(Player.class);
 
     boolean quitMatch = false;
     boolean notifyDropOut = false;
@@ -101,3 +104,4 @@ public class Player {
         this.notifyDropOut = notifyDropOut;
     }
 }
+

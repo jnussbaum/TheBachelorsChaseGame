@@ -1,15 +1,14 @@
 package tbc.game;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.server.Lobby;
-import tbc.server.WriteHighScore;
-
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.server.Lobby;
+import tbc.server.WriteHighScore;
 
 public class ServerGame implements Runnable {
 
@@ -74,7 +73,7 @@ public class ServerGame implements Runnable {
         cardDeck.put(Card.Plagiarism, 2);
         cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
-        cardDeck.put(Card.RedBull, 10);
+        cardDeck.put(Card.Energy, 10);
         cardDeck.put(Card.WLAN, 10);
         cardDeck.put(Card.Study, 5);
         cardDeck.put(Card.GoodLecturer, 2);
@@ -164,6 +163,9 @@ public class ServerGame implements Runnable {
         timer.cancel();
         //Remove the card from the client's cardset, and if not possible, print error message.
         if (!nameToPlayer(clientName).cards.remove(Card.valueOf(cardName))) {
+            if (cardName == "ez") {
+                endMatch(clientName);
+            }
             LOGGER.error("The client " + clientName + " cannot throw away the card " + cardName
                     + " because he does not have such a card.");
         }
@@ -244,17 +246,18 @@ public class ServerGame implements Runnable {
         writeHighScore();
     }
 
+    /**
+     * This method writes the highscore (names and coins of a player)
+     * to the HighScore.txt file after a match has ended.
+     */
     private void writeHighScore() {
         WriteHighScore data = new WriteHighScore(true);
-        StringBuilder stringBuilder = new StringBuilder();
         for (Player playerNames : players) {
             String playerName = playerNames.getName();
             int coins = playerNames.getNumOfCoins();
-            stringBuilder.append(playerName).append(" ").append(coins).append("\n");
+            data.writeToFile(playerName, coins);
             LOGGER.info("Name: " + playerName + " Coins: " + coins);
         }
-        String string = stringBuilder.toString();
-        data.writeToFile(string);
     }
 
     /**
@@ -399,5 +402,24 @@ public class ServerGame implements Runnable {
             }
         }
         players = newPlayers;
+    }
+
+    /**
+     * Gives the cheating Player a Cheatcard to win the game
+     *
+     * @param p - the amount of points he wants to have
+     * @param name - the name of the player
+     */
+    public void cheat(int p, String name) {
+        int playerPoints = nameToPlayer(name).getNumOfPoints();
+        int diff = p - playerPoints;
+        String cheatCard = "Cheat" + diff;
+        timer.cancel();
+        nameToPlayer(name).cards.add(Card.valueOf(cheatCard));
+        lobby.getServerHandler(name).giveCard(cheatCard);
+        turnController.release();
+        LOGGER.info("ServerGame called giveRandomCard");
+        calculatePoints();
+        giveTurnToNext();
     }
 }

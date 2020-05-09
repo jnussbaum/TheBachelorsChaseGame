@@ -1,5 +1,6 @@
 package tbc.client;
 
+import java.util.ArrayList;
 import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,8 +9,6 @@ import tbc.game.Player;
 import tbc.gui.DroppedOutWindow;
 import tbc.gui.LobbyController;
 import tbc.gui.SelectOptions;
-
-import java.util.ArrayList;
 
 public class ClientGame {
 
@@ -87,7 +86,7 @@ public class ClientGame {
             cardsAsStrings.add(c.toString());
         }
         if (cardsAsStrings.contains(cardName) == false) {
-            Platform.runLater(
+          Platform.runLater(
                     () -> {
                         LobbyController.gameWindowController.appendGameMsg(
                                 "You don't possess such a card. Please select another.");
@@ -243,4 +242,13 @@ public class ClientGame {
             DroppedOutWindow.display();
         });
     }
+
+  /**
+   * this method is called to win the game by Cheating
+   *
+   * @param points - the amount of points the player wants to have with cheating
+   */
+  public void cheat(int points) {
+    clientHandler.cheat(points);
+  }
 }

@@ -1,12 +1,15 @@
 package tbc.server;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
-
-import java.io.*;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 /**
  * As soon as a new client connects to the server, the server starts a new ServerHandler-Thread,
@@ -56,10 +59,31 @@ public class ServerHandler implements Runnable {
                 s = clientInputStream.readLine();
             } catch (IOException e) {
                 LOGGER.error("Reading from ClientInputStream failed: ");
-                e.printStackTrace();
+                lostConnectionHandling();
             }
-            if (s == null) System.err.println("The ServerHandler of " + myName + " received an empty message");
-            decode(s);
+            if (s == null) {
+                System.err.println("The ServerHandler of " + myName + " received an empty message");
+            } else {
+                decode(s);
+            }
+
+        }
+    }
+
+    void lostConnectionHandling() {
+        try {
+            lobby.logout(myName);
+            clientOutputStream.close();
+            clientInputStream.close();
+            clientSocket.close();
+            LOGGER
+                .info("Closed streams and socket from " + myName + "because of a Connection loss");
+            Server.removeUser(myName);
+            exit = true;
+
+        } catch (Exception e) {
+            LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
+            e.printStackTrace();
         }
     }
 
@@ -118,8 +142,14 @@ public class ServerHandler implements Runnable {
             case "READYFORMATCH":
                 lobby.readyForMatch(myName);
                 break;
+            case "ASKFORHIGHSCORE":
+                Server.getHighScoreData(myName);
+                break;
             case "LOGOUT":
                 closeConnection();
+                break;
+            case "CHEAT":
+                cheat(commands[1]);
                 break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");
@@ -160,11 +190,10 @@ public class ServerHandler implements Runnable {
      * Before closing the streams and the socket it should give a message to the clientOutputStream.
      */
     public void closeConnection() {
-        lobby.logout(myName);
-        clientOutputStream.println("LOGOUT");
-        clientOutputStream.flush();
-
         try {
+            lobby.logout(myName);
+            clientOutputStream.println("LOGOUT");
+            clientOutputStream.flush();
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
@@ -175,6 +204,7 @@ public class ServerHandler implements Runnable {
             LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
         }
     }
+
 
     /**
      * Send a list of the current players to the client.
@@ -335,5 +365,26 @@ public class ServerHandler implements Runnable {
     public void reject() {
         clientOutputStream.println("REJECTTOJOINLOBBY");
         clientOutputStream.flush();
+    }
+
+    /**
+     * Giving the highscore values as a String to the clientHandler.
+     * The String can never be null.
+     *
+     * @param highScoreData The names and coins from the highscore as a String
+     */
+    public void giveHighScore(String highScoreData) {
+        clientOutputStream.println("GIVEHIGHSCORE" + "#" + highScoreData);
+        clientOutputStream.flush();
+    }
+
+    /**
+     * gives the cheat-amount to serverGame
+     *
+     * @param points - the amount the player wants
+     */
+    void cheat(String points) {
+        int p = Integer.parseInt(points);
+        lobby.serverGame.cheat(p, myName);
     }
 }
