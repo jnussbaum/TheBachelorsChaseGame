@@ -38,7 +38,7 @@
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="98.0" layoutX="175.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/redbull.png" />
+                  <Image url="@img/energy.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="98.0" layoutX="321.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
@@ -57,7 +57,7 @@
                </image>
             </ImageView>
             <Text layoutX="58.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Coffee" translateY="10.0" wrappingWidth="46.2060546875" />
-            <Text layoutX="191.0" layoutY="-4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RedBull" translateY="23.0" wrappingWidth="52.2060546875" />
+            <Text layoutX="191.0" layoutY="-4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Energy" translateY="23.0" wrappingWidth="52.2060546875" />
             <Text layoutX="342.0" layoutY="-6.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Study" translateY="25.0" wrappingWidth="42.2060546875" />
             <Text layoutX="482.0" layoutY="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WLAN" translateY="15.0" wrappingWidth="44.2060546875" />
             <Text layoutX="98.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GoodLecturer" wrappingWidth="87.2060546875" />

@@ -126,12 +126,12 @@
                               </VBox>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <ImageView fx:id="redBullCard" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="energyCard" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@img/demo.png" />
                                        </image>
                                     </ImageView>
-                                    <Label fx:id="redBullCnt" textFill="WHITE" />
+                                    <Label fx:id="energyCnt" textFill="WHITE" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER">

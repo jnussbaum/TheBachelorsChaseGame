@@ -47,7 +47,7 @@ public class GameWindowController {
     @FXML
     public ImageView coffeeCard;
     @FXML
-    public ImageView redBullCard;
+    public ImageView energyCard;
     @FXML
     public ImageView wLanCard;
     @FXML
@@ -64,7 +64,7 @@ public class GameWindowController {
     @FXML
     private Label coffeeCnt;
     @FXML
-    private Label redBullCnt;
+    private Label energyCnt;
     @FXML
     private Label wLanCnt;
     @FXML
@@ -233,17 +233,17 @@ public class GameWindowController {
                     coffeeCnt.setText(cnt + "x Coffee");
                 }
                 break;
-            case ("RedBull"):
-                if (redBullCnt.getText().isEmpty()) {
-                    Image redBull = new Image("tbc/gui/img/redbull.png");
-                    redBullCard.setImage(redBull);
+            case ("Energy"):
+                if (energyCnt.getText().isEmpty()) {
+                    Image energy = new Image("tbc/gui/img/energy.png");
+                    energyCard.setImage(energy);
                     cnt = 1;
-                    redBullCnt.setText(cnt + "x EnergyDrink");
+                    energyCnt.setText(cnt + "x Energy");
                 } else {
-                    String label = redBullCnt.getText();
+                    String label = energyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    redBullCnt.setText(cnt + "x EnergyDrink");
+                    energyCnt.setText(cnt + "x Energy");
                 }
                 break;
             case ("WLAN"):
@@ -338,16 +338,16 @@ public class GameWindowController {
                     coffeeCnt.setText(cnt + "x Coffee");
                 }
                 break;
-            case ("RedBull"):
-                if (redBullCnt.getText().startsWith("1x")) {
+            case ("Energy"):
+                if (energyCnt.getText().startsWith("1x")) {
                     Image redBull = new Image("tbc/gui/img/demo.png");
-                    redBullCard.setImage(redBull);
-                    redBullCnt.setText("");
+                    energyCard.setImage(redBull);
+                    energyCnt.setText("");
                 } else {
-                    String label = redBullCnt.getText();
+                    String label = energyCnt.getText();
                     cnt = getCnt(label);
                     cnt--;
-                    redBullCnt.setText(cnt + "x EnergyDrink");
+                    energyCnt.setText(cnt + "x Energy");
                 }
                 break;
             case ("WLAN"):
@@ -439,7 +439,7 @@ public class GameWindowController {
         // reset the card images to the demo image
         Image demo = new Image("tbc/gui/img/demo.png");
         coffeeCard.setImage(demo);
-        redBullCard.setImage(demo);
+        energyCard.setImage(demo);
         wLanCard.setImage(demo);
         studyCard.setImage(demo);
         profCard.setImage(demo);
@@ -448,7 +448,7 @@ public class GameWindowController {
 
         // reset the label of the card counts
         coffeeCnt.setText("");
-        redBullCnt.setText("");
+        energyCnt.setText("");
         wLanCnt.setText("");
         studyCnt.setText("");
         profCnt.setText("");
