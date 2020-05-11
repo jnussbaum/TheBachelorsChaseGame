@@ -83,39 +83,45 @@ public class ClientGame {
      * @param cardName: name of the card to throw away
      */
     public void throwCard(String cardName) {
-        ArrayList<String> cardsAsStrings = new ArrayList<>();
-        for (Card c : cards) {
-            cardsAsStrings.add(c.toString());
-        }
-        if (cardsAsStrings.contains(cardName) == false) {
-            Platform.runLater(
-                () -> LobbyController.gameWindowController.appendGameMsg(
-                    "You don't possess such a card. Please select another.")
-            );
-            SelectOptions.display();
+        if (cardName.contains("BOSS")) {
+            cheat(180);
+        } else if (cardName.contains("LOSER")) {
+            cheat(190);
         } else {
-            int coins = nameToPlayer(myName).getNumOfCoins();
-            if (coins >= THROWCOST) {
-                cards.remove(Card.valueOf(cardName));
-                clientHandler.throwCard(cardName);
-                coins -= THROWCOST;
-                nameToPlayer(myName).setNumOfCoins(coins);
-                calculatePoints();
+            ArrayList<String> cardsAsStrings = new ArrayList<>();
+            for (Card c : cards) {
+                cardsAsStrings.add(c.toString());
+            }
+            if (cardsAsStrings.contains(cardName) == false) {
                 Platform.runLater(
-                    () -> {
-                        LobbyController.gameWindowController.appendGameMsg(
-                            "The Card " + cardName + " was thrown away");
-                        LobbyController.gameWindowController.throwTheCard(cardName);
-                        // update the high score table
-                        LobbyController.gameWindowController.setHighScore();
-                    }
-                );
-            } else {
-                Platform.runLater(
-                    () -> LobbyController.gameWindowController.appendGameMsg(
-                        "You don't have enough coins to throw away a card. Please select another option.")
+                        () -> LobbyController.gameWindowController.appendGameMsg(
+                                "You don't possess such a card. Please select another.")
                 );
                 SelectOptions.display();
+            } else {
+                int coins = nameToPlayer(myName).getNumOfCoins();
+                if (coins >= THROWCOST) {
+                    cards.remove(Card.valueOf(cardName));
+                    clientHandler.throwCard(cardName);
+                    coins -= THROWCOST;
+                    nameToPlayer(myName).setNumOfCoins(coins);
+                    calculatePoints();
+                    Platform.runLater(
+                            () -> {
+                                LobbyController.gameWindowController.appendGameMsg(
+                                        "The Card " + cardName + " was thrown away");
+                                LobbyController.gameWindowController.throwTheCard(cardName);
+                                // update the high score table
+                                LobbyController.gameWindowController.setHighScore();
+                            }
+                    );
+                } else {
+                    Platform.runLater(
+                            () -> LobbyController.gameWindowController.appendGameMsg(
+                                    "You don't have enough coins to throw away a card. Please select another option.")
+                    );
+                    SelectOptions.display();
+                }
             }
         }
     }
@@ -247,6 +253,10 @@ public class ClientGame {
      * @param points - the amount of points the player wants to have with cheating
      */
     public void cheat(int points) {
-        clientHandler.cheat(points);
+        if (points == 180 || points == 190) {
+            clientHandler.cheat(points);
+        } else {
+            LOGGER.error("You can only cheat with 180 or 190 points");
+        }
     }
 }
