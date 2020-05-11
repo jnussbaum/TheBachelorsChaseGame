@@ -211,7 +211,7 @@ public class Server {
         try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
             stream.forEach(s -> {
                 sb.append(s);
-                sb.append("£");
+                sb.append("s_9-,");
             });
         } catch (IOException e) {
             LOGGER.error("Could not read from the HighScore.txt file.");
