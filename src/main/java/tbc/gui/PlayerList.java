@@ -1,5 +1,8 @@
 package tbc.gui;
 
+import static java.lang.Thread.sleep;
+import static tbc.client.Client.clientHandler;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,9 +14,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static java.lang.Thread.sleep;
-import static tbc.client.Client.clientHandler;
 
 /**
  * If the button "Show Playerlist" in the Various window is pressed, it will open a this window "The

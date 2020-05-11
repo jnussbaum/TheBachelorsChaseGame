@@ -23,5 +23,5 @@ public class Main {
             LOGGER.error("Usage: client <hostadress>:<port> [<username>] | server <port>");
         }
     }
-    
+
 }

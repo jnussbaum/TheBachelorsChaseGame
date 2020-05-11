@@ -28,7 +28,8 @@ public class ChatServer {
                     Lobby playerLobby = sh.getLobby();
                     for (ServerHandler serverHandler : playerLobby.getClients().values()) {
                         serverHandler.sendChatMessage(sender, "false", msg);
-                        LOGGER.info("ChatServer sent message to the ServerHandler of " + sh.getName());
+                        LOGGER.info(
+                            "ChatServer sent message to the ServerHandler of " + sh.getName());
                     }
                 }
             }
@@ -46,7 +47,8 @@ public class ChatServer {
                 for (ServerHandler sh : Server.getServerHandlers()) {
                     if (sh.getName().equals(receiver)) {
                         sh.sendChatMessage(sender, "true", msg);
-                        LOGGER.info("ChatServer sent message to the ServerHandler of " + sh.getName());
+                        LOGGER.info(
+                            "ChatServer sent message to the ServerHandler of " + sh.getName());
                     }
                 }
             }

@@ -1,5 +1,7 @@
 package tbc.gui;
 
+import static tbc.client.Client.clientHandler;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,8 +11,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
-
-import static tbc.client.Client.clientHandler;
 
 /**
  * If the circle "Various" in the Lobby window is pressed, it will open a new window "The Bachelor's
@@ -30,8 +30,9 @@ public class VariousWindowController {
     private Button btnClose;
 
     /**
-     * If the button 'Enter' is pressed it will get the text from the field and checks if the new username is available.
-     * If the username is not available anymore, it will be set from the system automatically.
+     * If the button 'Enter' is pressed it will get the text from the field and checks if the new
+     * username is available. If the username is not available anymore, it will be set from the
+     * system automatically.
      */
     public void checkNewUsername() {
         String clientName = newUsername.getText();

@@ -1,5 +1,8 @@
 package tbc.gui;
 
+import static java.lang.Thread.sleep;
+import static tbc.client.Client.clientHandler;
+
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,12 +18,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.client.Client;
 
-import static java.lang.Thread.sleep;
-import static tbc.client.Client.clientHandler;
-
 /**
- * Opens a window with the list of the current lobbies. Here the user has to type in the name of a lobby,
- * which she/he wants to join/create.
+ * Opens a window with the list of the current lobbies. Here the user has to type in the name of a
+ * lobby, which she/he wants to join/create.
  */
 public class SelectLobby {
 
@@ -55,10 +55,12 @@ public class SelectLobby {
 
         Button createLobby = new Button("Create/Join a new lobby");
 
+        createLobby.setDefaultButton(true);
+
         createLobby.disableProperty().bind(
-                Bindings.isEmpty(newLobby.textProperty())
-                        .and(Bindings.isEmpty(newLobby.textProperty()))
-                        .and(Bindings.isEmpty(newLobby.textProperty()))
+            Bindings.isEmpty(newLobby.textProperty())
+                .and(Bindings.isEmpty(newLobby.textProperty()))
+                .and(Bindings.isEmpty(newLobby.textProperty()))
         );
 
         createLobby.setOnAction(e -> {

@@ -43,10 +43,11 @@ public class ClientGame {
     public void addCard(String cardName) {
         cards.add(Card.valueOf(cardName));
         Platform.runLater(
-                () -> {
-                    LobbyController.gameWindowController.appendGameMsg("You received the card " + cardName);
-                    LobbyController.gameWindowController.showCard(cardName);
-                }
+            () -> {
+                LobbyController.gameWindowController
+                    .appendGameMsg("You received the card " + cardName);
+                LobbyController.gameWindowController.showCard(cardName);
+            }
         );
         calculatePoints();
     }
@@ -57,14 +58,14 @@ public class ClientGame {
     public void giveTurn() {
         LOGGER.info("Show the three options");
         Platform.runLater(
-                () -> {
-                    String s = "";
-                    for (Card c : cards) {
-                        s = s + c.toString() + " ";
-                    }
-                    LobbyController.gameWindowController.appendGameMsg("Your cards: " + s);
-                    SelectOptions.display();
+            () -> {
+                String s = "";
+                for (Card c : cards) {
+                    s = s + c.toString() + " ";
                 }
+                LobbyController.gameWindowController.appendGameMsg("Your cards: " + s);
+                SelectOptions.display();
+            }
         );
     }
 
@@ -86,11 +87,9 @@ public class ClientGame {
             cardsAsStrings.add(c.toString());
         }
         if (cardsAsStrings.contains(cardName) == false) {
-          Platform.runLater(
-                    () -> {
-                        LobbyController.gameWindowController.appendGameMsg(
-                                "You don't possess such a card. Please select another.");
-                    }
+            Platform.runLater(
+                () -> LobbyController.gameWindowController.appendGameMsg(
+                    "You don't possess such a card. Please select another.")
             );
             SelectOptions.display();
         } else {
@@ -102,20 +101,18 @@ public class ClientGame {
                 nameToPlayer(myName).setNumOfCoins(coins);
                 calculatePoints();
                 Platform.runLater(
-                        () -> {
-                            LobbyController.gameWindowController.appendGameMsg(
-                                    "The Card " + cardName + " was thrown away");
-                            LobbyController.gameWindowController.throwTheCard(cardName);
-                            // update the high score table
-                            LobbyController.gameWindowController.setHighScore();
-                        }
+                    () -> {
+                        LobbyController.gameWindowController.appendGameMsg(
+                            "The Card " + cardName + " was thrown away");
+                        LobbyController.gameWindowController.throwTheCard(cardName);
+                        // update the high score table
+                        LobbyController.gameWindowController.setHighScore();
+                    }
                 );
             } else {
                 Platform.runLater(
-                        () -> {
-                            LobbyController.gameWindowController.appendGameMsg(
-                                    "You don't have enough coins to throw away a card. Please select another option.");
-                        }
+                    () -> LobbyController.gameWindowController.appendGameMsg(
+                        "You don't have enough coins to throw away a card. Please select another option.")
                 );
                 SelectOptions.display();
             }
@@ -141,9 +138,8 @@ public class ClientGame {
             sum += c.getValue();
         }
         points = sum;
-        Platform.runLater(() -> {
-            LobbyController.gameWindowController.appendGameMsg("You have " + points + " points.");
-        });
+        Platform.runLater(() -> LobbyController.gameWindowController
+            .appendGameMsg("You have " + points + " points."));
 
         if (points > 180) {
             droppedOut();
@@ -157,27 +153,28 @@ public class ClientGame {
      */
     public void endMatch(String winnerName) {
         Platform.runLater(
-                () -> {
-                    LobbyController.gameWindowController.appendGameMsg("The match has ended, the winner is "
-                            + winnerName + ". You scored " + points + " points!");
-                    LobbyController.gameWindowController.appendGameMsg("Your new number of coins is: "
-                            + nameToPlayer(myName).getNumOfCoins());
-                }
+            () -> {
+                LobbyController.gameWindowController
+                    .appendGameMsg("The match has ended, the winner is "
+                        + winnerName + ". You scored " + points + " points!");
+                LobbyController.gameWindowController.appendGameMsg("Your new number of coins is: "
+                    + nameToPlayer(myName).getNumOfCoins());
+            }
         );
 
         reset();
         Platform.runLater(
-                () -> {
-                    LobbyController.gameWindowController.appendGameMsg(
-                            "Press the button 'New match' if you want to start a new match");
-                    LobbyController.gameWindowController.btnNewMatch.setDisable(false);
-                }
+            () -> {
+                LobbyController.gameWindowController.appendGameMsg(
+                    "Press the button 'New match' if you want to start a new match");
+                LobbyController.gameWindowController.btnNewMatch.setDisable(false);
+            }
         );
     }
 
     /**
-     * Receives a string with the coins of all players, in order to update the own coins
-     * and for the highscore table
+     * Receives a string with the coins of all players, in order to update the own coins and for the
+     * highscore table
      *
      * @param allCoins: All coins and the corresponding player names as one string
      */
@@ -241,5 +238,14 @@ public class ClientGame {
         Platform.runLater(() -> {
             DroppedOutWindow.display();
         });
+    }
+
+    /**
+     * this method is called to win the game by Cheating
+     *
+     * @param points - the amount of points the player wants to have with cheating
+     */
+    public void cheat(int points) {
+        clientHandler.cheat(points);
     }
 }

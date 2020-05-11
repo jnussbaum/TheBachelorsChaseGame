@@ -28,7 +28,8 @@ public class DroppedOutWindow {
         textArea.setEditable(false);
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
-        textArea.setText("You have reached over 180 CP, so you dropped out. \nPlease wait for the match to end...");
+        textArea.setText(
+            "You have reached over 180 CP, so you dropped out. \nPlease wait for the match to end...");
 
         Button ok = new Button("OK");
         ok.setOnAction(e -> {

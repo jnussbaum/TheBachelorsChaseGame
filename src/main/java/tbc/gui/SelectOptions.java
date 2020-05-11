@@ -1,5 +1,7 @@
 package tbc.gui;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -20,13 +22,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import tbc.client.Client;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
- * Opens a window where the user can press 'Hit', 'Throw away' or 'Quit'
- * The button 'Throw away' is disabled as long as there is nothing typed in the field below.
- * This window will close automatically after 10 seconds if the user did not press any button.
+ * Opens a window where the user can press 'Hit', 'Throw away' or 'Quit' The button 'Throw away' is
+ * disabled as long as there is nothing typed in the field below. This window will close
+ * automatically after 10 seconds if the user did not press any button.
  */
 public class SelectOptions {
 
@@ -67,8 +66,8 @@ public class SelectOptions {
         cardName.setFocusTraversable(false);
         cardName.setPromptText("Type in the card you want to throw away");
         throwAway.disableProperty().bind(Bindings.isEmpty(cardName.textProperty())
-                .and(Bindings.isEmpty(cardName.textProperty()))
-                .and(Bindings.isEmpty(cardName.textProperty()))
+            .and(Bindings.isEmpty(cardName.textProperty()))
+            .and(Bindings.isEmpty(cardName.textProperty()))
         );
         throwAway.setOnAction(e -> {
             Client.game.throwCard(cardName.getText());
@@ -96,8 +95,8 @@ public class SelectOptions {
         timeSeconds.set(STARTTIME);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(STARTTIME + 1),
-                        new KeyValue(timeSeconds, 0)));
+            new KeyFrame(Duration.seconds(STARTTIME + 1),
+                new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
 
         Label timerLabel = new Label(" seconds left");

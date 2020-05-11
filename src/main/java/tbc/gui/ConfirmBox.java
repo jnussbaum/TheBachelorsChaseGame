@@ -29,6 +29,7 @@ public class ConfirmBox {
         yes.setOnAction(e -> {
             Client.chatClient.processInput("UserWantsToLogout");
         });
+
         Button no = new Button("No");
         no.setOnAction(e -> window.close());
 

@@ -1,12 +1,11 @@
 package tbc.server;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import tbc.game.ServerGame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tbc.game.ServerGame;
 
 /**
  * Server-side lobby, created by the Server.
@@ -15,27 +14,24 @@ public class Lobby {
 
     private static final Logger LOGGER = LogManager.getLogger();
     public String lobbyName;
+    /**
+     * The game belonging to this lobby is stored in this variable.
+     */
+    public ServerGame serverGame;
     ArrayList<String> readyGameClients = new ArrayList<>();
     ArrayList<String> readyMatchClients = new ArrayList<>();
-
+    /**
+     * This boolean stores the information whether a game is active right now or not.
+     */
+    boolean isGameActive = false;
     /**
      * Administration of all clients by their name and serverHandler
      */
     private HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
-     * The game belonging to this lobby is stored in this variable.
-     */
-    public ServerGame serverGame;
-
-    /**
-     * This boolean stores the information whether a game is active right now or not.
-     */
-    boolean isGameActive = false;
-
-    /**
-     * When a new lobby is created, the serverHandler of the client
-     * who initiated this lobby is added to the clients' administration.
+     * When a new lobby is created, the serverHandler of the client who initiated this lobby is
+     * added to the clients' administration.
      *
      * @param lobbyName The name of the lobby.
      * @param sh        The server handler from the client who joins the lobby.
@@ -62,7 +58,8 @@ public class Lobby {
     }
 
     /**
-     * When a player is ready to start a game and clicks his "Ready" button, this method will be called.
+     * When a player is ready to start a game and clicks his "Ready" button, this method will be
+     * called.
      *
      * @param myName: Name of the player who is ready
      */
@@ -78,7 +75,8 @@ public class Lobby {
     }
 
     /**
-     * When a player is ready to start a new match and clicks his "Ready" button, this method will be called.
+     * When a player is ready to start a new match and clicks his "Ready" button, this method will
+     * be called.
      *
      * @param myName: Name of the player who is ready
      */

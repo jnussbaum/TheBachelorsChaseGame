@@ -141,7 +141,7 @@ public class ClientHandler implements Runnable {
                 break;
             case "REJECTTOJOINLOBBY":
                 //TODO: Show a message in GUI that the client can not join this lobby
-                Platform.runLater(() -> RejectJoiningLobbyWindow.display() );
+                Platform.runLater(() -> RejectJoiningLobbyWindow.display());
                 break;
             case "GIVEHIGHSCORE":
                 String data = commands[1];
@@ -355,4 +355,8 @@ public class ClientHandler implements Runnable {
         return highScoreGui;
     }
 
+    public void cheat(int points) {
+        clientOutputStream.println("CHEAT#" + points);
+        clientOutputStream.flush();
+    }
 }

@@ -16,8 +16,8 @@ import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatServer;
 
 /**
- * All that the Server makes during his lifetime (in the main method) is to listen to new incoming connections,
- * add them to the clients administration, and register them at the chatServer.
+ * All that the Server makes during his lifetime (in the main method) is to listen to new incoming
+ * connections, add them to the clients administration, and register them at the chatServer.
  */
 public class Server {
 
@@ -39,8 +39,8 @@ public class Server {
     private static int clientNameCount = 0;
 
     /**
-     * Processes a client's request to change his name. If newUserName is occupied, it sends a negative
-     * answer back and puts a number behind the newUserName. If newUserName is available,
+     * Processes a client's request to change his name. If newUserName is occupied, it sends a
+     * negative answer back and puts a number behind the newUserName. If newUserName is available,
      * it changes requester's name to newUserName and sends a positive answer back.
      *
      * @param requester   The user who wants to change her/his name.
@@ -92,8 +92,8 @@ public class Server {
     }
 
     /**
-     * gets the list of existing lobbies.
-     * if der are no lobbies the list will only contain the entry: no lobbies
+     * gets the list of existing lobbies. if der are no lobbies the list will only contain the
+     * entry: no lobbies
      *
      * @return - an string-array
      */
@@ -133,8 +133,8 @@ public class Server {
     }
 
     /**
-     * puts an client in an lobby.
-     * is the lobby he wants to join does not exist it will make a new one
+     * puts an client in an lobby. is the lobby he wants to join does not exist it will make a new
+     * one
      *
      * @param lobbyName - the name of the lobby
      * @param sh        - the serverHandler
@@ -155,7 +155,8 @@ public class Server {
     /**
      * the main method
      *
-     * @param args The String array with the arguments from the user. Will be split into port number.
+     * @param args The String array with the arguments from the user. Will be split into port
+     *             number.
      */
     public static void main(String[] args) {
         int portNumber = Integer.parseInt(args[1]);
@@ -168,7 +169,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(portNumber);
             LOGGER.info("Type this address in the client after starting the client: "
-                    + InetAddress.getLocalHost().getHostAddress());
+                + InetAddress.getLocalHost().getHostAddress());
             Socket socket;
             int i = 0;
             while (true) {
@@ -182,7 +183,8 @@ public class Server {
                 chatServer.register(name, serverHandler);
             }
         } catch (IOException e) {
-            LOGGER.error("IOException while creating serverSocket or while listening to new incoming connections");
+            LOGGER.error(
+                "IOException while creating serverSocket or while listening to new incoming connections");
             e.printStackTrace();
         }
     }
@@ -211,8 +213,7 @@ public class Server {
                 sb.append(s);
                 sb.append("£");
             });
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             LOGGER.error("Could not read from the HighScore.txt file.");
         }
 

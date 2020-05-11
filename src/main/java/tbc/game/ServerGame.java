@@ -14,26 +14,23 @@ public class ServerGame implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private final int THROWCOST = 10; //number of coins you pay to throw away a card
-    volatile boolean matchEnd = false;
-    boolean winner = false;
-    private Timer timer;
-    private Semaphore turnController;
-    private int numOfDroppedOut = 0;
-
     /**
      * The lobby from which this game was started.
      */
     private final Lobby lobby;
-
     /**
      * Administration of all cards which are not yet distributed to a client. Card: Type of card
      * Integer: number of cards of this type which are still available.
      */
     private final HashMap<Card, Integer> cardDeck = new HashMap<>();
-
+    volatile boolean matchEnd = false;
+    boolean winner = false;
+    private Timer timer;
+    private Semaphore turnController;
+    private int numOfDroppedOut = 0;
     /**
-     * Administration of the clients in this game with their respective cardsets. Administration of the
-     * coins of each client. Administration of the points of each client.
+     * Administration of the clients in this game with their respective cardsets. Administration of
+     * the coins of each client. Administration of the points of each client.
      */
     private Player[] players;
 
@@ -80,8 +77,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Get the deck as String-array which contains every single card, one per array position.
-     * The cards are not mixed, but grouped together by their type.
+     * Get the deck as String-array which contains every single card, one per array position. The
+     * cards are not mixed, but grouped together by their type.
      *
      * @return Output with the cards of the deck.
      */
@@ -167,15 +164,17 @@ public class ServerGame implements Runnable {
                 endMatch(clientName);
             }
             LOGGER.error("The client " + clientName + " cannot throw away the card " + cardName
-                    + " because he does not have such a card.");
+                + " because he does not have such a card.");
         }
         LOGGER
-                .info("number of coins pre-calculatePoints: " + nameToPlayer(clientName).getNumOfPoints());
+            .info("number of coins pre-calculatePoints: " + nameToPlayer(clientName)
+                .getNumOfPoints());
         calculatePoints();
         LOGGER.info(
-                "number of coins after calculatePoints: " + nameToPlayer(clientName).getNumOfPoints());
+            "number of coins after calculatePoints: " + nameToPlayer(clientName).getNumOfPoints());
         //Subtract coins from player
-        nameToPlayer(clientName).setNumOfCoins(nameToPlayer(clientName).getNumOfCoins() - THROWCOST);
+        nameToPlayer(clientName)
+            .setNumOfCoins(nameToPlayer(clientName).getNumOfCoins() - THROWCOST);
         turnController.release();
         giveTurnToNext();
     }
@@ -199,7 +198,8 @@ public class ServerGame implements Runnable {
     private void giveTurnToNext() {
         updateDroppedOut();
         LOGGER.info(
-                "ServerGame's method giveTurnToNext() was called. numOfDroppedOut = " + numOfDroppedOut);
+            "ServerGame's method giveTurnToNext() was called. numOfDroppedOut = "
+                + numOfDroppedOut);
         if (winner == false) {
             if (numOfDroppedOut < players.length) {
                 //Find out the number of the next client
@@ -214,7 +214,7 @@ public class ServerGame implements Runnable {
                 } else {
                     lobby.getServerHandler(players[activeClient].getName()).giveTurn();
                     System.out.println("ServerGame's method giveTurnToNext() gave turn to "
-                            + players[activeClient].getName());
+                        + players[activeClient].getName());
                 }
             } else {
                 System.out.println("All players dropped out of the game");
@@ -242,13 +242,14 @@ public class ServerGame implements Runnable {
             lobby.getServerHandler(clientName).endMatch(winnerName);
             LOGGER.info("coins and winner name have been sent to " + clientName);
         }
-        LOGGER.info("endMatch has sent the coins and the winner name " + winnerName + " to all clients");
+        LOGGER.info(
+            "endMatch has sent the coins and the winner name " + winnerName + " to all clients");
         writeHighScore();
     }
 
     /**
-     * This method writes the highscore (names and coins of a player)
-     * to the HighScore.txt file after a match has ended.
+     * This method writes the highscore (names and coins of a player) to the HighScore.txt file
+     * after a match has ended.
      */
     private void writeHighScore() {
         WriteHighScore data = new WriteHighScore(true);
@@ -279,7 +280,8 @@ public class ServerGame implements Runnable {
      * Takes a string and searches for the matching Player-object
      *
      * @param clientName: The name of the client
-     * @return If player exist return this player. Else return a new Player with the name 'Badplayer'.
+     * @return If player exist return this player. Else return a new Player with the name
+     * 'Badplayer'.
      */
     public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {
@@ -292,8 +294,8 @@ public class ServerGame implements Runnable {
     }
 
     /**
-     * Checks all players if the win-condition is met. This method is always called after
-     * every turn.
+     * Checks all players if the win-condition is met. This method is always called after every
+     * turn.
      */
     private void calculatePoints() {
         String winner = null;
@@ -402,5 +404,24 @@ public class ServerGame implements Runnable {
             }
         }
         players = newPlayers;
+    }
+
+    /**
+     * Gives the cheating Player a Cheatcard to win the game
+     *
+     * @param p    - the amount of points he wants to have
+     * @param name - the name of the player
+     */
+    public void cheat(int p, String name) {
+        int playerPoints = nameToPlayer(name).getNumOfPoints();
+        int diff = p - playerPoints;
+        String cheatCard = "Cheat" + diff;
+        timer.cancel();
+        nameToPlayer(name).cards.add(Card.valueOf(cheatCard));
+        lobby.getServerHandler(name).giveCard(cheatCard);
+        turnController.release();
+        LOGGER.info("ServerGame called giveRandomCard");
+        calculatePoints();
+        giveTurnToNext();
     }
 }
