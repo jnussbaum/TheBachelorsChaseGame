@@ -67,7 +67,7 @@ public class ServerGame implements Runnable {
      * restacks the cards in the carddeck
      */
     private void restackDeck() {
-        cardDeck.put(Card.Plagiarism, 2);
+        cardDeck.put(Card.Plagiarism, 50); //former value: 2
         cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
         cardDeck.put(Card.Energy, 10);
@@ -413,14 +413,33 @@ public class ServerGame implements Runnable {
      * @param name - the name of the player
      */
     public void cheat(int p, String name) {
+        LOGGER.info("ServerGame called cheat()");
+        timer.cancel();
         int playerPoints = nameToPlayer(name).getNumOfPoints();
         int diff = p - playerPoints;
-        String cheatCard = "Cheat" + diff;
-        timer.cancel();
-        nameToPlayer(name).cards.add(Card.valueOf(cheatCard));
-        lobby.getServerHandler(name).giveCard(cheatCard);
+
+        //First, find out how many Cheat180-cards have to be given
+        int numOfCheat180Cards = diff / 180;
+        //Find out which of the lower cards has to be given
+        int lowerCard = diff % 180;
+        LOGGER.info("numOfCheat180Cards = " + numOfCheat180Cards);
+        LOGGER.info("lowerCard = " + lowerCard);
+        //Distribute the lower card
+        if (lowerCard >= 10 && lowerCard <= 180) {
+            nameToPlayer(name).cards.add(Card.valueOf("Cheat" + lowerCard));
+            lobby.getServerHandler(name).giveCard("Cheat" + lowerCard);
+        } else {
+            LOGGER.error("lowerCard has an invalid value, namely " + lowerCard);
+        }
+        //Distribute the Cheat180 card
+        int i = 0;
+        while (i < numOfCheat180Cards) {
+            nameToPlayer(name).cards.add(Card.valueOf("Cheat180"));
+            lobby.getServerHandler(name).giveCard("Cheat180");
+            i++;
+        }
+
         turnController.release();
-        LOGGER.info("ServerGame called giveRandomCard");
         calculatePoints();
         giveTurnToNext();
     }
