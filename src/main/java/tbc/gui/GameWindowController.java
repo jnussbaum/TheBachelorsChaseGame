@@ -58,6 +58,8 @@ public class GameWindowController {
     public ImageView partyCard;
     @FXML
     public ImageView plagCard;
+    @FXML
+    public ImageView cheatCard;
     private ObservableList<Player> players = observableArrayList();
     @FXML
     private TextArea txtAChat;
@@ -311,6 +313,13 @@ public class GameWindowController {
                     plagCnt.setText(cnt + "x Plagiarism");
                 }
                 break;
+            case ("BOSS"):
+                Image cheat = new Image("tbc/gui/img/cheat.png");
+                cheatCard.setImage(cheat);
+                break;
+            case ("LOSER"):
+                Image loser = new Image("tbc/gui/img/cheat.png");
+                cheatCard.setImage(loser);
             default:
                 LOGGER.error(card + " does not exist.");
         }
