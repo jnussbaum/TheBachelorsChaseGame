@@ -1,5 +1,6 @@
-Mei 450
-Nerd 130
-Nerd 110
-Mei 100
-annadiack0 40
+Johannes 30
+Johannes 30
+Johannes0 0
+Johannes0 0
+Johannes -50
+Johannes0 20

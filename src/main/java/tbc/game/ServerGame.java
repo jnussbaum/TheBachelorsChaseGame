@@ -321,14 +321,16 @@ public class ServerGame implements Runnable {
         LOGGER.info("Coins will be calculated");
         for (int i = 0; i < players.length; i++) {
             Player a = players[i];
-            if (a.getNumOfPoints() == 180) {
+            if (a.cheater) {
+                a.setNumOfCoins(a.getNumOfCoins() - 50);
+            } else if (a.getNumOfPoints() == 180) {
                 a.setNumOfCoins(a.getNumOfCoins() + 180 * 2);
             } else if (a.getNumOfPoints() < 180) {
-                if (a.getNumOfPoints() < 50) {
-                    a.setNumOfCoins(a.getNumOfCoins());
-                } else {
+                if (a.getNumOfPoints() >= 50 && a.getNumOfPoints() <= 180) {
+                    //Player receives 50 coins less than he has points
                     a.setNumOfCoins(a.getNumOfCoins() + a.getNumOfPoints() - 50);
                 }
+                //else: he does not receive any coins
             }
             a.setNumOfPoints(0);
         }
@@ -351,6 +353,7 @@ public class ServerGame implements Runnable {
      */
     private void reset() {
         for (Player p : players) {
+            p.cheater = false;
             p.setNumOfPoints(0);
             p.clearCards();
             p.setQuitMatch(false);
@@ -413,14 +416,34 @@ public class ServerGame implements Runnable {
      * @param name - the name of the player
      */
     public void cheat(int p, String name) {
+        LOGGER.info("ServerGame called cheat()");
+        timer.cancel();
+        nameToPlayer(name).cheater = true;
         int playerPoints = nameToPlayer(name).getNumOfPoints();
         int diff = p - playerPoints;
-        String cheatCard = "Cheat" + diff;
-        timer.cancel();
-        nameToPlayer(name).cards.add(Card.valueOf(cheatCard));
-        lobby.getServerHandler(name).giveCard(cheatCard);
+
+        //First, find out how many Cheat180-cards have to be given
+        int numOfCheat180Cards = diff / 180;
+        //Find out which of the lower cards has to be given
+        int lowerCard = diff % 180;
+        LOGGER.info("numOfCheat180Cards = " + numOfCheat180Cards);
+        LOGGER.info("lowerCard = " + lowerCard);
+        //Distribute the lower card
+        if (lowerCard >= 10 && lowerCard <= 180) {
+            nameToPlayer(name).cards.add(Card.valueOf("Cheat" + lowerCard));
+            lobby.getServerHandler(name).giveCard("Cheat" + lowerCard);
+        } else {
+            LOGGER.error("lowerCard has an invalid value, namely " + lowerCard);
+        }
+        //Distribute the Cheat180 card
+        int i = 0;
+        while (i < numOfCheat180Cards) {
+            nameToPlayer(name).cards.add(Card.valueOf("Cheat180"));
+            lobby.getServerHandler(name).giveCard("Cheat180");
+            i++;
+        }
+
         turnController.release();
-        LOGGER.info("ServerGame called giveRandomCard");
         calculatePoints();
         giveTurnToNext();
     }

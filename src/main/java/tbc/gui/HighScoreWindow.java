@@ -46,8 +46,8 @@ public class HighScoreWindow {
             e.printStackTrace();
         }
 
-        // replace all '£' to a new line
-        String data = clientHandler.getHighScoreGui().replaceAll("£", "\n");
+        // replace all '$' to a new line
+        String data = clientHandler.getHighScoreGui().replaceAll("s_9-,", "\n");
 
         highScoreArea.setText(data);
 

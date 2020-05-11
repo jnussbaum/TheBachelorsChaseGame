@@ -14,6 +14,7 @@ public class Player {
 
     boolean quitMatch = false;
     boolean notifyDropOut = false;
+    boolean cheater = false;
     String name;
     int numOfPoints;
     int numOfCoins = 0;

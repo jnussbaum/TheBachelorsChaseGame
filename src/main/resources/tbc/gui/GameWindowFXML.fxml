@@ -104,6 +104,11 @@
                   <Button focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#showHighScore" prefWidth="100.0" text="Highscore" />
                   <Button fx:id="btnRdy" focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#rdyForTheGame" prefWidth="100.0" text="Ready" />
                   <Button fx:id="btnNewMatch" disable="true" focusTraversable="false" minHeight="75.0" mnemonicParsing="false" onAction="#startNewMatch" prefWidth="100.0" text="New match" />
+                <ImageView fx:id="logo" fitHeight="124.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@img/Logo/final.png" />
+                  </image>
+                </ImageView>
                </children>
             </VBox>
          </right>
@@ -189,12 +194,15 @@
                               </VBox>
                               <VBox alignment="CENTER">
                                  <children>
+                                    <Label fx:id="plagCnt" textFill="WHITE" />
                                     <ImageView fx:id="plagCard" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@img/demo.png" />
                                        </image>
+                                       <VBox.margin>
+                                          <Insets bottom="30.0" />
+                                       </VBox.margin>
                                     </ImageView>
-                                    <Label fx:id="plagCnt" textFill="WHITE" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER">
@@ -202,14 +210,17 @@
                                   <Insets />
                                 </HBox.margin>
                                 <children>
-                                  <ImageView fx:id="logo" fitHeight="124.0" fitWidth="113.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                      <Image url="@img/Logo/final.png" />
-                                    </image>
-                                  </ImageView>
                                   <Label />
                                  </children>
                               </VBox>
+                              <ImageView fx:id="cheatCard" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/demo.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets bottom="30.0" right="10.0" />
+                                 </HBox.margin>
+                              </ImageView>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" />
