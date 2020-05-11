@@ -16,11 +16,11 @@ public class ServerGameTest {
     public ServerGameTest() throws IOException {
         lobby = new Lobby("myLobby", new ServerHandler(
                 "Player1",
-                new Socket("localhost", 135),
+                new Socket("localhost", 8090),
                 new ChatServer()));
         lobby.join("Player2", new ServerHandler(
                 "Player2",
-                new Socket("localhost", 135),
+                new Socket("localhost", 8090),
                 new ChatServer()));
         serverGame = new ServerGame(lobby, new String[]{"Player1", "Player2"});
     }
