@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -23,6 +24,9 @@
         <menus>
           <Menu mnemonicParsing="false" text="The Bachelor's Chase">
             <items>
+                  <MenuItem fx:id="menuStartMusic" mnemonicParsing="false" onAction="#startMusic" text="Start Backgroundmusic" />
+                  <MenuItem fx:id="menuStopMusic" mnemonicParsing="false" onAction="#stopMusic" text="Stop Backgroundmusic" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem fx:id="menuLogOut" mnemonicParsing="false" onAction="#logOut" text="Logout" />
             </items>
           </Menu>
@@ -30,6 +34,8 @@
             <items>
               <MenuItem fx:id="menuInfo" mnemonicParsing="false" onAction="#giveInfo" text="Info" />
                   <MenuItem fx:id="menuChatInfo" mnemonicParsing="false" onAction="#giveChatInfo" text="Chat Info" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="menuGamePlay" mnemonicParsing="false" onAction="#showGamePlay" text="Gameplay" />
             </items>
           </Menu>
         </menus>
