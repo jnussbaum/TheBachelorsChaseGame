@@ -306,13 +306,10 @@ public class GameWindowController {
                 }
                 plagCnt.setText(cnt + "x Plagiarism");
                 break;
-            case ("BOSS"):
+            case ("Cheat180"):
                 Image cheat = new Image("tbc/gui/img/cheat.png");
                 cheatCard.setImage(cheat);
                 break;
-            case ("LOSER"):
-                Image loser = new Image("tbc/gui/img/cheat.png");
-                cheatCard.setImage(loser);
             default:
                 LOGGER.error(card + " does not exist.");
         }
@@ -411,6 +408,11 @@ public class GameWindowController {
                     cnt--;
                     plagCnt.setText(cnt + "x Plagiarism");
                 }
+                break;
+            case ("Cheat180"):
+            case ("Cheat190"):
+                Image cheat = new Image("tbc/gui/img/cheat.png");
+                cheatCard.setImage(cheat);
                 break;
             default:
                 LOGGER.error(cardName + " does not exist.");
