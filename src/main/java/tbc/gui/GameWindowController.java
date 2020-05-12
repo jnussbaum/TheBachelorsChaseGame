@@ -227,91 +227,84 @@ public class GameWindowController {
                     Image coffee = new Image("tbc/gui/img/coffee.png");
                     coffeeCard.setImage(coffee);
                     cnt = 1;
-                    coffeeCnt.setText(cnt + "x Coffee");
                 } else {
                     String label = coffeeCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    coffeeCnt.setText(cnt + "x Coffee");
                 }
+                coffeeCnt.setText(cnt + "x Coffee");
                 break;
             case ("Energy"):
                 if (energyCnt.getText().isEmpty()) {
                     Image energy = new Image("tbc/gui/img/energy.png");
                     energyCard.setImage(energy);
                     cnt = 1;
-                    energyCnt.setText(cnt + "x Energy");
                 } else {
                     String label = energyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    energyCnt.setText(cnt + "x Energy");
                 }
+                energyCnt.setText(cnt + "x Energy");
                 break;
             case ("WLAN"):
                 if (wLanCnt.getText().isEmpty()) {
                     Image wLan = new Image("tbc/gui/img/wlan.png");
                     wLanCard.setImage(wLan);
                     cnt = 1;
-                    wLanCnt.setText(cnt + "x WLAN");
                 } else {
                     String label = wLanCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    wLanCnt.setText(cnt + "x WLAN");
                 }
+                wLanCnt.setText(cnt + "x WLAN");
                 break;
             case ("Study"):
                 if (studyCnt.getText().isEmpty()) {
                     Image study = new Image("tbc/gui/img/study.png");
                     studyCard.setImage(study);
                     cnt = 1;
-                    studyCnt.setText(cnt + "x Study");
                 } else {
                     String label = studyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    studyCnt.setText(cnt + "x Study");
                 }
+                studyCnt.setText(cnt + "x Study");
                 break;
             case ("GoodLecturer"):
                 if (profCnt.getText().isEmpty()) {
                     Image goodLecturer = new Image("tbc/gui/img/goodlecturer.png");
                     profCard.setImage(goodLecturer);
                     cnt = 1;
-                    profCnt.setText(cnt + "x GoodLecturer");
                 } else {
                     String label = profCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    profCnt.setText(cnt + "x GoodLecturer");
                 }
+                profCnt.setText(cnt + "x GoodLecturer");
                 break;
             case ("Party"):
                 if (partyCnt.getText().isEmpty()) {
                     Image party = new Image("tbc/gui/img/party.png");
                     partyCard.setImage(party);
                     cnt = 1;
-                    partyCnt.setText(cnt + "x Party");
                 } else {
                     String label = partyCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    partyCnt.setText(cnt + "x Party");
                 }
+                partyCnt.setText(cnt + "x Party");
                 break;
             case ("Plagiarism"):
                 if (plagCnt.getText().isEmpty()) {
                     Image plagiarism = new Image("tbc/gui/img/plagiarism.png");
                     plagCard.setImage(plagiarism);
                     cnt = 1;
-                    plagCnt.setText(cnt + "x Plagiarism");
                 } else {
                     String label = plagCnt.getText();
                     cnt = getCnt(label);
                     cnt++;
-                    plagCnt.setText(cnt + "x Plagiarism");
                 }
+                plagCnt.setText(cnt + "x Plagiarism");
                 break;
             case ("BOSS"):
                 Image cheat = new Image("tbc/gui/img/cheat.png");
@@ -509,5 +502,29 @@ public class GameWindowController {
      */
     public void showHighScore() {
         HighScoreWindow.display();
+    }
+
+    public void showGamePlay() {
+        //PlayMusic.stopAudio();
+        try {
+            PlayVideo gamePlay = new PlayVideo();
+            gamePlay.display("GamePlay.mp4");
+        } catch (Exception e) {
+            LOGGER.error("Could not find GamePlay.mp4 file");
+        }
+    }
+
+    /**
+     * MenuItem to start playing the music.
+     */
+    public void startMusic() {
+        PlayMusic.startAudio();
+    }
+
+    /**
+     * MenuItem to stop playing the music.
+     */
+    public void stopMusic() {
+        PlayMusic.stopAudio();
     }
 }

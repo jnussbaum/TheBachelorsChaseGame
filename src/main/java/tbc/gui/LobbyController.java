@@ -46,8 +46,7 @@ public class LobbyController {
         if (SelectLobby.lobbyChosen == true && !RejectJoiningLobbyWindow.rejected) {
             LOGGER.info("Show game window.");
             try {
-                Utils music = new Utils();
-                music.playAudio("backgroundMusic.wav");
+                PlayMusic.playAudio();
 
                 Stage gameWindow = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindowFXML.fxml"));

@@ -67,7 +67,7 @@ public class ServerGame implements Runnable {
      * restacks the cards in the carddeck
      */
     private void restackDeck() {
-        cardDeck.put(Card.Plagiarism, 50); //former value: 2
+        cardDeck.put(Card.Plagiarism, 2);
         cardDeck.put(Card.Party, 10);
         cardDeck.put(Card.Coffee, 10);
         cardDeck.put(Card.Energy, 10);
@@ -321,14 +321,16 @@ public class ServerGame implements Runnable {
         LOGGER.info("Coins will be calculated");
         for (int i = 0; i < players.length; i++) {
             Player a = players[i];
-            if (a.getNumOfPoints() == 180) {
+            if (a.cheater) {
+                a.setNumOfCoins(a.getNumOfCoins() - 50);
+            } else if (a.getNumOfPoints() == 180) {
                 a.setNumOfCoins(a.getNumOfCoins() + 180 * 2);
             } else if (a.getNumOfPoints() < 180) {
-                if (a.getNumOfPoints() < 50) {
-                    a.setNumOfCoins(a.getNumOfCoins());
-                } else {
+                if (a.getNumOfPoints() >= 50 && a.getNumOfPoints() <= 180) {
+                    //Player receives 50 coins less than he has points
                     a.setNumOfCoins(a.getNumOfCoins() + a.getNumOfPoints() - 50);
                 }
+                //else: he does not receive any coins
             }
             a.setNumOfPoints(0);
         }
@@ -351,6 +353,7 @@ public class ServerGame implements Runnable {
      */
     private void reset() {
         for (Player p : players) {
+            p.cheater = false;
             p.setNumOfPoints(0);
             p.clearCards();
             p.setQuitMatch(false);
@@ -415,6 +418,7 @@ public class ServerGame implements Runnable {
     public void cheat(int p, String name) {
         LOGGER.info("ServerGame called cheat()");
         timer.cancel();
+        nameToPlayer(name).cheater = true;
         int playerPoints = nameToPlayer(name).getNumOfPoints();
         int diff = p - playerPoints;
 

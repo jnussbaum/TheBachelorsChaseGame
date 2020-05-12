@@ -26,9 +26,9 @@ public class LoginController {
     @FXML
     public TextField userName;
     @FXML
-    private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
-    @FXML
     public Button okBtn;
+    @FXML
+    private Label labelStatus, labelGirly, labelNerd, labelEmo, labelHippy;
 
     public static String getChosenLogo() {
         return chosenLogo;

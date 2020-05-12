@@ -58,32 +58,13 @@ public class ServerHandler implements Runnable {
             String s = null;
             try {
                 s = clientInputStream.readLine();
+                if (s != null) {
+                    decode(s);
+                }
             } catch (IOException e) {
-                LOGGER.error("Reading from ClientInputStream failed: ");
-                lostConnectionHandling();
+                LOGGER.error("Reading from ClientInputStream failed. Logging out...");
+                closeConnection();
             }
-            if (s == null) {
-                System.err.println("The ServerHandler of " + myName + " received an empty message");
-            } else {
-                decode(s);
-            }
-
-        }
-    }
-
-    void lostConnectionHandling() {
-        try {
-            lobby.logout(myName);
-            clientOutputStream.close();
-            clientInputStream.close();
-            clientSocket.close();
-            LOGGER
-                .info("Closed streams and socket from " + myName + " because of a Connection loss");
-            Server.removeUser(myName);
-            exit = true;
-        } catch (Exception e) {
-            LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
-            e.printStackTrace();
         }
     }
 
@@ -194,24 +175,27 @@ public class ServerHandler implements Runnable {
      * clientOutputStream.
      */
     public void closeConnection() {
+        exit = true;
+        Server.removeUser(myName);
+        LOGGER.info("ServerHandler of " + myName + " removed from Server");
+        if (lobby != null) {
+            lobby.logout(myName);
+            LOGGER.info("ServerHandler of " + myName + "logged out in the lobby.");
+        }
         try {
-            // if a lobby is joined
-            if (lobby != null) {
-                lobby.logout(myName);
+            if (!clientOutputStream.checkError()) {
+                clientOutputStream.println("LOGOUT");
+                clientOutputStream.flush();
             }
-            clientOutputStream.println("LOGOUT");
-            clientOutputStream.flush();
             clientOutputStream.close();
             clientInputStream.close();
             clientSocket.close();
-            LOGGER.info("Closed streams and socket from " + myName);
-            Server.removeUser(myName);
-            exit = true;
+            LOGGER.info("ServerHandler of " + myName + " closed streams and socket");
         } catch (IOException e) {
             LOGGER.error("Closing streams and socket failed in ServerHandler " + myName);
+            e.printStackTrace();
         }
     }
-
 
     /**
      * Send a list of the current players to the client.
