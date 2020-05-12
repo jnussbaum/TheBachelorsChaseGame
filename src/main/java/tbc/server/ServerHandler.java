@@ -132,7 +132,8 @@ public class ServerHandler implements Runnable {
                 closeConnection();
                 break;
             case "CHEAT":
-                cheat(commands[1]);
+                String points = commands[1];
+                cheat(points);
                 break;
             default:
                 LOGGER.error("ServerHandler " + myName + " received an invalid message.");

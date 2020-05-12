@@ -47,7 +47,7 @@ public class HighScoreWindow {
         }
 
         // replace all '$' to a new line
-        String data = clientHandler.getHighScoreGui().replaceAll("s_9-,", "\n");
+        String data = clientHandler.getHighScoreGui().replaceAll("_9-,", "\n");
 
         highScoreArea.setText(data);
 

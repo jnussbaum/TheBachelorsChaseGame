@@ -53,7 +53,7 @@ public class LobbyController {
                 Parent root = loader.load();
 
                 gameWindow.setTitle("The Bachelor's Chase");
-                gameWindow.setScene(new Scene(root, 1000, 650));
+                gameWindow.setScene(new Scene(root, 1000, 750));
                 gameWindow.show();
 
                 gameWindowController = loader.getController();

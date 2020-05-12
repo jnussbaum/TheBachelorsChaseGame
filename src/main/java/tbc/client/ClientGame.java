@@ -82,9 +82,9 @@ public class ClientGame {
      * @param cardName: name of the card to throw away
      */
     public void throwCard(String cardName) {
-        if (cardName.contains("BOSS")) {
+        if (cardName.equals("BOSS")) {
             cheat(180);
-        } else if (cardName.contains("LOSER")) {
+        } else if (cardName.equals("LOSER")) {
             cheat(190);
         } else {
             ArrayList<String> cardsAsStrings = new ArrayList<>();
@@ -93,8 +93,8 @@ public class ClientGame {
             }
             if (cardsAsStrings.contains(cardName) == false) {
                 Platform.runLater(
-                        () -> LobbyController.gameWindowController.appendGameMsg(
-                                "You don't possess such a card. Please select another.")
+                    () -> LobbyController.gameWindowController.appendGameMsg(
+                        "You don't possess such a card. Please select another.")
                 );
                 SelectOptions.display();
             } else {

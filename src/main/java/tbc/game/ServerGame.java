@@ -422,20 +422,20 @@ public class ServerGame implements Runnable {
         int playerPoints = nameToPlayer(name).getNumOfPoints();
         int diff = p - playerPoints;
 
-        //First, find out how many Cheat180-cards have to be given
+        // First, find out how many Cheat180-cards have to be given
         int numOfCheat180Cards = diff / 180;
-        //Find out which of the lower cards has to be given
+        // Find out which of the lower cards has to be given
         int lowerCard = diff % 180;
         LOGGER.info("numOfCheat180Cards = " + numOfCheat180Cards);
         LOGGER.info("lowerCard = " + lowerCard);
-        //Distribute the lower card
+        // Distribute the lower card
         if (lowerCard >= 10 && lowerCard <= 180) {
             nameToPlayer(name).cards.add(Card.valueOf("Cheat" + lowerCard));
             lobby.getServerHandler(name).giveCard("Cheat" + lowerCard);
         } else {
             LOGGER.error("lowerCard has an invalid value, namely " + lowerCard);
         }
-        //Distribute the Cheat180 card
+        // Distribute the Cheat180 card
         int i = 0;
         while (i < numOfCheat180Cards) {
             nameToPlayer(name).cards.add(Card.valueOf("Cheat180"));

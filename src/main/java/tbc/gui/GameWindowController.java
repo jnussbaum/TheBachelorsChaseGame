@@ -60,7 +60,6 @@ public class GameWindowController {
     public ImageView plagCard;
     @FXML
     public ImageView cheatCard;
-    private ObservableList<Player> players = observableArrayList();
     @FXML
     private TextArea txtAChat;
     @FXML
@@ -81,6 +80,8 @@ public class GameWindowController {
     private Button btnRdy;
     @FXML
     private TextArea gameChatArea;
+
+    private ObservableList<Player> players = observableArrayList();
     private Window secondStage;
 
     /**
@@ -221,6 +222,9 @@ public class GameWindowController {
      */
     public void showCard(String card) {
         int cnt;
+        if (card.contains("Cheat")) {
+            card = "Cheat";
+        }
         switch (card) {
             case ("Coffee"):
                 if (coffeeCnt.getText().isEmpty()) {
@@ -306,13 +310,12 @@ public class GameWindowController {
                 }
                 plagCnt.setText(cnt + "x Plagiarism");
                 break;
-            case ("Cheat180"):
-            case ("Cheat190"):
+            case ("Cheat"):
                 Image cheat = new Image("tbc/gui/img/cheat.png");
                 cheatCard.setImage(cheat);
                 break;
             default:
-                LOGGER.error(card + " does not exist.");
+                LOGGER.error(card + " does not exist...");
         }
     }
 
@@ -325,6 +328,9 @@ public class GameWindowController {
      */
     public void throwTheCard(String cardName) {
         int cnt;
+        if (cardName.contains("Cheat")) {
+            cardName = "Cheat";
+        }
         switch (cardName) {
             case ("Coffee"):
                 if (coffeeCnt.getText().startsWith("1x")) {
@@ -410,8 +416,7 @@ public class GameWindowController {
                     plagCnt.setText(cnt + "x Plagiarism");
                 }
                 break;
-            case ("Cheat180"):
-            case ("Cheat190"):
+            case ("Cheat"):
                 Image cheat = new Image("tbc/gui/img/cheat.png");
                 cheatCard.setImage(cheat);
                 break;
@@ -450,6 +455,7 @@ public class GameWindowController {
         profCard.setImage(demo);
         partyCard.setImage(demo);
         plagCard.setImage(demo);
+        cheatCard.setImage(demo);
 
         // reset the label of the card counts
         coffeeCnt.setText("");
@@ -508,7 +514,6 @@ public class GameWindowController {
     }
 
     public void showGamePlay() {
-        //PlayMusic.stopAudio();
         try {
             PlayVideo gamePlay = new PlayVideo();
             gamePlay.display("GamePlay.mp4");

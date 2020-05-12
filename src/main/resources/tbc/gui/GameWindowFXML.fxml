@@ -17,18 +17,21 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<BorderPane prefHeight="639.0" prefWidth="1000.0" style="-fx-background-color: #006400#006400;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tbc.gui.GameWindowController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="The Bachelor's Chase">
-            <items>
-                  <MenuItem fx:id="menuStartMusic" mnemonicParsing="false" onAction="#startMusic" text="Start Backgroundmusic" />
-                  <MenuItem fx:id="menuStopMusic" mnemonicParsing="false" onAction="#stopMusic" text="Stop Backgroundmusic" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem fx:id="menuLogOut" mnemonicParsing="false" onAction="#logOut" text="Logout" />
-            </items>
+<BorderPane prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: #006400#006400;"
+  xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+  fx:controller="tbc.gui.GameWindowController">
+  <top>
+    <MenuBar BorderPane.alignment="CENTER">
+      <menus>
+        <Menu mnemonicParsing="false" text="The Bachelor's Chase">
+          <items>
+            <MenuItem fx:id="menuStartMusic" mnemonicParsing="false" onAction="#startMusic"
+              text="Start Backgroundmusic"/>
+            <MenuItem fx:id="menuStopMusic" mnemonicParsing="false" onAction="#stopMusic"
+              text="Stop Backgroundmusic"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem fx:id="menuLogOut" mnemonicParsing="false" onAction="#logOut" text="Logout"/>
+          </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
@@ -194,33 +197,25 @@
                               </VBox>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <Label fx:id="plagCnt" textFill="WHITE" />
                                     <ImageView fx:id="plagCard" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@img/demo.png" />
                                        </image>
-                                       <VBox.margin>
-                                          <Insets bottom="30.0" />
-                                       </VBox.margin>
                                     </ImageView>
+                                   <Label fx:id="plagCnt" textFill="WHITE"/>
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER">
-                                <HBox.margin>
-                                  <Insets />
-                                </HBox.margin>
-                                <children>
-                                  <Label />
-                                 </children>
-                              </VBox>
-                              <ImageView fx:id="cheatCard" fitHeight="200.0" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/demo.png" />
-                                 </image>
-                                 <HBox.margin>
-                                    <Insets bottom="30.0" right="10.0" />
-                                 </HBox.margin>
-                              </ImageView>
+                             <VBox alignment="CENTER">
+                               <children>
+                                 <ImageView fx:id="cheatCard" fitHeight="200.0" fitWidth="140.0"
+                                   pickOnBounds="true" preserveRatio="true">
+                                   <image>
+                                     <Image url="@img/demo.png"/>
+                                   </image>
+                                 </ImageView>
+                                 <Label fx:id="partyCnt2" textFill="WHITE"/>
+                               </children>
+                             </VBox>
                            </children>
                            <VBox.margin>
                               <Insets bottom="10.0" />
