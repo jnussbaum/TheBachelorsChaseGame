@@ -49,9 +49,7 @@ public class Client {
         String[] players = player.split("::");
         game = new ClientGame(clientHandler, players);
         LOGGER.info("Client's startGame() was invoked");
-        Platform.runLater(() -> {
-            LobbyController.gameWindowController.setHighScore();
-        });
+        Platform.runLater(() -> LobbyController.gameWindowController.setHighScore());
     }
 
     /**

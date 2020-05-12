@@ -37,7 +37,7 @@ public class GameInfoWindow {
             + "whether he wants to draw a card, throw away a card (only possible against coins) "
             + "or wants to take a turn respectively not draw a card. \n"
             + "\nRules:"
-            + "\nCoinsystem: \nEach player has an account, "
+            + "\nCoin-System: \nEach player has an account, "
             + "that is still empty at the beginning of the first round."
             + "After a player has reached 180 KP, the coins are distributed as follows:"
             + "\nThe player with 180 KP receives 360 coins."

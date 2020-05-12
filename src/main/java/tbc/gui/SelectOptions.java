@@ -44,9 +44,7 @@ public class SelectOptions {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                Platform.runLater(() -> {
-                    window.close();
-                });
+                Platform.runLater(() -> window.close());
             }
         }, 10000);
 

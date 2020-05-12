@@ -41,14 +41,13 @@ public class VariousWindowController {
         clientHandler.changeName(clientName);
 
         Thread thread = new Thread(() -> {
-            Runnable updater = () -> {
-                usernameStatus.setText("New Name: " + Client.clientHandler.getMyName());
-            };
+            Runnable updater = () -> usernameStatus.setText("New Name: " + Client.clientHandler.getMyName());
 
             while (true) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException ex) {
+                    LOGGER.error("InterruptedException in the class VariousWindowController.");
                 }
                 // UI update is run on the Application thread
                 Platform.runLater(updater);
