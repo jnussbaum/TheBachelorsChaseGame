@@ -140,7 +140,6 @@ public class ClientHandler implements Runnable {
                 Client.getGame().droppedOut();
                 break;
             case "REJECTTOJOINLOBBY":
-                //TODO: Show a message in GUI that the client can not join this lobby
                 Platform.runLater(() -> RejectJoiningLobbyWindow.display());
                 break;
             case "GIVEHIGHSCORE":
@@ -218,7 +217,7 @@ public class ClientHandler implements Runnable {
             }
 
             LOGGER.info("These are the available lobbies: ");
-            StringBuffer lobby = new StringBuffer();
+            StringBuilder lobby = new StringBuilder();
             for (String s : lobbies) {
                 lobby.append(s).append("\n");
                 LOGGER.info(s);
@@ -260,7 +259,7 @@ public class ClientHandler implements Runnable {
             }
 
             LOGGER.info("These are the current players: ");
-            StringBuffer player = new StringBuffer();
+            StringBuilder player = new StringBuilder();
             for (String s : players) {
                 player.append(s).append("\n");
             }

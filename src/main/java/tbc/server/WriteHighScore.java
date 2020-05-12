@@ -27,7 +27,7 @@ public class WriteHighScore {
         String path = "HighScore.txt";
         FileWriter writer;
         BufferedWriter bufferedWriter;
-        PrintWriter printWriter = null;
+        PrintWriter printWriter;
         try {
             writer = new FileWriter(path, appendToFile);
             bufferedWriter = new BufferedWriter(writer);
@@ -36,18 +36,18 @@ public class WriteHighScore {
 
             sortHighScore();
 
+            printWriter.close();
+
             LOGGER.info("Highscore has been written to the HighScore.txt");
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            printWriter.close();
         }
     }
 
     private void sortHighScore() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("HighScore.txt"));
-            ArrayList<Player> playerRecords = new ArrayList<Player>();
+            ArrayList<Player> playerRecords = new ArrayList<>();
             String currentLine = reader.readLine();
 
             while (currentLine != null) {
@@ -71,7 +71,7 @@ public class WriteHighScore {
             reader.close();
             writer.close();
         } catch (FileNotFoundException e) {
-            LOGGER.error("Coiuld not find HighScore.txt");
+            LOGGER.error("Could not find HighScore.txt");
         } catch (IOException e) {
             LOGGER.error("Could not read from HighScore.txt");
         }

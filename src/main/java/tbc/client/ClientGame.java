@@ -199,9 +199,7 @@ public class ClientGame {
         }
 
         // update the high score table
-        Platform.runLater(() -> {
-            LobbyController.gameWindowController.setHighScore();
-        });
+        Platform.runLater(() -> LobbyController.gameWindowController.setHighScore());
     }
 
     /**
@@ -241,9 +239,7 @@ public class ClientGame {
      * Displays a window with the alert that the player has dropped out because of too many points
      */
     public void droppedOut() {
-        Platform.runLater(() -> {
-            DroppedOutWindow.display();
-        });
+        Platform.runLater(() -> DroppedOutWindow.display());
     }
 
     /**
