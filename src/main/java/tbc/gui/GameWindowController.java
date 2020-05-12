@@ -307,6 +307,7 @@ public class GameWindowController {
                 plagCnt.setText(cnt + "x Plagiarism");
                 break;
             case ("Cheat180"):
+            case ("Cheat190"):
                 Image cheat = new Image("tbc/gui/img/cheat.png");
                 cheatCard.setImage(cheat);
                 break;
