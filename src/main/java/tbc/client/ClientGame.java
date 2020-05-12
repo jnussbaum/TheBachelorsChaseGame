@@ -41,8 +41,7 @@ public class ClientGame {
      * @param cardName The new card, which the user got, will be appended to the ArrayList 'cards'.
      */
     public void addCard(String cardName) {
-        if(cardName.contains("Cheat"))
-        cards.add(Card.valueOf(cardName));
+            cards.add(Card.valueOf(cardName));
         Platform.runLater(
             () -> {
                 LobbyController.gameWindowController
