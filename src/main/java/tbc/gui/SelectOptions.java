@@ -31,8 +31,8 @@ public class SelectOptions {
 
     private static final Integer STARTTIME = 10;
     private static Timeline timeline;
-    private static TextField timerField = new TextField();
-    private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+    private static final TextField timerField = new TextField();
+    private static final IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
     /**
      * Opens a window to show the three options a player can make while it's his turn. Button 'Hit':

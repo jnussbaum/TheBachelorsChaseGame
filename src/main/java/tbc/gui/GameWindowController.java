@@ -81,7 +81,7 @@ public class GameWindowController {
     @FXML
     private TextArea gameChatArea;
 
-    private ObservableList<Player> players = observableArrayList();
+    private final ObservableList<Player> players = observableArrayList();
     private Window secondStage;
 
     /**

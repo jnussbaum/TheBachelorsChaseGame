@@ -31,6 +31,7 @@ public class Player {
 
     /**
      * Create a player object with the player name and the number of coins.
+     *
      * @param userName the name of the player
      * @param coins    the number of coins of this player
      */
@@ -85,6 +86,7 @@ public class Player {
 
     /**
      * Set the boolean variable 'quitMatch' to true or false.
+     *
      * @param quitMatch Information if this player has quit this match (true) or not (false).
      */
     public void setQuitMatch(boolean quitMatch) {
@@ -93,6 +95,7 @@ public class Player {
 
     /**
      * Set the boolean 'notifyDropOut' to true or false.
+     *
      * @param notifyDropOut Information if this player already dropped out (true) or not (false).
      */
     public void setNotifyDropOut(boolean notifyDropOut) {

@@ -21,7 +21,7 @@ import tbc.game.Player;
 public class WriteHighScore {
 
     private static final Logger LOGGER = LogManager.getLogger(WriteHighScore.class);
-    private boolean appendToFile;
+    private final boolean appendToFile;
 
     /**
      * The constructor of the class.

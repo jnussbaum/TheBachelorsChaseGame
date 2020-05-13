@@ -57,8 +57,8 @@ public class Client {
     /**
      * The main method tries to connect to the server and starts the GUI window
      *
-     * @param args The String array with the arguments from the user. The following format is required:
-     *             Client IP-Address:Portnumber, and then user name (if one exists)
+     * @param args The String array with the arguments from the user. The following format is
+     *             required: Client IP-Address:Portnumber, and then user name (if one exists)
      */
     public static void main(String[] args) {
         // run jar without a username. Username is set from the server as the system name.
