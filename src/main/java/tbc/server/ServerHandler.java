@@ -178,10 +178,13 @@ public class ServerHandler implements Runnable {
     public void closeConnection() {
         exit = true;
         Server.removeUser(myName);
-        LOGGER.info("ServerHandler of " + myName + " removed from Server");
         if (lobby != null) {
             lobby.logout(myName);
-            LOGGER.info("ServerHandler of " + myName + "logged out in the lobby.");
+            LOGGER.info("ServerHandler of " + myName + " logged out in the lobby.");
+            if (lobby.serverGame != null) {
+                lobby.serverGame.logout(myName);
+                LOGGER.info("ServerHandler of " + myName + " removed from ServerGame");
+            }
         }
         try {
             if (!clientOutputStream.checkError()) {
