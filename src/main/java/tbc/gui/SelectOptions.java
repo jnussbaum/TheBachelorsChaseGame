@@ -34,6 +34,12 @@ public class SelectOptions {
     private static TextField timerField = new TextField();
     private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
 
+    /**
+     * Opens a window to show the three options a player can make while it's his turn. Button 'Hit':
+     * gives the player a card Button 'Throw Away': the player has to write in a card name which
+     * she/he wants to throw away Button 'Quit': the player can not continue playing in this match
+     * Timer: counts the 10 seconds. After 10 seconds the turn will be given to the next player.
+     */
     public static void display() {
         Stage window = new Stage();
 
@@ -82,7 +88,7 @@ public class SelectOptions {
             stage.close();
         });
 
-        // Timer for each round
+        // timer for each round
         timerField.setEditable(false);
         timerField.setPrefWidth(30.0);
         timerField.textProperty().bind(timeSeconds.asString());

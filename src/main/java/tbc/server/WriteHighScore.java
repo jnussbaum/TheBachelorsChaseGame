@@ -11,18 +11,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tbc.game.Player;
 import tbc.game.CoinsCompare;
+import tbc.game.Player;
 
+
+/**
+ * This Class writes the HighScore into a txt-file in order to have it persistently.
+ */
 public class WriteHighScore {
 
     private static final Logger LOGGER = LogManager.getLogger(WriteHighScore.class);
     private boolean appendToFile;
 
+    /**
+     * The constructor of the class.
+     *
+     * @param appendValue boolean to allow to append values to the file.
+     */
     public WriteHighScore(boolean appendValue) {
         appendToFile = appendValue;
     }
 
+    /**
+     * The method to write into the txt-file.
+     *
+     * @param name  the username of the player.
+     * @param coins the coins belonging to the player.
+     */
     public void writeToFile(String name, int coins) {
         String path = "HighScore.txt";
         FileWriter writer;
@@ -44,6 +59,10 @@ public class WriteHighScore {
         }
     }
 
+    /**
+     * Takes the information inside of the HighScore.txt file, sorts the values inside of it and
+     * writes it again.
+     */
     private void sortHighScore() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader("HighScore.txt"));

@@ -19,14 +19,11 @@ public class RejectJoiningLobbyWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(RejectJoiningLobbyWindow.class);
 
-    public static boolean rejected = false;
-
     /**
-     * It opens a window with the message to tell the user he can not join anymore.
+     * It opens a window with the message to tell the user he can not join anymore. The button 'OK'
+     * closes this window.
      */
     public static void display() {
-        rejected = true;
-
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -44,6 +41,7 @@ public class RejectJoiningLobbyWindow {
         ok.setOnAction(e -> {
             Stage stage = (Stage) ok.getScene().getWindow();
             stage.close();
+            SelectLobby.display();
             LOGGER.info("Closed rejection window.");
         });
 

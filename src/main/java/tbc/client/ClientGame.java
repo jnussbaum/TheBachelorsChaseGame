@@ -112,18 +112,18 @@ public class ClientGame {
                     nameToPlayer(myName).setNumOfCoins(coins);
                     calculatePoints();
                     Platform.runLater(
-                            () -> {
-                                LobbyController.gameWindowController.appendGameMsg(
-                                        "The Card " + cardName + " was thrown away");
-                                LobbyController.gameWindowController.throwTheCard(cardName);
-                                // update the high score table
-                                LobbyController.gameWindowController.setHighScore();
-                            }
+                        () -> {
+                            LobbyController.gameWindowController.appendGameMsg(
+                                "The Card " + cardName + " was thrown away");
+                            LobbyController.gameWindowController.throwTheCard(cardName);
+                            // update the high score table
+                            LobbyController.gameWindowController.setHighScore();
+                        }
                     );
                 } else {
                     Platform.runLater(
-                            () -> LobbyController.gameWindowController.appendGameMsg(
-                                    "You don't have enough coins to throw away a card. Please select another option.")
+                        () -> LobbyController.gameWindowController.appendGameMsg(
+                            "You don't have enough coins to throw away a card. Please select another option.")
                     );
                     SelectOptions.display();
                 }

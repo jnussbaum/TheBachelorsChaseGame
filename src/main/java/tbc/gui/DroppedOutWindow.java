@@ -11,12 +11,18 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This Class opens a window which tells the player that he reached over 180 points.
+ */
 public class DroppedOutWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(DroppedOutWindow.class);
 
+    /**
+     * Opens a little window to tell that the player has reached over 180 points. The button 'OK'
+     * closes this window. The player can't continue the game while the match has not ended.
+     */
     public static void display() {
-
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -29,7 +35,8 @@ public class DroppedOutWindow {
         textArea.setFocusTraversable(false);
         textArea.setWrapText(true);
         textArea.setText(
-            "You have reached over 180 CP, so you dropped out. \nPlease wait for the match to end...");
+            "You have reached over 180 CP, so you dropped out. "
+                + "\nPlease wait for the match to end...");
 
         Button ok = new Button("OK");
         ok.setOnAction(e -> {

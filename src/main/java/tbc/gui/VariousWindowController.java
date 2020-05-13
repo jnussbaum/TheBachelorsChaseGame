@@ -19,7 +19,6 @@ import tbc.client.Client;
 public class VariousWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(VariousWindowController.class);
-
     @FXML
     public TextField newUsername;
     @FXML
@@ -41,7 +40,8 @@ public class VariousWindowController {
         clientHandler.changeName(clientName);
 
         Thread thread = new Thread(() -> {
-            Runnable updater = () -> usernameStatus.setText("New Name: " + Client.clientHandler.getMyName());
+            Runnable updater = () -> usernameStatus
+                .setText("New Name: " + Client.clientHandler.getMyName());
 
             while (true) {
                 try {

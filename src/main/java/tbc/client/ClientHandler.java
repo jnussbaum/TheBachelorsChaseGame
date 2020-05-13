@@ -8,11 +8,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import javafx.application.Platform;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.chat.ChatClient;
-import tbc.gui.RejectJoiningLobbyWindow;
 
 /**
  * At the beginning of his life, a client starts a clientHandler-Thread, which will be responsible
@@ -21,6 +19,7 @@ import tbc.gui.RejectJoiningLobbyWindow;
 public class ClientHandler implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
+    public boolean rejected = false;
     private String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
@@ -152,7 +151,7 @@ public class ClientHandler implements Runnable {
                 break;
             case "REJECTTOJOINLOBBY":
                 // message that this client cannot enter this lobby
-                Platform.runLater(() -> RejectJoiningLobbyWindow.display());
+                rejected = true;
                 break;
             case "GIVEHIGHSCORE":
                 // receives the new highscore list
