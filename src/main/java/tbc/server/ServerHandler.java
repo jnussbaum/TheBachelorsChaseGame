@@ -79,10 +79,12 @@ public class ServerHandler implements Runnable {
         String[] commands = s.split("#");
         switch (commands[0]) {
             case "CHANGENAME":
+                // request from the client to change his name into the name passed as argument
                 String userName = commands[1];
                 Server.changeName(myName, userName);
                 break;
             case "CHAT":
+                // chat message from a client
                 String sender = commands[1];
                 String receiver = commands[2];
                 String msg = commands[4];
@@ -90,20 +92,20 @@ public class ServerHandler implements Runnable {
                 chatServer.receiveMessage(sender, receiver, msg);
                 break;
             case "GETPLAYERLIST":
+                // request from client to receive a list of all players in the lobby
                 sendPlayerList();
                 break;
-            case "CREATELOBBY":
-                String lobbyName = commands[1];
-                Server.createLobby(lobbyName, this);
-                break;
             case "GETLOBBYLIST":
+                // request from client to receive a list of all lobbies
                 sendLobbyList();
                 break;
             case "JOINLOBBY":
+                // request from client to join the named lobby
                 String name = commands[1];
                 Server.joinLobby(name, this);
                 break;
             case "READYFORGAME":
+                // message from client that he is ready to start a game
                 LOGGER.info(
                     "ServerHandler received READYFORGAME and will execute lobby.readyForGame with "
                         +
@@ -112,26 +114,33 @@ public class ServerHandler implements Runnable {
                 lobby.readyForGame(myName);
                 break;
             case "ASKFORCARD":
+                // request from client to get a card ("hit")
                 lobby.serverGame.giveCardToClient(myName);
                 LOGGER.info("ServerHandler invoked giveCardToClient() in ServerGame");
                 break;
             case "THROWCARD":
+                // request from client to throw away a card
                 String cardName = commands[1];
                 lobby.serverGame.throwCard(myName, cardName);
                 break;
             case "QUITTHISMATCH":
+                // request from client to quit this match
                 lobby.serverGame.quitThisMatch(myName);
                 break;
             case "READYFORMATCH":
+                // message from client that he is ready to start a match
                 lobby.readyForMatch(myName);
                 break;
             case "ASKFORHIGHSCORE":
+                // request from client to receive the highscore list
                 Server.getHighScoreData(myName);
                 break;
             case "LOGOUT":
+                // request from client to log out
                 closeConnection();
                 break;
             case "CHEAT":
+                // message from client that he wants to reach the named number of points by cheating
                 String points = commands[1];
                 cheat(points);
                 break;
@@ -158,8 +167,8 @@ public class ServerHandler implements Runnable {
      * The server sends a feedback to this handler's client, if his name change request was allowed
      * or rejected.
      *
-     * @param feedback - tells if the Change was accepted
-     * @param newName  - the requested name
+     * @param feedback tells if the Change was accepted
+     * @param newName  the requested name
      */
     public void giveFeedbackToChange(boolean feedback, String newName) {
         if (feedback) {
@@ -171,11 +180,11 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * This method closes all the streams and the socket of the client who requested the LOGOUT.
-     * Before closing the streams and the socket it should give a message to the
-     * clientOutputStream.
+     * This method logs this client out from the server, lobby, and serverGame, and then
+     * closes all the streams and the socket.
      */
     public void closeConnection() {
+        // first, log out from server, lobby, and servergame
         exit = true;
         Server.removeUser(myName);
         if (lobby != null) {
@@ -186,10 +195,13 @@ public class ServerHandler implements Runnable {
                 LOGGER.info("ServerHandler of " + myName + " removed from ServerGame");
             }
         }
+
+        // close all streams and sockets
         try {
             if (!clientOutputStream.checkError()) {
                 clientOutputStream.println("LOGOUT");
                 clientOutputStream.flush();
+                LOGGER.info("ServerHandler of " + myName + " sent LOGOUT to ClientHandler");
             }
             clientOutputStream.close();
             clientInputStream.close();
@@ -202,53 +214,58 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * Send a list of the current players to the client.
+     * Sends a list of the current players to the client.
      */
     public void sendPlayerList() {
         String[] players = Server.getPlayers();
-        //Create the string which will be sent to the clientOutputStream
+
+        // create the string which will be sent to the clientOutputStream
         StringBuilder stringBuilder = new StringBuilder("SENDPLAYERLIST");
         if (players.length != 0) {
-            //append the players to the string
+            // append the players to the string
             for (int i = 0; i < players.length; i++) {
                 stringBuilder.append("#").append(players[i]);
             }
         } else {
             stringBuilder.append("#").append("No Players");
         }
+
+        // send the string to the client
         String s = stringBuilder.toString();
         clientOutputStream.println(s);
         clientOutputStream.flush();
     }
 
     /**
-     * Send a list of available lobbies to the client.
+     * Sends a list of available lobbies to the client.
      */
     public void sendLobbyList() {
         String[] lobbies = Server.getLobbies();
-        //Create the string which will be sent to the clientOutputStream
+
+        // create the string which will be sent to the clientOutputStream
         String s = "SENDLOBBYLIST";
         if (lobbies.length != 0) {
-            //append the lobbies to the string
+            // append the lobbies to the string
             for (int i = 0; i < lobbies.length; i++) {
                 s = s + "#" + lobbies[i];
             }
         } else {
             s = s + "#" + "No Lobbies";
         }
+
+        // send the string to the client
         clientOutputStream.println(s);
         clientOutputStream.flush();
     }
 
     /**
-     * Tell the client that he successfully joined the specified lobby
+     * Tells the client that he successfully joined the specified lobby
      *
-     * @param lobbyName - the Name of the lobby
+     * @param lobbyName the Name of the lobby
      */
     public void lobbyJoined(String lobbyName) {
         clientOutputStream.println("LOBBYJOINED" + "#" + lobbyName);
         clientOutputStream.flush();
-        //store the lobby in this object field
         this.lobby = Server.getLobby(lobbyName);
         LOGGER.info("ServerHandler of " + myName + " set its lobby variable.");
     }
@@ -256,7 +273,7 @@ public class ServerHandler implements Runnable {
     /**
      * Sends the given card to the Client
      *
-     * @param cardName - the name of the cart that is about to be send
+     * @param cardName the name of the card that is about to be sent
      */
     public void giveCard(String cardName) {
         clientOutputStream.println("GIVECARD" + "#" + cardName);
@@ -266,9 +283,9 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * Sends the notification that the game has Started
+     * Sends the notification that the game has started
      *
-     * @param players - an Array with all the names of the participating players
+     * @param players an array with all the names of the participating players
      */
     public void gameStarted(String[] players) {
         String output = "GAMESTARTED" + "#";
@@ -291,7 +308,7 @@ public class ServerHandler implements Runnable {
     /**
      * Sends the notification that the match has ended
      *
-     * @param winnerName - the name of the winner
+     * @param winnerName the name of the winner
      */
     public void endMatch(String winnerName) {
         clientOutputStream.println("ENDMATCH" + "#" + winnerName);
@@ -300,9 +317,9 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * Sends the new amount of coins of every player
+     * Sends the new number of coins of every player
      *
-     * @param allCoins - all names with there corresponding coins
+     * @param allCoins all names with their corresponding coins
      */
     public void sendCoins(String allCoins) {
         clientOutputStream.println("SENDCOINS" + "#" + allCoins);
@@ -310,44 +327,34 @@ public class ServerHandler implements Runnable {
         LOGGER.info("Coins have been sent");
     }
 
-    /**
-     * gets the name of the Client that the serverHandler is responding to
-     *
-     * @return the name of the client
-     */
     public String getName() {
         return myName;
     }
 
     /**
-     * sets the name of the client the serverHandler is responding to
+     * Sets the name of the client the serverHandler is communicating to
      *
-     * @param name the name of the client as an String
+     * @param name the name of the client as a String
      */
     public void setName(String name) {
         myName = name;
     }
 
-    /**
-     * gets the lobby the serverHandler is assigned to
-     *
-     * @return the lobby object
-     */
     public Lobby getLobby() {
         return lobby;
     }
 
     /**
-     * Sets the Lobby the serverHandler is assigned to
+     * Sets the Lobby this serverHandler is assigned to
      *
-     * @param lobby - the lobby
+     * @param lobby the lobby
      */
     public void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
 
     /**
-     * sends a Notification to the client that he has dropped out of the game
+     * Sends a notification to the client that he has dropped out of the game
      */
     public void droppedOut() {
         System.out.println("ServerHandler.droppedOut");
@@ -356,7 +363,7 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * the Client has been rejected from joining an lobby and is getting feedback
+     * The Client has been rejected from joining a lobby and is getting feedback
      */
     public void reject() {
         clientOutputStream.println("REJECTTOJOINLOBBY");
@@ -374,9 +381,9 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * gives the cheat-amount to serverGame
+     * If a player cheats, this method is called
      *
-     * @param points - the amount the player wants
+     * @param points the number of points the player wants
      */
     void cheat(String points) {
         int p = Integer.parseInt(points);

@@ -8,7 +8,9 @@ import tbc.chat.ChatClient;
 import tbc.gui.LobbyController;
 import tbc.gui.Login;
 
-
+/**
+ * The client which is started from the jar.
+ */
 public class Client {
 
     private static final Logger LOGGER = LogManager.getLogger(Client.class);
@@ -26,8 +28,8 @@ public class Client {
      * When a new Client connects to the server, he chooses his name and sends a request to the
      * server to connect with this name. The Server answers by invoking this method.
      *
-     * @param feedback: Answer yes/no if the name changing succeeded or not.
-     * @param newName:  The new name.
+     * @param feedback Answer yes/no if the name changing succeeded or not.
+     * @param newName  The new name.
      */
     public static void nameChangeFeedback(boolean feedback, String newName) {
         if (feedback) {
@@ -43,7 +45,7 @@ public class Client {
     /**
      * Answer from the Server to this client that a game starts now.
      *
-     * @param player: String with all players in this game
+     * @param player String with all players in this game
      */
     public static void startGame(String player) {
         String[] players = player.split("::");
@@ -53,18 +55,18 @@ public class Client {
     }
 
     /**
-     * try`s to connect to the server and starts the game-window
+     * The main method tries to connect to the server and starts the GUI window
      *
-     * @param args The String array with the arguments from the user. Will be split into hostname,
-     *             port number and user name (if one exists)
+     * @param args The String array with the arguments from the user. The following format is required:
+     *             Client IP-Address:Portnumber, and then user name (if one exists)
      */
     public static void main(String[] args) {
-        // Run jar without a username. Username is set from the server as the system name.
+        // run jar without a username. Username is set from the server as the system name.
         if (args.length < 3) {
             userName = System.getProperty("user.name");
             LOGGER.info("Username has been set from the server: " + userName);
         } else {
-            // Run jar with username
+            // run jar with username
             userName = args[2];
             LOGGER.info("Username has been set from the client: " + userName);
         }
@@ -96,7 +98,7 @@ public class Client {
     /**
      * Send a request to the server to join a lobby
      *
-     * @param lobby: The lobby which should be joined
+     * @param lobby The lobby which should be joined
      */
     public static void joinALobby(String lobby) {
         LOGGER.info("A request will be sent to join the lobby " + lobby);

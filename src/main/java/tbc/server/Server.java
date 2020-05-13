@@ -80,18 +80,6 @@ public class Server {
     }
 
     /**
-     * Creates a new lobby and puts the first client(the one how asked to make one) in it
-     *
-     * @param lobbyName - the name of the new lobby
-     * @param sh        - ServerHandler of the first occupant of the lobby
-     */
-    public static void createLobby(String lobbyName, ServerHandler sh) {
-        Lobby lobby = new Lobby(lobbyName, sh);
-        lobbies.put(lobbyName, lobby);
-        sh.setLobby(lobby);
-    }
-
-    /**
      * gets the list of existing lobbies. if der are no lobbies the list will only contain the
      * entry: no lobbies
      *

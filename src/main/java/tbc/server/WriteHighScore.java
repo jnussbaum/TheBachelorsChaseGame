@@ -12,7 +12,7 @@ import java.util.Collections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tbc.game.Player;
-import tbc.game.coinsCompare;
+import tbc.game.CoinsCompare;
 
 public class WriteHighScore {
 
@@ -59,7 +59,7 @@ public class WriteHighScore {
                 currentLine = reader.readLine();
             }
 
-            Collections.sort(playerRecords, new coinsCompare());
+            Collections.sort(playerRecords, new CoinsCompare());
             BufferedWriter writer = new BufferedWriter(new FileWriter("HighScore.txt"));
 
             for (Player player : playerRecords) {

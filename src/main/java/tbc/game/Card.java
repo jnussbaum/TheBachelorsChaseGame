@@ -1,7 +1,8 @@
 package tbc.game;
 
 /**
- * This enum defines the different card types and their value.
+ * This enum defines the different card types and their values. The cheat cards seem to be never used,
+ * because they are not put into a deck, but only used then someone cheats.
  */
 public enum Card {
     Plagiarism(-50),

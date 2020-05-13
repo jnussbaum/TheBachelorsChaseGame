@@ -21,7 +21,6 @@ import tbc.gui.RejectJoiningLobbyWindow;
 public class ClientHandler implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger(ClientHandler.class);
-
     private String myName;
     private Socket clientSocket;
     private ChatClient chatClient;
@@ -90,42 +89,52 @@ public class ClientHandler implements Runnable {
         String[] commands = s.split("#");
         switch (commands[0]) {
             case "CHAT":
+                // handles chat messages
                 String sender = commands[1];
                 String isPrivateMessage = commands[3];
                 String msg = commands[4];
                 chatClient.chatArrived(sender, isPrivateMessage, msg);
                 break;
             case "CHANGEOK":
+                // feedback that the name change was successful
                 String newName = commands[1];
                 Client.nameChangeFeedback(true, newName);
                 myName = newName;
                 break;
             case "CHANGENO":
+                // feedback that the name change was unsuccessful
                 String name = commands[1];
                 Client.nameChangeFeedback(false, name);
                 break;
             case "SENDPLAYERLIST":
+                // receives all players as a string
                 receivePlayerList(commands);
                 break;
             case "SENDLOBBYLIST":
+                // receives a list of all existing lobbies
                 receiveLobbyList(commands);
                 break;
             case "LOBBYJOINED":
+                // feedback that the named lobby was joined
                 String lobbyName = commands[1];
                 LOGGER.info("You joined the lobby " + lobbyName);
                 break;
             case "GIVECARD":
+                // receives the named card
                 String cardName = commands[1];
                 Client.getGame().addCard(cardName);
                 break;
             case "GAMESTARTED":
+                // feedback that the game started with the named players
                 String players = commands[1];
                 Client.startGame(players);
                 break;
             case "GIVETURN":
+                // message that it's this client's turn
                 Client.getGame().giveTurn();
                 break;
             case "ENDMATCH":
+                // message that the match ended and that winnerName won
                 String winnerName = commands[1];
                 LOGGER.info(
                     "endmatch of ClientGame " + Client.getGame() + " was called with winnername "
@@ -133,20 +142,25 @@ public class ClientHandler implements Runnable {
                 Client.getGame().endMatch(winnerName);
                 break;
             case "SENDCOINS":
+                // receives the new number of coins of all players
                 String allCoins = commands[1];
                 Client.getGame().receiveCoins(allCoins);
                 break;
             case "DROPPEDOUT":
+                // message that this player dropped out of the ongoing match
                 Client.getGame().droppedOut();
                 break;
             case "REJECTTOJOINLOBBY":
+                // message that this client cannot enter this lobby
                 Platform.runLater(() -> RejectJoiningLobbyWindow.display());
                 break;
             case "GIVEHIGHSCORE":
+                // receives the new highscore list
                 String data = commands[1];
                 setHighScore(data);
                 break;
             case "LOGOUT":
+                // message that this client logged out
                 System.exit(0);
                 break;
             default:
@@ -154,14 +168,18 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * With this method, the client tells the clientHandler which chatClient belongs to him.
+     * @param chatClient The chatClient belonging to this clientHandler
+     */
     public void registerChatClient(ChatClient chatClient) {
         this.chatClient = chatClient;
     }
 
     /**
-     * Sends an request to change the name of the client
+     * Sends a request to change the name of the client
      *
-     * @param userName - the name that the client wants to change in to
+     * @param userName the new name that the client wants to have
      */
     public void changeName(String userName) {
         clientOutputStream.println("CHANGENAME" + "#" + userName);
@@ -169,11 +187,11 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sends a chatMessage
+     * Sends a chat message
      *
-     * @param receiver     - the name of the receiver
-     * @param isPrivateMsg - statement if the message is private
-     * @param msg          - the Message the client wants to send
+     * @param receiver     the name of the receiver
+     * @param isPrivateMsg statement if the message is private
+     * @param msg          the Message the client wants to send
      */
     public void sendMessage(String receiver, String isPrivateMsg, String msg) {
         clientOutputStream
@@ -182,7 +200,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sends the logout-request
+     * Sends the logout-request to the Server
      */
     public void logOut() {
         clientOutputStream.println("LOGOUT");
@@ -190,7 +208,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sends a request for the Lobby-list
+     * Sends a request to obtain a list of available lobbies
      */
     public void askForLobbyList() {
         clientOutputStream.println("GETLOBBYLIST");
@@ -198,16 +216,9 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * @param lobbyName
-     */
-    void createLobby(String lobbyName) {
-        clientOutputStream.println("CREATELOBBY" + "#" + lobbyName);
-    }
-
-    /**
-     * this method takes the received String array and translates it
+     * This method takes the received String array and processes it
      *
-     * @param commands - the received list of lobby names
+     * @param commands the received list of lobby names
      */
     public void receiveLobbyList(String[] commands) {
         if (commands.length > 1) {
@@ -224,22 +235,17 @@ public class ClientHandler implements Runnable {
             }
             lobbiesGui = lobby.toString();
         } else {
-            //There are no lobbies
+            // there are no lobbies
             LOGGER.info("There are no lobbies");
         }
     }
 
-    /**
-     * gets the LobbyGui name
-     *
-     * @return - the name of the LobbyGUI
-     */
     public String getLobbiesGui() {
         return lobbiesGui;
     }
 
     /**
-     * send an request for the PlayerList
+     * Sends a request to the server to obtain a list of all players
      */
     public void askForPlayerList() {
         clientOutputStream.println("GETPLAYERLIST");
@@ -247,9 +253,9 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * translate the received list
+     * This method receives the list of all players and processes it
      *
-     * @param commands - the list of Player-names
+     * @param commands the String array of all Player-names
      */
     public void receivePlayerList(String[] commands) {
         if (commands.length > 1) {
@@ -266,24 +272,19 @@ public class ClientHandler implements Runnable {
             playersGui = player.toString();
             LOGGER.info(playersGui);
         } else {
-            //There are no players
+            // there are no players
             LOGGER.info("There are no players");
         }
     }
 
-    /**
-     * Gets the PlayerListGui
-     *
-     * @return - the PlayerlistGUI
-     */
     public String getPlayerListGui() {
         return playersGui;
     }
 
     /**
-     * sends an request to join the named lobby
+     * Sends a request to the server to join the named lobby
      *
-     * @param lobbyName - the Lobby-name
+     * @param lobbyName the Lobby-name
      */
     void joinLobby(String lobbyName) {
         clientOutputStream.println("JOINLOBBY" + "#" + lobbyName);
@@ -291,7 +292,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * send an request for an card
+     * Sends a request for a card to the server, when the user clicks on "Hit"
      */
     public void askForCard() {
         clientOutputStream.println("ASKFORCARD");
@@ -299,9 +300,9 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * send an request to throw away a card
+     * Sends a request to the server to throw away a card
      *
-     * @param cardName - name of the card that shall be cast away
+     * @param cardName name of the card that shall be thrown away
      */
     public void throwCard(String cardName) {
         clientOutputStream.println("THROWCARD" + "#" + cardName);
@@ -309,7 +310,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sending the server the message that the client wants to skip the active match
+     * Sends a request to the server to quit the ongoing match
      */
     public void quitThisMatch() {
         clientOutputStream.println("QUITTHISMATCH");
@@ -317,7 +318,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sending the server a message that the client is ready to start an new game
+     * Sends the message to the server that the client is ready to start a game
      */
     public void readyForGame() {
         LOGGER.info("readyforgame was send");
@@ -326,7 +327,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sending the server a message that the client is ready to start an new match
+     * Sends the message to the server that the client is ready to start a new match
      */
     public void askForNewMatch() {
         clientOutputStream.println("READYFORMATCH");
@@ -334,7 +335,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sending the server a message that the client wants to get the highscore
+     * Sends a message to the server that the client wants to get the highscore list
      */
     public void askForHighScore() {
         clientOutputStream.println("ASKFORHIGHSCORE");
@@ -342,7 +343,7 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * sets the highscore, which this method gets as the parameter, to the variable 'highScoreGui'
+     * Saves the highscore, which this method gets as the parameter, into the variable 'highScoreGui'
      *
      * @param data the names and coins of the highscore as a String
      */
@@ -354,6 +355,10 @@ public class ClientHandler implements Runnable {
         return highScoreGui;
     }
 
+    /**
+     * Sends the message to the server that this player wants to cheat
+     * @param points The number of points the player wants to achieve.
+     */
     public void cheat(int points) {
         clientOutputStream.println("CHEAT#" + points);
         clientOutputStream.flush();

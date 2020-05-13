@@ -13,12 +13,13 @@ import tbc.gui.LobbyController;
 public class ChatClient {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatClient.class);
-
-    /**
-     * The clientHandler who is responsible for the communication with the server.
-     */
     private final ClientHandler clientHandler;
 
+    /**
+     * When starting a ChatClient, a clientHandler has to be passed as argument
+     *
+     * @param clientHandler The clientHandler of the Client who started this chatClient
+     */
     public ChatClient(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }

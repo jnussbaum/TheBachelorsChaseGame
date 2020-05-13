@@ -10,6 +10,9 @@ import tbc.gui.DroppedOutWindow;
 import tbc.gui.LobbyController;
 import tbc.gui.SelectOptions;
 
+/**
+ * The client-side game.
+ */
 public class ClientGame {
 
     private static final Logger LOGGER = LogManager.getLogger();
@@ -23,8 +26,8 @@ public class ClientGame {
     /**
      * The Client starts a new game.
      *
-     * @param ch:          the clientHandler for sending stuff to the server
-     * @param namePlayers: the player names that are participating in the game
+     * @param ch          the clientHandler for sending stuff to the server
+     * @param namePlayers a string array of the player names that are participating in the game
      */
     public ClientGame(ClientHandler ch, String[] namePlayers) {
         this.clientHandler = ch;
@@ -79,14 +82,16 @@ public class ClientGame {
     /**
      * Handles the process of throwing away a card on client side
      *
-     * @param cardName: name of the card to throw away
+     * @param cardName name of the card to throw away
      */
     public void throwCard(String cardName) {
+        // cheat codes
         if (cardName.equals("BOSS")) {
             cheat(180);
         } else if (cardName.equals("LOSER")) {
             cheat(190);
         } else {
+            // check if cardName is valid
             ArrayList<String> cardsAsStrings = new ArrayList<>();
             for (Card c : cards) {
                 cardsAsStrings.add(c.toString());
@@ -98,6 +103,7 @@ public class ClientGame {
                 );
                 SelectOptions.display();
             } else {
+                // if cardName is valid, check if the player has enough coins
                 int coins = nameToPlayer(myName).getNumOfCoins();
                 if (coins >= THROWCOST) {
                     cards.remove(Card.valueOf(cardName));
@@ -126,7 +132,7 @@ public class ClientGame {
     }
 
     /**
-     * Handles the exiting of the player
+     * This method is called when a player quits the ongoing match.
      */
     public void quitThisMatch() {
         nameToPlayer(myName).setQuitMatch(true);
@@ -146,16 +152,12 @@ public class ClientGame {
         points = sum;
         Platform.runLater(() -> LobbyController.gameWindowController
             .appendGameMsg("You have " + points + " points."));
-
-        if (points > 180) {
-            droppedOut();
-        }
     }
 
     /**
      * Handles the routine at the end of a match
      *
-     * @param winnerName: Name of the client who has won
+     * @param winnerName Name of the client who has won
      */
     public void endMatch(String winnerName) {
         Platform.runLater(
@@ -182,15 +184,15 @@ public class ClientGame {
      * Receives a string with the coins of all players, in order to update the own coins and for the
      * highscore table
      *
-     * @param allCoins: All coins and the corresponding player names as one string
+     * @param allCoins All coins and the corresponding player names as one string
      */
     public void receiveCoins(String allCoins) {
-        //split string into substrings, then write information into the player objects
+        // split string into substrings, then write information into the player objects
         String[] s = allCoins.split("::");
         String name;
         for (int i = 0; i < s.length - 1; i++) {
             if (i % 2 == 0) {
-                //a name is at this position
+                // a name is at this position
                 name = s[i];
                 int coins = Integer.parseInt(s[i + 1]);
                 nameToPlayer(name).setNumOfCoins(coins);
@@ -205,7 +207,7 @@ public class ClientGame {
     /**
      * Returns the player object of the requested player
      *
-     * @param clientName: Name of the client as string
+     * @param clientName Name of the client as string
      * @return The player-object
      */
     public Player nameToPlayer(String clientName) {
@@ -243,9 +245,9 @@ public class ClientGame {
     }
 
     /**
-     * this method is called to win the game by Cheating
+     * This method is called to win the game by cheating
      *
-     * @param points - the amount of points the player wants to have with cheating
+     * @param points the number of points the player wants to reach
      */
     public void cheat(int points) {
         if (points == 180 || points == 190) {

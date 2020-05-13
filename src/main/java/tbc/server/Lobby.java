@@ -14,16 +14,11 @@ public class Lobby {
 
     private static final Logger LOGGER = LogManager.getLogger();
     public String lobbyName;
-    /**
-     * The game belonging to this lobby is stored in this variable.
-     */
     public ServerGame serverGame;
     ArrayList<String> readyGameClients = new ArrayList<>();
     ArrayList<String> readyMatchClients = new ArrayList<>();
-    /**
-     * This boolean stores the information whether a game is active right now or not.
-     */
     boolean isGameActive = false;
+
     /**
      * Administration of all clients by their name and serverHandler
      */
@@ -45,8 +40,8 @@ public class Lobby {
     /**
      * A client's join request leads to the invocation of this method
      *
-     * @param clientName: Name of the client who wants to join
-     * @param sh:         This client's ServerHandler
+     * @param clientName Name of the client who wants to join
+     * @param sh         This client's ServerHandler
      */
     public void join(String clientName, ServerHandler sh) {
         if (clients.size() > 3 || isGameActive || clients.containsKey(clientName)) {
@@ -61,7 +56,7 @@ public class Lobby {
      * When a player is ready to start a game and clicks his "Ready" button, this method will be
      * called.
      *
-     * @param myName: Name of the player who is ready
+     * @param myName Name of the player who is ready
      */
     void readyForGame(String myName) {
         if (clients.containsKey(myName)) {
@@ -78,7 +73,7 @@ public class Lobby {
      * When a player is ready to start a new match and clicks his "Ready" button, this method will
      * be called.
      *
-     * @param myName: Name of the player who is ready
+     * @param myName Name of the player who is ready
      */
     void readyForMatch(String myName) {
         if (clients.containsKey(myName)) {
@@ -127,7 +122,7 @@ public class Lobby {
     /**
      * When a client logs out, he is removed from the lobby and the serverGame.
      *
-     * @param name: Name of the client who logged out
+     * @param name Name of the client who logged out
      */
     public void logout(String name) {
         clients.remove(name);

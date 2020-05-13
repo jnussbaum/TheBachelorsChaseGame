@@ -2,7 +2,7 @@ package tbc.game;
 
 import java.util.Comparator;
 
-public class coinsCompare implements Comparator<Player> {
+public class CoinsCompare implements Comparator<Player> {
 
     @Override
     public int compare(Player p1, Player p2) {
