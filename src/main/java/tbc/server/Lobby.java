@@ -22,7 +22,7 @@ public class Lobby {
     /**
      * Administration of all clients by their name and serverHandler
      */
-    private HashMap<String, ServerHandler> clients = new HashMap<>();
+    private final HashMap<String, ServerHandler> clients = new HashMap<>();
 
     /**
      * When a new lobby is created, the serverHandler of the client who initiated this lobby is

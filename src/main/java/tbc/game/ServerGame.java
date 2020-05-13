@@ -17,24 +17,20 @@ public class ServerGame implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private final Lobby lobby;
+    /**
+     * Number of coins you pay to throw away a card
+     */
+    private final int THROWCOST = 10;
+    /**
+     * Administration of all cards which are not yet distributed to a client. Card: Type of card
+     * Integer: number of cards of this type which are still available.
+     */
+    private final HashMap<Card, Integer> cardDeck = new HashMap<>();
     volatile boolean matchEnd = false;
     boolean winner = false;
     private Timer timer;
     private Semaphore turnController;
     private int numOfDroppedOut = 0;
-
-    /**
-     * Number of coins you pay to throw away a card
-     */
-    private final int THROWCOST = 10;
-
-    /**
-     * Administration of all cards which are not yet distributed to a client.
-     * Card: Type of card
-     * Integer: number of cards of this type which are still available.
-     */
-    private final HashMap<Card, Integer> cardDeck = new HashMap<>();
-
     /**
      * Administration of the clients in this game with their respective cardsets, coins and points.
      */
@@ -63,6 +59,7 @@ public class ServerGame implements Runnable {
 
     /**
      * Get the number of cards which still are in the card deck
+     *
      * @return Number of cards
      */
     public int getDeckSize() {
@@ -287,8 +284,8 @@ public class ServerGame implements Runnable {
      * Takes a string and returns the matching Player-object
      *
      * @param clientName The name of the client
-     * @return If the requested player exists, his player-object is returned.
-     * Else, a new Player with the name 'Badplayer' is returned.
+     * @return If the requested player exists, his player-object is returned. Else, a new Player
+     * with the name 'Badplayer' is returned.
      */
     public Player nameToPlayer(String clientName) {
         for (int i = 0; i < players.length; i++) {

@@ -180,8 +180,8 @@ public class ServerHandler implements Runnable {
     }
 
     /**
-     * This method logs this client out from the server, lobby, and serverGame, and then
-     * closes all the streams and the socket.
+     * This method logs this client out from the server, lobby, and serverGame, and then closes all
+     * the streams and the socket.
      */
     public void closeConnection() {
         // first, log out from server, lobby, and servergame

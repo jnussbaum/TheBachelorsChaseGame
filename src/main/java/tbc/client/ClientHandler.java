@@ -169,6 +169,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * With this method, the client tells the clientHandler which chatClient belongs to him.
+     *
      * @param chatClient The chatClient belonging to this clientHandler
      */
     public void registerChatClient(ChatClient chatClient) {
@@ -342,7 +343,8 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * Saves the highscore, which this method gets as the parameter, into the variable 'highScoreGui'
+     * Saves the highscore, which this method gets as the parameter, into the variable
+     * 'highScoreGui'
      *
      * @param data the names and coins of the highscore as a String
      */
@@ -356,6 +358,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * Sends the message to the server that this player wants to cheat
+     *
      * @param points The number of points the player wants to achieve.
      */
     public void cheat(int points) {

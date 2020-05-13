@@ -9,6 +9,7 @@ public class CoinsCompare implements Comparator<Player> {
 
     /**
      * Overrides the compare method from Comparator. Compares the given coins of two players.
+     *
      * @param p1 The first player
      * @param p2 The second player
      * @return The difference between the player two and player one.
