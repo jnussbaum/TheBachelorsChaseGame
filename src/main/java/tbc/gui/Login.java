@@ -35,7 +35,7 @@ public class Login extends Application {
             LoginController loginController = loader.getController();
             loginController.setUserName(Client.userName);
 
-            // Press enter to send your ok
+            // press enter to send your ok
             loginController.okBtn.setDefaultButton(true);
 
         } catch (Exception e) {

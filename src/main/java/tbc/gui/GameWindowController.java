@@ -513,20 +513,12 @@ public class GameWindowController {
         HighScoreWindow.display();
     }
 
-    public void showGamePlay() {
-        try {
-            PlayVideo gamePlay = new PlayVideo();
-            gamePlay.display("GamePlay.mp4");
-        } catch (Exception e) {
-            LOGGER.error("Could not find GamePlay.mp4 file");
-        }
-    }
-
     /**
      * MenuItem to start playing the music.
      */
     public void startMusic() {
         PlayMusic.startAudio();
+        LOGGER.info("Music is playing.");
     }
 
     /**
@@ -534,5 +526,6 @@ public class GameWindowController {
      */
     public void stopMusic() {
         PlayMusic.stopAudio();
+        LOGGER.info("Music stopped.");
     }
 }

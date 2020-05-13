@@ -12,10 +12,12 @@ import org.apache.logging.log4j.Logger;
 public class CardWindowController {
 
     private static final Logger LOGGER = LogManager.getLogger(CardWindowController.class);
-
     @FXML
     private Button btnBack;
 
+    /**
+     * Gets the stage of the close button and closes this stage.
+     */
     public void closeCardWindow() {
         Stage stage = (Stage) btnBack.getScene().getWindow();
         stage.close();

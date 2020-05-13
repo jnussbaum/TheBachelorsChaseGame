@@ -17,12 +17,16 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * If the button "Show Lobbylist" in the Various window is pressed, it will open a new window "The
- * Bachelor's Chase - Lobbylist". Here you can see a list of the lobbies.
+ * Bachelor's Chase - Lobbylist". Here you can see a list of all the lobbies set in the server.
  */
 public class LobbyList {
 
     private static final Logger LOGGER = LogManager.getLogger(LobbyList.class);
 
+    /**
+     * Opens a window to show all the lobbylist that are set in the server. First asks for a
+     * lobbylist and then sets it to the field. The button 'Close' closes this window.
+     */
     public static void display() {
         Stage window = new Stage();
 

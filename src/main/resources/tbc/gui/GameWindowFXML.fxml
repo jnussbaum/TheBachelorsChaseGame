@@ -37,8 +37,6 @@
             <items>
               <MenuItem fx:id="menuInfo" mnemonicParsing="false" onAction="#giveInfo" text="Info" />
                   <MenuItem fx:id="menuChatInfo" mnemonicParsing="false" onAction="#giveChatInfo" text="Chat Info" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="menuGamePlay" mnemonicParsing="false" onAction="#showGamePlay" text="Gameplay" />
             </items>
           </Menu>
         </menus>

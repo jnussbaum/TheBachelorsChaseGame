@@ -23,6 +23,10 @@ public class PlayerList {
 
     private static final Logger LOGGER = LogManager.getLogger(PlayerList.class);
 
+    /**
+     * Opens a window to show a list of all the players connected to the server. First asks for a
+     * playerlist and then sets it to the field. The button 'Close' closes this window.
+     */
     public static void display() {
         Stage window = new Stage();
 

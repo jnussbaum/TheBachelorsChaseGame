@@ -8,10 +8,11 @@ import java.util.Comparator;
 public class CoinsCompare implements Comparator<Player> {
 
     /**
+     * Overrides the compare method from Comparator. Compares the given coins of two Players.
      *
      * @param p1 is the first Player.
      * @param p2 is the second Player.
-     * @return
+     * @return The difference between the coins of player 2 and player 1.
      */
     @Override
     public int compare(Player p1, Player p2) {

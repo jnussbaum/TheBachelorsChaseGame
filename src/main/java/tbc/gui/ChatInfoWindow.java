@@ -18,8 +18,11 @@ public class ChatInfoWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatInfoWindow.class);
 
+    /**
+     * Opens a new window with the information about how to chat. The button 'Close' closes this
+     * window.
+     */
     public static void display() {
-
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);

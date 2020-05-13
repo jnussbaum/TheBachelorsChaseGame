@@ -15,6 +15,11 @@ import tbc.client.Client;
  */
 public class ConfirmBox {
 
+    /**
+     * Opens a little window to ask if the player really wants to log out. If the player presses on
+     * 'Yes' the GUI will close and the server logs the client out. If the player presses on 'No'
+     * the confirm window will close and the player can continue the game.
+     */
     public static void display() {
         Stage window = new Stage();
 

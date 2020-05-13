@@ -39,17 +39,23 @@ public class LobbyController {
      * @param mouseEvent mouse event to pick the top-most node under cursor.
      */
     public void startGame(MouseEvent mouseEvent) {
-        LOGGER.info("Join or create a lobby");
+        LOGGER.info("Join or create a lobby.");
         SelectLobby.display();
 
-        // Check if a lobby is chosen and if the game in this lobby has already started.
-        if (SelectLobby.lobbyChosen == true && !RejectJoiningLobbyWindow.rejected) {
+        // check if server has rejected the joining of a player to the lobby
+        if (clientHandler.rejected == true) {
+            RejectJoiningLobbyWindow.display();
+        }
+
+        // check if a lobby is chosen and if the game in this lobby has already started.
+        if (SelectLobby.lobbyChosen == true && clientHandler.rejected == false) {
             LOGGER.info("Show game window.");
             try {
                 PlayMusic.playAudio();
 
                 Stage gameWindow = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("GameWindowFXML.fxml"));
+                FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("GameWindowFXML.fxml"));
                 Parent root = loader.load();
 
                 gameWindow.setTitle("The Bachelor's Chase");
@@ -58,17 +64,18 @@ public class LobbyController {
 
                 gameWindowController = loader.getController();
 
-                // Welcomes the client in all the chat windows
-                clientHandler.sendMessage("ALL", "false", "Welcome, " + clientHandler.getMyName());
+                // welcomes the client in all the chat windows
+                clientHandler.sendMessage("ALL", "false", "Welcome, "
+                    + clientHandler.getMyName());
 
-                // Tells the user to press the 'Ready' button
+                // tells the user to press the 'Ready' button
                 gameWindowController
                     .appendGameMsg("Press the button 'Ready' if you are ready for the game");
 
-                // Press enter to send the chat message
+                // press enter to send the chat message
                 gameWindowController.btnSend.setDefaultButton(true);
 
-                // The send button from the chat is disabled as long as there is no input in the chat field
+                // the 'Send' button from the chat is disabled as long as there is no input in the chat field
                 gameWindowController.btnSend.disableProperty().bind(
                     Bindings.isEmpty(gameWindowController.msgField.textProperty())
                         .and(Bindings.isEmpty(gameWindowController.msgField.textProperty()))
@@ -155,7 +162,8 @@ public class LobbyController {
     public void showVarious() {
         LOGGER.info("Show various.");
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("VariousWindowFXML.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("VariousWindowFXML.fxml"));
             BorderPane various = loader.load();
 
             Stage variousWindow = new Stage();
@@ -168,10 +176,10 @@ public class LobbyController {
 
             variousWindowController = loader.getController();
 
-            // Press enter to enter your name
+            // press enter to enter your name
             variousWindowController.btnEnter.setDefaultButton(true);
 
-            // You can't press the enter button if you didn't type in an username.
+            // you can't press the enter button if you didn't type in an username.
             variousWindowController.btnEnter.disableProperty().bind(
                 Bindings.isEmpty(variousWindowController.newUsername.textProperty())
                     .and(Bindings.isEmpty(variousWindowController.newUsername.textProperty()))
