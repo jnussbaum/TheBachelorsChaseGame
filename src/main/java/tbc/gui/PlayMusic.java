@@ -7,16 +7,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This class is used to play sounds.
+ * This class is used to play the background music.
  */
 public class PlayMusic {
 
     private static final Logger LOGGER = LogManager.getLogger(PlayMusic.class);
-
     private static MediaPlayer mediaPlayer;
 
     /**
-     * This method plays the music file given from as a parameter.
+     * This method plays the music file.
      */
     public static void playAudio() {
         String fileName = "backgroundMusic.wav";

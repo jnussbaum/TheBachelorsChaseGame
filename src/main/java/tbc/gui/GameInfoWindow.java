@@ -12,13 +12,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Shows a window with information about the game like a description of the game, the rules and the
- * goals.
+ * This class shows a window with information about the game like a description of the game, the
+ * rules and the goals.
  */
 public class GameInfoWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(GameInfoWindow.class);
 
+    /**
+     * Opens a window with the information about the game. The button 'Close' closes this window.
+     */
     public static void display() {
         Stage window = new Stage();
 

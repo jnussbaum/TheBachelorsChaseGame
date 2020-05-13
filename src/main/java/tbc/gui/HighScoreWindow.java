@@ -16,12 +16,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Opens a window with the highscore of played matches.
+ * This class shows a window with the persistently highscore of played matches.
  */
 public class HighScoreWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(HighScoreWindow.class);
 
+    /**
+     * Opens a window to show a persistently highscore of the played matches. It asks for the
+     * highscore, then replaces the regex and sets the formatted text to the highscore field. The
+     * button 'Close' closes this window.
+     */
     public static void display() {
         Stage window = new Stage();
 
@@ -43,7 +48,7 @@ public class HighScoreWindow {
         try {
             sleep(1500);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.error("InterruptedException in the class HighScoreWindow.");
         }
 
         // replace all '$' to a new line

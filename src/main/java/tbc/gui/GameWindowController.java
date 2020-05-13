@@ -527,6 +527,7 @@ public class GameWindowController {
      */
     public void startMusic() {
         PlayMusic.startAudio();
+        LOGGER.info("Music is playing.");
     }
 
     /**
@@ -534,5 +535,6 @@ public class GameWindowController {
      */
     public void stopMusic() {
         PlayMusic.stopAudio();
+        LOGGER.info("Music stopped.");
     }
 }

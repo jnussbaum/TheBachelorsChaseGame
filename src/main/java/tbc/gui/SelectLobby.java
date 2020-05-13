@@ -25,9 +25,13 @@ import tbc.client.Client;
 public class SelectLobby {
 
     private static final Logger LOGGER = LogManager.getLogger(ChatInfoWindow.class);
-
     public static boolean lobbyChosen = false;
 
+    /**
+     * Opens a window to show a lobby list. Here it needs an user input to create/join a lobby.
+     * Enter a lobby name and press enter or the button 'Create/Join a lobby'. After that it will
+     * check if you can join the lobby or not.
+     */
     public static void display() {
         Stage window = new Stage();
 
@@ -53,7 +57,7 @@ public class SelectLobby {
         newLobby.setFocusTraversable(false);
         newLobby.setPromptText("Type in a new or an existing lobby name");
 
-        Button createLobby = new Button("Create/Join a new lobby");
+        Button createLobby = new Button("Create/Join a lobby");
 
         createLobby.setDefaultButton(true);
 
@@ -65,7 +69,8 @@ public class SelectLobby {
 
         createLobby.setOnAction(e -> {
             String lobbyName = newLobby.getText();
-            LOGGER.info("Create or join a lobby.");
+            LOGGER.info("Create/join a lobby.");
+            clientHandler.rejected = false;
             Client.joinALobby(lobbyName);
 
             lobbyChosen = true;
