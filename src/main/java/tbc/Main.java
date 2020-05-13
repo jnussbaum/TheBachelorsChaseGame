@@ -12,6 +12,12 @@ public class Main {
 
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
 
+    /**
+     * the main-method which runs the whole project.
+     * It decides if you start the server or the client.
+     *
+     * @param args the input of the user.
+     */
     public static void main(String[] args) {
         if (args[0].equalsIgnoreCase("client")) {
             LOGGER.info("Client started...");

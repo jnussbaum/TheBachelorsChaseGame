@@ -11,6 +11,9 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This Class opens a window which tells the player that he reached over 180 Points.
+ */
 public class DroppedOutWindow {
 
     private static final Logger LOGGER = LogManager.getLogger(DroppedOutWindow.class);
